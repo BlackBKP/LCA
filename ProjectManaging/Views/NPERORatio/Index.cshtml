@@ -1,0 +1,39 @@
+﻿<!-- Normal Per OT Ratio Index -->
+<div class="container-fluid" style="padding-top:10px">
+    <div class="card card-dark">
+        <div class="card-header">
+            <span>Normal/OT Ratio</span>
+        </div>
+        <div class="card-body">
+            <canvas id="chart_pie" style="height:400px"></canvas>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        var ctx = document.getElementById('chart_pie').getContext('2d');
+        var chart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Data 1', 'Data 2', 'Data 3', 'Data 4', 'Data 5', 'Data 6'],
+                datasets: [{
+                    data: [12, 19, 3, 5, 2, 3],
+                    backgroundColor: [
+                        'rgba(255, 0, 0,0.5)',
+                        'rgba(0, 255, 0,0.5)',
+                        'rgba(0, 0, 255,0.5)',
+                        'rgba(255, 255, 0,0.5)',
+                        'rgba(255, 0, 255,0.5)',
+                        'rgba(0, 255, 255,0.5)'
+                    ],
+                }]
+            },
+            options: {
+                maintainAspectRatio: false
+            }
+        });
+    </script>
+}

@@ -1,0 +1,169 @@
+﻿<!-- Home Index -->
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="container-fluid" style="padding-top:10px">
+
+    <h1>Projects</h1>
+
+    <div id="projects">
+
+    </div>
+    @*<div class="card card-dark">
+        <div class="card-header">
+            <span class="card-title">2021 Salary</span>
+        </div>
+        <div class="card-body">
+            <canvas id="chart_line" style="height:400px;width:100%"></canvas>
+        </div>
+    </div>*@
+</div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            GetJobs();
+            //GenChart();
+        });
+
+        async function GetJobs() {
+            await $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetJobs", "Home")',
+	            contentType: 'application/x-www-form-urlencoded',
+                data: {
+
+                },
+                success: function (response) {
+                    console.log("Response");
+                    console.log(response);
+                    GenGraph(response);
+                }
+            });
+        }
+
+        function GenGraph(jobs) {
+            $('#projects').empty();
+            for (var i = 0; i < jobs.length; i++) {
+                var str = '<div class="card card-dark"><div class="card-header">';
+                str += '<span class="card-title">' + jobs[i].job_id + '</span></div>';
+                str += '<div class="card-body"><canvas id="' + jobs[i].job_id + '" style="height:300px;width:100%"></canvas>';
+                str += '</div></div>';
+                $('#projects').append(str); 
+
+                var maximum_budget = [];
+                var half_budget = [];
+                var progress = [];
+                for (var j = 0; j < jobs[i].spent.length; j++) {
+                    maximum_budget[j] = jobs[i].budget;
+                    half_budget[j] = jobs[i].budget / 2;
+                    progress[j] = (jobs[i].progress[j] / 100) * jobs[i].budget;
+                }
+
+                var ctx = document.getElementById(jobs[i].job_id).getContext('2d');
+                var chart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: jobs[i].fortnight,
+                        datasets: [
+                            {
+                                label: "Budget Spent",
+                                data: jobs[i].spent,
+                                fill: false,
+                                borderColor: ['rgba(0, 0, 255, 1)'],
+                            },
+                            {
+                                label: "Half Budget",
+                                data: half_budget,
+                                fill: false,
+                                borderColor: ['rgba(255, 255, 0, 0.5)'],
+                            },
+                            {
+                                label: '100% of Budget',
+                                data: maximum_budget,
+                                fill: false,
+                                borderColor: ['rgba(255, 0, 0, 0.5)'],
+                            },
+                            {
+                                label: 'Progress',
+                                data: progress,
+                                fill: false,
+                                borderColor: ['rgba(0, 255, 0, 0.5)'],
+                            }
+                        ]
+                    },
+                    options: {
+                        scales: {
+                            xAxes: [{
+                                gridLines: {
+                                    display: true
+                                }
+                            }],
+                            yAxes: [{
+                                gridLines: {
+                                    display: true
+                                }
+                            }]
+                        },
+                        maintainAspectRatio: false
+                    }
+                });
+            }
+        };
+
+
+        function GenChart() {
+            var ctx = document.getElementById('chart_line').getContext('2d');
+            var chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ["JAN 1", "JAN 2", "FEB 1", "FEB 2", "MAR 1", "MAR 2", "APR 1"],
+                    datasets: [
+                        {
+                            label: "Budget Spent",
+                            data: [2, 5, 7, 11, 13, 15],
+                            fill: false,
+                            borderColor: ['rgba(0, 0, 255, 1)'],
+                        },
+                        {
+                            label: '50% of Budget',
+                            data: [10, 10, 10, 10, 10, 10, 10],
+                            fill: false,
+                            borderColor: ['rgba(255, 255, 0, 0.5)'],
+                        },
+                        {
+                            label: '100% of Budget',
+                            data: [20, 20, 20, 20, 20, 20, 20],
+                            fill: false,
+                            borderColor: ['rgba(255, 0, 0, 0.5)'],
+                        },
+                        {
+                            label: 'Progress',
+                            data: [3, 7, 9, 13, 15, 17],
+                            fill: false,
+                            borderColor: ['rgba(0, 255, 0, 0.5)'],
+                        }
+                    ]
+                },
+                options: {
+                    scales: {
+                        xAxes: [{
+                            gridLines: {
+                                display: true
+                            }
+                        }],
+                        yAxes: [{
+                            gridLines: {
+                                display: true
+                            }
+                        }]
+                    }
+                }
+            });
+        }
+
+    </script>
+}
