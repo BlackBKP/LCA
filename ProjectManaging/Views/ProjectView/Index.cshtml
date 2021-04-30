@@ -1,100 +1,138 @@
 ﻿<!-- Project View Index -->
 <div class="container-fluid" style="padding-top:10px">
-    <div class="info-box bg-gradient-dark" style="width:100%;">
-        <div class="info-box-content">
-            <span class="info-box-text">
-                JOB ID : J01-0001
-            </span>
-        </div>
-    </div>
 
     <div class="row">
-        <div class="col-6">
-            <div class="card card-dark">
-                <div class="card-header">
-                    <span class="card-title">
-                        Spent Per Fortnight
-                    </span>
-                </div>
-                <div class="card-body">
-                    <canvas id="canvas_1" style="height:250px"></canvas>
-                </div>
-            </div>
-        </div>
-        <div class="col-6">
-            <div class="card card-dark">
-                <div class="card-header">
-                    <span class="card-title">
-                        Manpower Per Hour
-                    </span>
-                </div>
-                <div class="card-body">
-                    <canvas id="canvas_2" style="height:250px"></canvas>
+        <div class="col-2">
+            <div class="info-box bg-gradient-dark" style="width:100%;">
+                <div class="info-box-content row">
+                    <div class="col-4 text-center">
+                        <label class="info-box-text" for="ProjectYears" style="height:100%">Year</label>
+                    </div>
+                    <div class="col-8">
+                        <select class="form-control" id="ProjectYears" style="width:100%">
+                            <option>2021</option>
+                            <option>2020</option>
+                            <option>2019</option>
+                        </select>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="col-6">
             <div class="card card-dark">
                 <div class="card-header">
-                    <span class="card-title">
-                        Salary Per Hour
-                    </span>
+                    <span class="card-title">JOB ID</span>
                 </div>
-                <div class="card-body">
-                    <canvas id="canvas_3" style="height:250px"></canvas>
+                <div class="card-body" style="padding:0px">
+                    <ul id="pj_lists" class="list-group">
+                    </ul>
                 </div>
             </div>
+
+            <div class="row">
+                <div class="col-12">
+                    
+                </div>
+            </div>
+            
         </div>
-        <div class="col-6">
+        <div class="col-10">
+            <div class="info-box bg-gradient-dark" style="width:100%;">
+                <div class="info-box-content">
+                    <span class="info-box-text">
+                        JOB ID : J01-0001
+                    </span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-6">
+                    <div class="card card-dark">
+                        <div class="card-header">
+                            <span class="card-title">
+                                Spent Per Fortnight
+                            </span>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="canvas_1" style="height:250px"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card card-dark">
+                        <div class="card-header">
+                            <span class="card-title">
+                                Manpower Per Hour
+                            </span>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="canvas_2" style="height:250px"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-6">
+                    <div class="card card-dark">
+                        <div class="card-header">
+                            <span class="card-title">
+                                Salary Per Hour
+                            </span>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="canvas_3" style="height:250px"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card card-dark">
+                        <div class="card-header">
+                            <span class="card-title">
+                                Normal Per Overtime Ratio
+                            </span>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="canvas_4" style="height:250px"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="card card-dark">
                 <div class="card-header">
-                    <span class="card-title">
-                        Normal Per Overtime Ratio
-                    </span>
+                    <span class="card-title">Tables</span>
                 </div>
                 <div class="card-body">
-                    <canvas id="canvas_4" style="height:250px"></canvas>
+                    <table class="table table-sm table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Normal</th>
+                                <th>Overtime</th>
+                                <th>Salary</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>#01</td>
+                                <td>Black</td>
+                                <td>80</td>
+                                <td>0</td>
+                                <td>8,000</td>
+                            </tr>
+
+                            <tr>
+                                <td>#02</td>
+                                <td>Staff A</td>
+                                <td>76</td>
+                                <td>4</td>
+                                <td>8,000</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <div class="card card-dark">
-        <div class="card-header">
-            <span class="card-title">Tables</span>
-        </div>
-        <div class="card-body">
-            <table class="table table-sm table-hover">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Normal</th>
-                        <th>Overtime</th>
-                        <th>Salary</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>#01</td>
-                        <td>Black</td>
-                        <td>80</td>
-                        <td>0</td>
-                        <td>8,000</td>
-                    </tr>
-
-                    <tr>
-                        <td>#02</td>
-                        <td>Staff A</td>
-                        <td>76</td>
-                        <td>4</td>
-                        <td>8,000</td>
-                    </tr>
-                </tbody>
-            </table>
         </div>
     </div>
 
@@ -105,11 +143,24 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
+            GenProjectOptions();
             GenCanvas1();
             GenCanvas2();
             GenCanvas3();
             GenCanvas4();
         });
+
+        function GenProjectOptions() {
+            $('#pj_lists').empty();
+            var str = '';
+            for (var i = 1; i < 28; i++) {
+                str += '<li class="list-group-item" style="padding:1px">';
+                str += '<button type="button" class="btn btn-secondary form-control">';
+                str += 'J21 - ' + i.toString().padStart(4, "0") + '</button >';
+                str += '</li>';
+            }
+            $('#pj_lists').append(str);
+        }
 
         function GenCanvas1() {
             var ctx = document.getElementById('canvas_1').getContext('2d');
