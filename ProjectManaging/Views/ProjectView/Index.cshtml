@@ -1,1 +1,269 @@
 ﻿<!-- Project View Index -->
+<div class="container-fluid" style="padding-top:10px">
+    <div class="info-box bg-gradient-dark" style="width:100%;">
+        <div class="info-box-content">
+            <span class="info-box-text">
+                JOB ID : J01-0001
+            </span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <div class="card card-dark">
+                <div class="card-header">
+                    <span class="card-title">
+                        Spent Per Fortnight
+                    </span>
+                </div>
+                <div class="card-body">
+                    <canvas id="canvas_1" style="height:250px"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="card card-dark">
+                <div class="card-header">
+                    <span class="card-title">
+                        Manpower Per Hour
+                    </span>
+                </div>
+                <div class="card-body">
+                    <canvas id="canvas_2" style="height:250px"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <div class="card card-dark">
+                <div class="card-header">
+                    <span class="card-title">
+                        Salary Per Hour
+                    </span>
+                </div>
+                <div class="card-body">
+                    <canvas id="canvas_3" style="height:250px"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="card card-dark">
+                <div class="card-header">
+                    <span class="card-title">
+                        Normal Per Overtime Ratio
+                    </span>
+                </div>
+                <div class="card-body">
+                    <canvas id="canvas_4" style="height:250px"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card card-dark">
+        <div class="card-header">
+            <span class="card-title">Tables</span>
+        </div>
+        <div class="card-body">
+            <table class="table table-sm table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Normal</th>
+                        <th>Overtime</th>
+                        <th>Salary</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>#01</td>
+                        <td>Black</td>
+                        <td>80</td>
+                        <td>0</td>
+                        <td>8,000</td>
+                    </tr>
+
+                    <tr>
+                        <td>#02</td>
+                        <td>Staff A</td>
+                        <td>76</td>
+                        <td>4</td>
+                        <td>8,000</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            GenCanvas1();
+            GenCanvas2();
+            GenCanvas3();
+            GenCanvas4();
+        });
+
+        function GenCanvas1() {
+            var ctx = document.getElementById('canvas_1').getContext('2d');
+            var chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['JAN 1', 'JAN 2', 'FEB 1', 'FEB 2', 'MAR 1', 'MAR 2'],
+                    datasets: [
+                        {
+                            label: 'Spent Per Fortnight',
+                            type: 'bar',
+                            data: [1, 2, 1, 2, 1, 1],
+                        },
+                        {
+                            label: 'Spent Total',
+                            type: 'line',
+                            data: [1, 3, 4, 6, 7, 8],
+                            fill:false,
+                        },
+                        {
+                            label: '50% Budget',
+                            type: 'line',
+                            data: [5, 5, 5, 5, 5, 5],
+                            fill: false,
+                        },
+                        {
+                            label: 'Maximum Budget',
+                            type: 'line',
+                            data: [10, 10, 10, 10, 10, 10],
+                            fill: false
+                        }
+                    ],
+                },
+                options: {
+                    scales: {
+                        xAxes: [
+                            {
+                                max: 7,
+                                min: -1,
+                                ticks: {
+                                    stepSize: 0.5
+                                }
+                            }
+                        ],
+                        yAxes: [
+                            {
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            },
+                        ]
+                    },
+                    maintainAspectRatio: false
+                }
+            });
+        }
+
+        function GenCanvas2() {
+            var ctx2 = document.getElementById('canvas_2').getContext('2d');
+            var chart2 = new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: ['JAN 1', 'JAN 2', 'FEB 1', 'FEB 2', 'MAR 1', 'MAR 2'],
+                    datasets: [
+                        {
+                            label: 'Normal',
+                            data: [10, 9, 10, 11, 7, 6],
+                        },
+                        {
+                            label: 'Overtimes',
+                            data: [4, 3.5, 2.5, 1, 1.5, 0.5],
+                            backgroundColor:'rgba(255,0,0,0.3)',
+                        }
+                    ],
+                },
+                options: {
+                    scales: {
+                        xAxes: [
+                            {
+                                stacked: true
+                            }
+                        ],
+                        yAxes: [
+                            {
+                                ticks: {
+                                    beginAtZero: true
+                                },
+                                stacked: true
+                            },
+                        ]
+                    },
+                    maintainAspectRatio: false
+                }
+            });
+        }
+
+        function GenCanvas3() {
+            var ctx3 = document.getElementById('canvas_3').getContext('2d');
+            var chart3 = new Chart(ctx3, {
+                type: 'bar',
+                data: {
+                    labels: ['JAN 1', 'JAN 2', 'FEB 1', 'FEB 2', 'MAR 1', 'MAR 2'],
+                    datasets: [
+                        {
+                            label: 'Normal',
+                            data: [10, 9, 10, 11, 7, 6],
+                        },
+                        {
+                            label: 'Overtimes',
+                            data: [4, 3.5, 2.5, 1, 1.5, 0.5],
+                            backgroundColor: 'rgba(255,0,0,0.3)',
+                        }
+                    ],
+                },
+                options: {
+                    scales: {
+                        xAxes: [
+                            {
+                                stacked: true
+                            }
+                        ],
+                        yAxes: [
+                            {
+                                ticks: {
+                                    beginAtZero: true
+                                },
+                                stacked: true
+                            },
+                        ]
+                    },
+                    maintainAspectRatio: false
+                }
+            });
+        }
+
+        function GenCanvas4() {
+            var ctx4 = document.getElementById('canvas_4').getContext('2d');
+            var chart4 = new Chart(ctx4, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Normal', 'Overtime'],
+                    datasets: [{
+                        data: [200, 40],
+                        backgroundColor: [
+                            'rgba(128, 128, 128,0.5)',
+                            'rgba(0, 0, 0,0.2)',
+                        ],
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false
+                }
+            });
+        }
+
+    </script>
+}
