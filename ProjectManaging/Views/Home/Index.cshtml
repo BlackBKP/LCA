@@ -38,30 +38,37 @@
 
                 },
                 success: function (response) {
-                    console.log("Response");
-                    console.log(response);
-                    GenGraph(response);
+                    //console.log("Response");
+                    //console.log(response);
+                    GenChart(response);
                 }
             });
         }
 
-        function GenGraph(jobs) {
+        function GenChart(jobs) {
             $('#projects').empty();
             for (var i = 0; i < jobs.length; i++) {
                 var str = '<div class="card card-dark"><div class="card-header">';
                 str += '<span class="card-title">' + jobs[i].job_id + '</span></div>';
-                str += '<div class="card-body"><canvas id="' + jobs[i].job_id + '" style="height:300px;width:100%"></canvas>';
+                str += '<div class="card-body"><canvas id="' + jobs[i].job_id + '" style="height:600px;width:100%"></canvas>';
                 str += '</div></div>';
                 $('#projects').append(str); 
 
                 var maximum_budget = [];
                 var half_budget = [];
                 var progress = [];
+                var pf = [];
                 for (var j = 0; j < jobs[i].spent.length; j++) {
                     maximum_budget[j] = jobs[i].budget;
                     half_budget[j] = jobs[i].budget / 2;
                     progress[j] = (jobs[i].progress[j] / 100) * jobs[i].budget;
+                    if (j == 0)
+                        pf[j] = (jobs[i].progress[j] / 100) * jobs[i].budget;
+                    else
+                        pf[j] = (jobs[i].progress[j] - jobs[i].progress[j - 1]) / 100 * jobs[i].budget;
                 }
+                //console.log("PF" + i);
+                //console.log(pf);
 
                 var ctx = document.getElementById(jobs[i].job_id).getContext('2d');
                 var chart = new Chart(ctx, {
@@ -92,6 +99,11 @@
                                 data: progress,
                                 fill: false,
                                 borderColor: ['rgba(0, 255, 0, 0.5)'],
+                            },
+                            {
+                                label: 'Progress/Fortnight',
+                                data: pf,
+                                type: 'bar',
                             }
                         ]
                     },
@@ -100,70 +112,36 @@
                             xAxes: [{
                                 gridLines: {
                                     display: true
+                                },
+                                ticks: {
+                                    beginAtZero: true
                                 }
                             }],
                             yAxes: [{
                                 gridLines: {
-                                    display: true
+                                    display: true,
+                                },
+                                ticks: {
+                                    beginAtZero: true
                                 }
                             }]
                         },
-                        maintainAspectRatio: false
+                        maintainAspectRatio: false,
+                        tooltips: {
+                            callbacks: {
+                                label: function (tooltipItem, data) {
+                                    var label = data.datasets[4].label || '';
+                                    if (label)
+                                        label += ': ';
+                                    label += ((data.datasets[4] / data.datasets[2]) * 100) + " %";
+                                    return label;
+                                }
+                            }
+                        }
                     }
                 });
             }
         };
-
-
-        function GenChart() {
-            var ctx = document.getElementById('chart_line').getContext('2d');
-            var chart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ["JAN 1", "JAN 2", "FEB 1", "FEB 2", "MAR 1", "MAR 2", "APR 1"],
-                    datasets: [
-                        {
-                            label: "Budget Spent",
-                            data: [2, 5, 7, 11, 13, 15],
-                            fill: false,
-                            borderColor: ['rgba(0, 0, 255, 1)'],
-                        },
-                        {
-                            label: '50% of Budget',
-                            data: [10, 10, 10, 10, 10, 10, 10],
-                            fill: false,
-                            borderColor: ['rgba(255, 255, 0, 0.5)'],
-                        },
-                        {
-                            label: '100% of Budget',
-                            data: [20, 20, 20, 20, 20, 20, 20],
-                            fill: false,
-                            borderColor: ['rgba(255, 0, 0, 0.5)'],
-                        },
-                        {
-                            label: 'Progress',
-                            data: [3, 7, 9, 13, 15, 17],
-                            fill: false,
-                            borderColor: ['rgba(0, 255, 0, 0.5)'],
-                        }
-                    ]
-                },
-                options: {
-                    scales: {
-                        xAxes: [{
-                            gridLines: {
-                                display: true
-                            }
-                        }],
-                        yAxes: [{
-                            gridLines: {
-                                display: true
-                            }
-                        }]
-                    }
-                }
-            });
-        }
 
     </script>
 }
