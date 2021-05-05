@@ -1,30 +1,39 @@
 ﻿<!-- Project Index -->
 <div class="container-fluid" style="padding-top:10px">
     
-    <div class="row align-content-end">
-        <div class="col-1">
-            <button id="add_project" class="btn btn-primary form-control" type="button">
-                Add Project
+    <div class="row">
+        <div class="col-6">
+            <div class="info-box bg-dark" style="height:100%">
+                <i class="info-box-icon fas fa-list"></i>
+                <div class="info-box-content">
+                    <span class="info-box-text">Total Project</span>
+                    <span class="info-box-number">3/3</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-3">
+            <button id="btn_add_job" class="btn btn-dark" style="width:100%;height:100%">
+                Add Job
             </button>
         </div>
-        <div class="col-1">
-            <button id="import_project" class="btn btn-primary form-control" type="button">
-                Import Project
+        <div class="col-3">
+            <button id="btn_import_job" class="btn btn-dark" style="width:100%;height:100%">
+                Import Job(s)
             </button>
         </div>
     </div>
-
+    
     <br />
 
     <div class="card card-dark">
         <div class="card-header">
-            <span class="card-title">Projects</span>
+            <span class="card-title">Job(s)</span>
         </div>
         <div class="card-body">
             <table id="project_table" class="table table-sm table-hover">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>JOB ID</th>
                         <th>Name</th>
                         <th>PM</th>
                         <th>Budget</th>
@@ -57,13 +66,23 @@
             </table>
         </div>
     </div>
+
 </div>
+
+<partial name="AddJobModal" />
+<partial name="ImportJobModal" />
 
 @section Scripts
 {
     <script type="text/javascript">
+
         $(document).ready(function () {
 
         });
+
+        $('#btn_add_job').on('click', function () {
+            $('#modal_add_job').modal();
+        });
+
     </script>
 }
