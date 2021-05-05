@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ProjectManaging.Interfaces;
 using ProjectManaging.Models;
+using ProjectManaging.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -10,8 +12,17 @@ namespace ProjectManaging.Controllers
 {
     public class HomeController : Controller
     {
+        IHome Home;
+
+        public HomeController()
+        {
+            this.Home = new HomeService();
+        }
+
         public IActionResult Index()
         {
+            string s = Home.Show();
+            int a = Home.Add(3, 4);
             return View();
         }
 

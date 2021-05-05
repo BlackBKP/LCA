@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 
 namespace ProjectManaging.Interfaces
 {
-    public interface IConnectDB
+    interface IHome
     {
-        string Connect();
+        string Show();
+        int Add(int a,int b);
     }
 }

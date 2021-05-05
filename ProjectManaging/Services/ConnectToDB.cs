@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 
 namespace ProjectManaging.Services
 {
-    public class ConnectDB : IConnectDB
+    public class ConnectToDB
     {
-        public string Connect()
+       
+        IConnectDB connect;
+        public ConnectToDB()
         {
-            return "Connect DB";
+            this.connect = new ConnectDB();
         }
     }
 }
