@@ -1,5 +1,6 @@
 ﻿<!-- Normal Per OT Ratio Index -->
 <div class="container-fluid" style="padding-top:10px">
+
     <div class="card card-dark">
         <div class="card-header">
             <span>Normal/OT Ratio</span>
@@ -18,21 +19,24 @@
         var chart = new Chart(ctx, {
             type: 'doughnut',
             data: {
-                labels: ['Data 1', 'Data 2', 'Data 3', 'Data 4', 'Data 5', 'Data 6'],
+                labels: ['Data 1', 'Data 2'],
                 datasets: [{
-                    data: [12, 19, 3, 5, 2, 3],
+                    data: [200, 40],
                     backgroundColor: [
                         'rgba(255, 0, 0,0.5)',
-                        'rgba(0, 255, 0,0.5)',
-                        'rgba(0, 0, 255,0.5)',
-                        'rgba(255, 255, 0,0.5)',
-                        'rgba(255, 0, 255,0.5)',
-                        'rgba(0, 255, 255,0.5)'
+                        'rgba(0, 255, 0,0.5)'
                     ],
                 }]
             },
             options: {
-                maintainAspectRatio: false
+                maintainAspectRatio: false,
+                tooltips: {
+                    callbacks: {
+                        label: function (tooltipItem, data) {
+                            return data.labels[tooltipItem.index] + ': ' + parseInt((data.datasets[0].data[tooltipItem.index]/240)*100) + ' %';
+                        }
+                    }
+                }
             }
         });
     </script>

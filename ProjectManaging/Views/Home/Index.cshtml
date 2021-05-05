@@ -69,7 +69,7 @@
                         labels: jobs[i].fortnight,
                         datasets: [
                             {
-                                label: "Budget Spent",
+                                label: "Budget Spent (Accumulation)",
                                 data: jobs[i].spent,
                                 fill: false,
                                 borderColor: ['rgba(0, 0, 255, 1)'],
@@ -87,7 +87,7 @@
                                 borderColor: ['rgba(255, 0, 0, 0.5)'],
                             },
                             {
-                                label: 'Progress',
+                                label: 'Progress (Accumulation)',
                                 data: progress,
                                 fill: false,
                                 borderColor: ['rgba(0, 255, 0, 0.5)'],
@@ -122,11 +122,9 @@
                         tooltips: {
                             callbacks: {
                                 label: function (tooltipItem, data) {
-                                    var label = data.datasets[4].label || '';
-                                    if (label)
-                                        label += ': ';
-                                    label += ((data.datasets[4] / data.datasets[2]) * 100) + " %";
-                                    return label;
+                                    var ds_index = tooltipItem.datasetIndex;
+                                    var t_index = tooltipItem.index;
+                                    return data.datasets[ds_index].label + ': ' + parseInt((data.datasets[ds_index].data[t_index] / 10) * 100) + ' %';
                                 }
                             }
                         }
