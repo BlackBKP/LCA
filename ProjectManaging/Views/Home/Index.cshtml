@@ -18,7 +18,6 @@
 
         $(document).ready(function () {
             GetJobs();
-            //GenChart();
         });
 
         async function GetJobs() {
@@ -30,8 +29,6 @@
 
                 },
                 success: function (response) {
-                    //console.log("Response");
-                    //console.log(response);
                     GenChart(response);
                 }
             });
@@ -40,8 +37,9 @@
         function GenChart(jobs) {
             $('#projects').empty();
             for (var i = 0; i < jobs.length; i++) {
-                var str = '<div class="card card-dark"><div class="card-header">';
-                str += '<span class="card-title">' + jobs[i].job_id + '</span></div>';
+                var str = '<div class="card card-dark"><div class="card-header"><div class="row">';
+                str += '<div class="col-2"><span class="card-title">JOB ID: ' + jobs[i].job_id + '</span></div>';
+                str += '<div class="col-10"><span class="card-title">Project Manager: ' + jobs[i].pm + '</span></div></div></div>';
                 str += '<div class="card-body"><canvas id="' + jobs[i].job_id + '" style="height:600px;width:100%"></canvas>';
                 str += '</div></div>';
                 $('#projects').append(str); 
@@ -59,8 +57,6 @@
                     else
                         pf[j] = (jobs[i].progress[j] - jobs[i].progress[j - 1]) / 100 * jobs[i].budget;
                 }
-                //console.log("PF" + i);
-                //console.log(pf);
 
                 var ctx = document.getElementById(jobs[i].job_id).getContext('2d');
                 var chart = new Chart(ctx, {
@@ -103,10 +99,10 @@
                         scales: {
                             xAxes: [{
                                 gridLines: {
-                                    display: true
+                                    display: true,
                                 },
                                 ticks: {
-                                    beginAtZero: true
+                                    beginAtZero: true,
                                 }
                             }],
                             yAxes: [{
@@ -114,7 +110,7 @@
                                     display: true,
                                 },
                                 ticks: {
-                                    beginAtZero: true
+                                    beginAtZero: true,
                                 }
                             }]
                         },
@@ -124,7 +120,8 @@
                                 label: function (tooltipItem, data) {
                                     var ds_index = tooltipItem.datasetIndex;
                                     var t_index = tooltipItem.index;
-                                    return data.datasets[ds_index].label + ': ' + parseInt((data.datasets[ds_index].data[t_index] / 10) * 100) + ' %';
+                                    var max_budget = data.datasets[2].data[0];
+                                    return data.datasets[ds_index].label + ': ' + parseInt((data.datasets[ds_index].data[t_index] / max_budget) * 100) + ' %';
                                 }
                             }
                         }

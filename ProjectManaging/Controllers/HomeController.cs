@@ -44,6 +44,18 @@ namespace ProjectManaging.Controllers
             };
             jobs.Add(job);
 
+            //Job 03
+            job = new JobModel()
+            {
+                job_id = "J21-0003",
+                pm = "Mister C",
+                budget = 1,
+                fortnight = new string[] { "JAN 2", "FEB 1", "FEB 2", "MAR 1" },
+                progress = new double[] { 13, 32, 47, 66 },
+                spent = new double[] { 0.05, 0.12, 0.31, 0.44 },
+            };
+            jobs.Add(job);
+
             return Json(jobs);
         }
 

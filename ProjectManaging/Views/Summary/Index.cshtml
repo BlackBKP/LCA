@@ -5,7 +5,7 @@
             <span class="card-title">Summary</span>
         </div>
         <div class="card-body" style="overflow-y:auto">
-            <table id="summary_table" class="table table-sm table-hover table-bordered" style="width:100%">
+            <table id="summary_table" class="table table-sm table-hover" style="width:100%">
                 <thead>
                     <tr>
                         <th style="text-align:center;width:5%">Job Number</th>
@@ -31,7 +31,7 @@
                 </thead>
                 <tbody>
 
-                    <!-- Project 1 -->
+                    @*<!-- Project 1 -->
                     <tr style="height:50px">
 
                         <!-- Job Number -->
@@ -99,7 +99,7 @@
                             <span>400</span>
                         </td>
 
-                    </tr>
+                    </tr>*@
 
                 </tbody>
             </table>
@@ -110,8 +110,59 @@
 @section Scripts
 {
     <script type="text/javascript">
-        $(document).ready(function () {
+        var table;
 
+        $(document).ready(function () {
+            GetJobsSummary();
         });
+
+        async function GetJobsSummary() {
+            await $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetJobsSummary", "Summary")',
+	            contentType: 'application/x-www-form-urlencoded',
+                data: {
+
+                },
+                success: function (response) {
+                    console.log("Response");
+                    console.log(response);
+                    GenSummaryTable(response);
+                }
+            });
+        }
+
+        function GenSummaryTable(summaries) {
+            var datas = [];
+            for (var i = 0; i < summaries.length; i++) {
+                datas.push([
+                    summaries[i].job_id,
+                    summaries[i].estimate_budget,
+                    summaries[i].labor_cost,
+                    summaries[i].labor_cost_ot,
+                    summaries[i].accomodation_cost,
+                    summaries[i].compensation_cost,
+                    summaries[i].cost_to_date,
+                    summaries[i].remainning_cost,
+                    summaries[i].percent_cost_usage,
+                    summaries[i].percent_work_completion,
+                    summaries[i].normal_manhour,
+                    summaries[i].x15_manhour,
+                    summaries[i].x30_manhour,
+                    summaries[i].total_manhour,
+                    summaries[i].number_of_labor,
+                    summaries[i].avg_labor_cost_per_hour,
+                ]);
+            }
+
+            if (table != null)
+                table == null
+
+            table = $('#summary_table').DataTable({
+                data: datas,
+                pagingType: "full_numbers",
+            });
+        }
+
     </script>
 }
