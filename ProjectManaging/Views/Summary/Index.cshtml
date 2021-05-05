@@ -161,6 +161,11 @@
             table = $('#summary_table').DataTable({
                 data: datas,
                 pagingType: "full_numbers",
+                columnDefs: [
+                    {
+                        targets: []
+                    },
+                ],
             });
         }
 
