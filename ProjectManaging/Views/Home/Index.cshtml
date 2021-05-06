@@ -21,7 +21,23 @@
 
         $(document).ready(function () {
             GetJobs();
+            GetEmps();
         });
+
+        async function GetEmps() {
+            await $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetEmps", "Home")',
+	            contentType: 'application/x-www-form-urlencoded',
+                data: {
+
+                },
+                success: function (response) {
+                    console.log("EMPS");
+                    console.log(response);
+                }
+            });
+        }
 
         async function GetJobs() {
             await $.ajax({
@@ -44,14 +60,16 @@
                 str += '<span class="card-title">JOB ID: ' + jobs[i].job_id + '</span></div>';
                 str += '<div class="card-body"><canvas id="' + jobs[i].job_id + '" style="height:40vh;width:100%"></canvas>';
                 str += '</div></div>';
-                $('#projects').append(str); 
+                $('#projects').append(str);
 
                 var maximum_budget = [];
+                var eighty_budget = [];
                 var half_budget = [];
                 var progress = [];
                 var pf = [];
                 for (var j = 0; j < jobs[i].spent.length; j++) {
                     maximum_budget[j] = jobs[i].budget;
+                    eighty_budget[j] = jobs[i].budget * 0.8;
                     half_budget[j] = jobs[i].budget / 2;
                     progress[j] = (jobs[i].progress[j] / 100) * jobs[i].budget;
                     if (j == 0)
@@ -59,7 +77,6 @@
                     else
                         pf[j] = (jobs[i].progress[j] - jobs[i].progress[j - 1]) / 100 * jobs[i].budget;
                 }
-               // console.log(jobs);
                 var ctx = document.getElementById(jobs[i].job_id).getContext('2d');
                 var chart = new Chart(ctx, {
                     type: 'line',
@@ -70,12 +87,6 @@
                                 type:'line',
                                 label: "Budget Spent (Accumulation)",
                                 data: jobs[i].spent,
-                                //fill: {
-                                //    value: 5,
-                                //    above: 'rgba(255,0,0,1)',
-                                //    below: 'rgba(255, 255, 255,0)',
-                                //},
-                                //backgroundColor: 'rgba(0, 0, 255, 0.3)',
                                 borderColor: ['rgba(0, 0, 255, 1)'],
                             },
                             {
@@ -83,47 +94,41 @@
                                 data: half_budget,
                                 fill:false,
                                 borderDash: [10, 5],
-                                borderColor: ['rgba(0, 255, 200, 0.5)'],
+                                borderColor: ['rgba(255, 255, 0, 0.3)'],
                             },
                             {
                                 label: "80% Budget",
-                                data: [8,8,8,8,8,8],
+                                data: eighty_budget,
                                 fill: {
-                                    value: 5,
+                                    value: half_budget[0],
                                     above: 'rgba(255,200,50,0.2)',
                                     below: 'rgba(255, 255, 255,0)',
                                 },
                                 borderDash: [10, 5],
-                                borderColor: ['rgba(255, 200, 50, 0.5)'],
+                                borderColor: ['rgba(255, 200, 50, 0.3)'],
                             },
                             {
                                 label: '100% of Budget',
                                 data: maximum_budget,
                                 fill: {
-                                    value: 8,
+                                    value: maximum_budget[0]*0.8,
                                     above: 'rgba(255,0,0,0.2)',
                                     below: 'rgba(255, 255, 255,0)',
                                 },
                                 borderDash:[10,5],
-                                borderColor: ['rgba(255, 0, 0, 0.5)'],
+                                borderColor: ['rgba(255, 0, 0, 0.3)'],
                             },
                             {
                                 label: 'Progress (Accumulation)',
                                 data: progress,
-                                
-                                    //fill: {
-                                    //    value: 5,
-                                    //    above: 'rgba(255,0,0,1)',
-                                    //    below: 'rgba(255, 255, 255, 0)',
-                                    //},
-                                
                                 borderColor: ['rgba(0, 255, 0, 0.5)'],
                             },
                             {
                                 label: 'Progress/Fortnight',
                                 data: pf,
                                 type: 'line',
-                                backgroundColor:'rgba(250,200,0,0.5)',
+                                backgroundColor: 'rgba(250,200,0,0.75)',
+                                borderColor: 'rgba(250,200,0,0.75)',
                             }
                         ]
                     },
@@ -131,7 +136,7 @@
                         scales: {
                             xAxes: [{
                                 gridLines: {
-                                    display: false,
+                                    display: true,
                                 },
                                 ticks: {
                                     beginAtZero: true,
@@ -139,7 +144,7 @@
                             }],
                             yAxes: [{
                                 gridLines: {
-                                    display: false,
+                                    display: true,
                                 },
                                 ticks: {
                                     beginAtZero: true,

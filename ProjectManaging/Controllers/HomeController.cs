@@ -21,10 +21,13 @@ namespace ProjectManaging.Controllers
 
         public IActionResult Index()
         {
-            string s = Home.Show();
-            int a = Home.Add(3, 4);
-            Console.WriteLine(a + s);
             return View();
+        }
+
+        [HttpGet]
+        public JsonResult GetEmps()
+        {
+            return Json(Home.GetEmployees());
         }
 
         [HttpGet]

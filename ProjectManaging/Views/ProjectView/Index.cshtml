@@ -164,6 +164,7 @@
             $('#pj_lists').append(str);
         }
 
+        //Spent per 15 days
         function GenCanvas1() {
             var ctx = document.getElementById('canvas_1').getContext('2d');
             var chart = new Chart(ctx, {
@@ -173,7 +174,7 @@
                     datasets: [
                         {
                             label: 'Spent Per Fortnight',
-                            type: 'bar',
+                            type: 'line',
                             data: [1, 2, 1, 2, 1, 1],
                         },
                         {
@@ -186,6 +187,12 @@
                             label: '50% Budget',
                             type: 'line',
                             data: [5, 5, 5, 5, 5, 5],
+                            fill: false,
+                        },
+                        {
+                            label: '80% Budget',
+                            type: 'line',
+                            data: [8, 8, 8, 8, 8, 8],
                             fill: false,
                         },
                         {
@@ -220,6 +227,7 @@
             });
         }
 
+        //Manpower per hour
         function GenCanvas2() {
             var ctx2 = document.getElementById('canvas_2').getContext('2d');
             var chart2 = new Chart(ctx2, {
@@ -259,6 +267,7 @@
             });
         }
 
+        //Salary per hour
         function GenCanvas3() {
             var ctx3 = document.getElementById('canvas_3').getContext('2d');
             var chart3 = new Chart(ctx3, {
@@ -298,6 +307,7 @@
             });
         }
 
+        //Normal Overtime Ratio
         function GenCanvas4() {
             var ctx4 = document.getElementById('canvas_4').getContext('2d');
             var chart4 = new Chart(ctx4, {
