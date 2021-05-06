@@ -23,6 +23,7 @@ namespace ProjectManaging.Controllers
         {
             string s = Home.Show();
             int a = Home.Add(3, 4);
+            Console.WriteLine(a + s);
             return View();
         }
 
@@ -49,9 +50,9 @@ namespace ProjectManaging.Controllers
                 job_id = "J21-0002",
                 pm = "Mister B",
                 budget = 5,
-                fortnight = new string[] { "JAN 1", "JAN 2", "FEB 1", "FEB 2", "MAR 1", "MAR 2" },
-                progress = new double[] { 15, 30, 40, 60, 80, 100 },
-                spent = new double[] { 0.5, 1, 2, 2.5, 3, 3.5 },
+                fortnight = new string[] { "JAN 1","", "JAN 2", "", "FEB 1", "", "FEB 2", "", "MAR 1", "", "MAR 2" },
+                progress = new double[] { 15,27.5, 30,35, 40,50, 60,70, 80,90, 100 },
+                spent = new double[] { 0.5,0.75, 1,1.5, 2,2.25, 2.5,2.75, 3,3.25, 3.5 },
             };
             jobs.Add(job);
 
