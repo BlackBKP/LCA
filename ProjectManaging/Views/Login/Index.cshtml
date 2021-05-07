@@ -1,0 +1,37 @@
+﻿<!-- Login Index -->
+@model ProjectManaging.Models.LoginModel
+@{
+    Layout = null;
+}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+
+<body>
+    <div class="container-fluid">
+
+        <form role="form" asp-action="Login" asp-controller="Login" method="post">
+
+            <label>Username</label>
+            <input id="username" type="text" name="username" asp-for="username" autocomplete="on"/>
+
+            <label>Password</label>
+            <input id="password" type="password" name="password" asp-for="password"/>
+
+            <input type="submit" value="Login"/>
+
+        </form>
+
+    </div>
+    <script type="text/javascript">
+
+    </script>
+</body>
+</html>
