@@ -1,55 +1,82 @@
 ﻿<!-- Man Per Hour Index -->
 <div class="container-fluid" style="padding-top:10px">
-    <div class="card card-dark">
-        <div class="card-header">
-            <span class="card-title">Man Hour</span>
-        </div>
-        <div class="card-body">
-            <canvas id="chart_bar" style="height:400px"></canvas>
+    <div class="info-box bg-dark">
+        <div class="info-box-content">
+            <h3 class="info-box-text">Manpower Per Hour</h3>
         </div>
     </div>
+    <div id="projects"></div>
 </div>
 
 @section Scripts
 {
     <script type="text/javascript">
 
-        var ctx = document.getElementById('chart_bar').getContext('2d');
-        var myChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['JAN 1', 'JAN 2', 'FEB 1', 'FEB 2', 'MAR 1', 'MAR 3'],
-                datasets: [{
-                    label: '# of Votes',
-                    data: [12, 19, 3, 5, 2, 3],
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        ticks: { beginAtZero: true }
-                    }
-                },
-                maintainAspectRatio:false
-            }
+        $(document).ready(function () {
+            GetData();
         });
+
+        async function GetData() {
+            await $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetData", "ManHour")',
+	            contentType: 'application/x-www-form-urlencoded',
+                data: {
+
+                },
+                success: function (response) {
+                    GenChart(response);
+                }
+            });
+        }
+
+        function GenChart(data) {
+            $('#projects').empty();
+            for (var i = 0; i < data.length; i++) {
+                var str = '<div class="card card-dark"><div class="card-header"><span class="card-title">' + data[i].job_id + '</span></div>';
+                str += '<div class="card-body"><canvas id="' + data[i].job_id + '" style="height:400px"></canvas></div></div>';
+                $('#projects').append(str);
+
+                var ctx = document.getElementById(data[i].job_id).getContext('2d');
+                var myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: data[i].week,
+                        datasets: [
+                            {
+                                label: 'Normal',
+                                data: data[i].normal,
+                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                borderWidth: 1
+                            },
+                            {
+                                label: 'Overtime',
+                                data: data[i].overtime,
+                                backgroundColor: 'rgba(132, 99, 255, 0.2)',
+                                borderColor: 'rgba(132, 99, 255, 1)',
+                                borderWidth: 1
+                            }
+                        ]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: {
+                                ticks: {
+                                    beginAtZero: true
+                                },
+                                stacked: true
+                            },
+                            xAxes: {
+                                stacked: true
+                            }
+                        },
+                        maintainAspectRatio: false
+                    }
+                });
+
+            }
+        }
 
     </script>
 }

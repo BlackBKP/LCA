@@ -1,5 +1,12 @@
 ﻿<!-- Salary Per Hour Index -->
 <div class="container-fluid" style="padding-top:10px">
+
+    <div class="info-box bg-dark">
+        <div class="info-box-content">
+            <h3 class="info-box-text">Salary Per Hour</h3>
+        </div>
+    </div>
+
     <div class="card card-dark">
         <div class="card-header">
             <span class="card-title">Salary Hour</span>
@@ -13,6 +20,20 @@
 @section Scripts
 {
     <script type="text/javascript">
+
+        $(document).ready(function () {
+
+        });
+
+        async function GetData() {
+            await $.ajax({
+
+            });
+        }
+
+        function GenChart(data) {
+
+        }
 
         var ctx = document.getElementById('chart_bar').getContext('2d');
         var myChart = new Chart(ctx, {

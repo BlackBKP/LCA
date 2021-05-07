@@ -7,7 +7,7 @@
 
     <div class="info-box bg-dark">
         <div class="info-box-content">
-            <h1 class="info-box-text">Projects</h1>
+            <h3 class="info-box-text">Projects</h3>
         </div>
     </div>
     
@@ -87,14 +87,16 @@
                                 type:'line',
                                 label: "Budget Spent (Accumulation)",
                                 data: jobs[i].spent,
-                                borderColor: ['rgba(0, 0, 255, 1)'],
+                                backgroundColor: 'rgba(0, 0, 255, 1)',
+                                borderColor: 'rgba(0, 0, 255, 1)',
                             },
                             {
-                                label: "Half Budget",
+                                label: "50% Budget",
                                 data: half_budget,
                                 fill:false,
                                 borderDash: [10, 5],
-                                borderColor: ['rgba(255, 255, 0, 0.3)'],
+                                backgroundColor: 'rgba(255,255,255,0.2)',
+                                borderColor: 'rgba(255, 255, 0, 0.3)',
                             },
                             {
                                 label: "80% Budget",
@@ -121,7 +123,8 @@
                             {
                                 label: 'Progress (Accumulation)',
                                 data: progress,
-                                borderColor: ['rgba(0, 255, 0, 0.5)'],
+                                backgroundColor: 'rgba(0, 255, 0, 0.75)',
+                                borderColor: 'rgba(0, 255, 0, 0.75)',
                             },
                             {
                                 label: 'Progress/Fortnight',

@@ -1,43 +1,83 @@
 ﻿<!-- Normal Per OT Ratio Index -->
 <div class="container-fluid" style="padding-top:10px">
 
-    <div class="card card-dark">
+    <div class="info-box bg-dark">
+        <div class="info-box-content">
+            <h3 class="info-box-text">Normal Per Overtime Ratio</h3>
+        </div>
+    </div>
+
+    <div id="project_lists">
+    </div>
+
+    @*<div class="card card-dark">
         <div class="card-header">
             <span>Normal/OT Ratio</span>
         </div>
         <div class="card-body">
             <canvas id="chart_pie" style="height:400px"></canvas>
         </div>
-    </div>
+    </div>*@
 
 </div>
 
 @section Scripts
 {
     <script type="text/javascript">
-        var ctx = document.getElementById('chart_pie').getContext('2d');
-        var chart = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Data 1', 'Data 2'],
-                datasets: [{
-                    data: [200, 40],
-                    backgroundColor: [
-                        'rgba(255, 0, 0,0.5)',
-                        'rgba(0, 255, 0,0.5)'
-                    ],
-                }]
-            },
-            options: {
-                maintainAspectRatio: false,
-                tooltips: {
-                    callbacks: {
-                        label: function (tooltipItem, data) {
-                            return data.labels[tooltipItem.index] + ': ' + parseInt((data.datasets[0].data[tooltipItem.index]/240)*100) + ' %';
+
+        $(document).ready(function () {
+            GetData();
+        });
+
+        async function GetData() {
+            await $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetNPOR", "NPERORatio")',
+	            contentType: 'application/x-www-form-urlencoded',
+                data: {
+
+                },
+                success: function (response) {
+                    console.log("Data");
+                    console.log(response);
+                    GenChart(response);
+                }
+            });
+        }
+
+        function GenChart(data) {
+            $('#project_lists').empty();
+            for (var i = 0; i < data.length; i++) {
+                var str = '<div class="card card-dark"><div class="card-header"><span>' + data[i].job_id + '</span></div>';
+                str += '<div class="card-body"><canvas id="' + data[i].job_id + '" style="height:400px"></canvas></div></div>';
+                $('#project_lists').append(str);
+
+                var ctx = document.getElementById(data[i].job_id).getContext('2d');
+                var chart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Overtime', 'Normal'],
+                        datasets: [{
+                            data: [data[i].overtime, data[i].normal],
+                            backgroundColor: [
+                                'rgba(255, 0, 0,0.5)',
+                                'rgba(0, 0, 0,0.5)'
+                            ],
+                        }]
+                    },
+                    options: {
+                        maintainAspectRatio: false,
+                        tooltips: {
+                            callbacks: {
+                                label: function (tooltipItem, data) {
+                                    return data.labels[tooltipItem.index] + ': ' + parseInt((data.datasets[0].data[tooltipItem.index] / 240) * 100) + ' %';
+                                }
+                            }
                         }
                     }
-                }
+                });
             }
-        });
+        }
+
     </script>
 }

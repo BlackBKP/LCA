@@ -63,7 +63,7 @@ namespace ProjectManaging
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Login}/{action=Index}/{id?}");
+                    template: "{controller=Home}/{action=Index}/{id?}");
                     //template: "{controller=ProjectView}/{action=Index}/{id?}");
             });
         }
