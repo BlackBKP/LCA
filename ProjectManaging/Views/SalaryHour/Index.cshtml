@@ -22,17 +22,27 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
-
+            GetData();
         });
 
         async function GetData() {
             await $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetData", "SalaryHour")',
+	            contentType: 'application/x-www-form-urlencoded',
+                data: {
 
+                },
+                success: function (response) {
+                    GenChart(response);
+                }
             });
         }
 
         function GenChart(data) {
+            for (var i = 0; i < data.length; i++) {
 
+            }
         }
 
         var ctx = document.getElementById('chart_bar').getContext('2d');
