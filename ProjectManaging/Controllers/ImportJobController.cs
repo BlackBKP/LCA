@@ -30,7 +30,7 @@ namespace ProjectManaging.Controllers
         public ActionResult Import()
         {
             IFormFile file = Request.Form.Files[0];
-            string folderName = "file";
+            string folderName = "files";
             string webRootPath = _hostingEnvironment.WebRootPath;
             string newPath = Path.Combine(webRootPath, folderName);
             StringBuilder sb = new StringBuilder();
@@ -63,7 +63,7 @@ namespace ProjectManaging.Controllers
                 }
 
                 IRow headerRow = sheet.GetRow(0); //Get Header Row
-                int cellCount = 5;/*headerRow.LastCellNum;*/
+                int cellCount = 3;
 
                 sb.Append("<table class='table table-sm table-hover' style='width:100%'>");
                 for(int i = 0; i < sheet.LastRowNum;i++)
@@ -73,16 +73,13 @@ namespace ProjectManaging.Controllers
                         continue;
                     if (row.Cells.All(d => d.CellType == CellType.Blank)) 
                         continue;
-                    
-                    if (row.Cells.All(r => r.StringCellValue == null))
-                        continue;
 
-                    if(i == 0)
+                    if (i == 0)
                     {
                         sb.Append("<thead><tr>");
-                        for(int j = 0; j < cellCount; j++)
+                        for (int j = 0; j < cellCount; j++)
                         {
-                            if(row.GetCell(j) != null)
+                            if (row.GetCell(j) != null)
                                 sb.Append("<td>" + row.GetCell(j).ToString() + "</td>");
                         }
                         sb.Append("</tr></thead>");
