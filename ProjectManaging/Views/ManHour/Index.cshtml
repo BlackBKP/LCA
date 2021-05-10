@@ -46,15 +46,15 @@
                             {
                                 label: 'Normal',
                                 data: data[i].normal,
-                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                                borderColor: 'rgba(255, 99, 132, 1)',
+                                backgroundColor: 'rgba(32, 67, 198, 1)',
+                                borderColor: 'rgba(32, 67, 198, 1)',
                                 borderWidth: 1
                             },
                             {
                                 label: 'Overtime',
                                 data: data[i].overtime,
-                                backgroundColor: 'rgba(132, 99, 255, 0.2)',
-                                borderColor: 'rgba(132, 99, 255, 1)',
+                                backgroundColor: 'rgba(40, 121, 191, 1)',
+                                borderColor: 'rgba(40, 121, 191, 1)',
                                 borderWidth: 1
                             }
                         ]
@@ -65,10 +65,10 @@
                                 ticks: {
                                     beginAtZero: true
                                 },
-                                stacked: true
+                                stacked: false
                             },
                             xAxes: {
-                                stacked: true
+                                stacked: false
                             }
                         },
                         maintainAspectRatio: false

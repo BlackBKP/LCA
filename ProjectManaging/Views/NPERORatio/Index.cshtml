@@ -8,16 +8,8 @@
     </div>
 
     <div id="project_lists">
+        @* Generate by Scripts *@
     </div>
-
-    @*<div class="card card-dark">
-        <div class="card-header">
-            <span>Normal/OT Ratio</span>
-        </div>
-        <div class="card-body">
-            <canvas id="chart_pie" style="height:400px"></canvas>
-        </div>
-    </div>*@
 
 </div>
 
@@ -38,8 +30,8 @@
 
                 },
                 success: function (response) {
-                    console.log("Data");
-                    console.log(response);
+                    //console.log("Data");
+                    //console.log(response);
                     GenChart(response);
                 }
             });
@@ -48,7 +40,7 @@
         function GenChart(data) {
             $('#project_lists').empty();
             for (var i = 0; i < data.length; i++) {
-                var str = '<div class="card card-dark"><div class="card-header"><span>' + data[i].job_id + '</span></div>';
+                var str = '<div class="card card-dark"><div class="card-header"><span>Job ID: ' + data[i].job_id + '</span></div>';
                 str += '<div class="card-body"><canvas id="' + data[i].job_id + '" style="height:400px"></canvas></div></div>';
                 $('#project_lists').append(str);
 
@@ -60,9 +52,14 @@
                         datasets: [{
                             data: [data[i].overtime, data[i].normal],
                             backgroundColor: [
-                                'rgba(255, 0, 0,0.5)',
-                                'rgba(0, 0, 0,0.5)'
+                                'rgba(40, 121, 191,1)',
+                                'rgba(32, 67, 198,1)'
                             ],
+                            borderColor: [
+                                'rgba(40, 121, 191,1)',
+                                'rgba(32, 67, 198,1)'
+                            ],
+                            borderWidth: 0
                         }]
                     },
                     options: {

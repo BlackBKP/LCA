@@ -18,7 +18,7 @@ namespace ProjectManaging.Controllers
         public JsonResult GetData()
         {
             List<SPHModel> sphs = GetSPHModels();
-            return Json("GGEZ");
+            return Json(sphs);
         }
 
         public List<SPHModel> GetSPHModels()
