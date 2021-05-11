@@ -7,16 +7,47 @@
         </div>
     </div>
 
-    <div class="card">
-        <div class="card-body">
-            <label id="file_label">Choose File</label>
-            <input id="import_file" type="file" />
+    <div class="row">
+        <div class="col-4">
+            <div class="card card-dark">
+                <div class="card-header">
+                    <span class="card-title">Import Overtime</span>
+                </div>
+                <div class="card-body">
+                    <label id="file_label">Choose File</label>
+                    <input id="import_file_ot" type="file" />
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="card card-dark">
+                <div class="card-header">
+                    <span class="card-title">Import Projects</span>
+                </div>
+                <div class="card-body">
+                    <label id="file_label2">Choose File</label>
+                    <input id="import_file2" type="file"/>
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="card card-dark">
+                <div class="card-header">
+                    <span class="card-title">Import Staffs</span>
+                </div>
+                <div class="card-body">
+                    <label id="file_label3">Choose File</label>
+                    <input id="import_file3" type="file"/>
+                </div>
+            </div>
         </div>
     </div>
 
+    
+
     <div class="card">
         <div class="card-header">
-            <span class="card-title">Upload Content</span>
+            <span class="card-title">Uploaded Content</span>
         </div>
         <div class="card-body">
             <div id="divPrint"></div>
@@ -29,9 +60,10 @@
 {
     <script type="text/javascript">
 
-        $('#import_file').on('change', async function () {
+        $('#import_file_ot').on('change', async function () {
+            $('#divPrint').empty();
             var fileExtension = ['xls', 'xlsx'];
-            var filename = $('#import_file').val();
+            var filename = $('#import_file_ot').val();
 
             if (filename.length == 0) {
                 alert("Please Select a File");
@@ -44,14 +76,107 @@
             }
 
             var fdata = new FormData();
-            var fileupload = $('#import_file').get(0);
+            var fileupload = $('#import_file_ot').get(0);
             var files = fileupload.files;
 
             fdata.append(files[0].name, files[0]);
             $('#file_label').text(files[0].name);
             await $.ajax({
                 type: "POST",
-                url: "ImportJob/Import",
+                url: "ImportJob/ImportOT",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("XSRF-TOKEN",
+                        $('input:hidden[name="__RequestVerificationToken"]').val());
+                },
+                data: fdata,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    if (response.length == 0)
+                        alert('Some error occured while uploading');
+                    else {
+                        console.log("Response");
+                        console.log(response);
+                        $('#divPrint').html(response);
+                    }
+                },
+                error: function (e) {
+                    $('#divPrint').html(e.responseText);
+                }
+            });
+        });
+
+
+        $('#import_file2').on('change', async function () {
+            $('#divPrint').empty();
+            var fileExtension = ['xls', 'xlsx'];
+            var filename = $('#import_file2').val();
+
+            if (filename.length == 0) {
+                alert("Please Select a File");
+            }
+            else {
+                var extension = filename.replace(/^.*\./, '');
+                if ($.inArray(extension, fileExtension) == -1) {
+                    alert("Please select only excel files.");
+                }
+            }
+
+            var fdata = new FormData();
+            var fileupload = $('#import_file2').get(0);
+            var files = fileupload.files;
+
+            fdata.append(files[0].name, files[0]);
+            $('#file_label2').text(files[0].name);
+            await $.ajax({
+                type: "POST",
+                url: "ImportJob/Import2",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("XSRF-TOKEN",
+                        $('input:hidden[name="__RequestVerificationToken"]').val());
+                },
+                data: fdata,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    if (response.length == 0)
+                        alert('Some error occured while uploading');
+                    else {
+                        console.log("Response");
+                        console.log(response);
+                        $('#divPrint').html(response);
+                    }
+                },
+                error: function (e) {
+                    $('#divPrint').html(e.responseText);
+                }
+            });
+        });
+
+        $('#import_file3').on('change', async function () {
+            $('#divPrint').empty();
+            var fileExtension = ['xls', 'xlsx'];
+            var filename = $('#import_file3').val();
+
+            if (filename.length == 0) {
+                alert("Please Select a File");
+            }
+            else {
+                var extension = filename.replace(/^.*\./, '');
+                if ($.inArray(extension, fileExtension) == -1) {
+                    alert("Please select only excel files.");
+                }
+            }
+
+            var fdata = new FormData();
+            var fileupload = $('#import_file3').get(0);
+            var files = fileupload.files;
+
+            fdata.append(files[0].name, files[0]);
+            $('#file_label3').text(files[0].name);
+            await $.ajax({
+                type: "POST",
+                url: "ImportJob/Import3",
                 beforeSend: function (xhr) {
                     xhr.setRequestHeader("XSRF-TOKEN",
                         $('input:hidden[name="__RequestVerificationToken"]').val());
