@@ -7,8 +7,12 @@
         </div>
     </div>
 
-    <label id="file_label">Choose File</label>
-    <input id="import_file" type="file"/>
+    <div class="card">
+        <div class="card-body">
+            <label id="file_label">Choose File</label>
+            <input id="import_file" type="file" />
+        </div>
+    </div>
 
     <div class="card">
         <div class="card-header">
@@ -24,10 +28,6 @@
 @section Scripts
 {
     <script type="text/javascript">
-
-        $(document).ready(function () {
-
-        });
 
         $('#import_file').on('change', async function () {
             var fileExtension = ['xls', 'xlsx'];
@@ -47,9 +47,6 @@
             var fileupload = $('#import_file').get(0);
             var files = fileupload.files;
 
-            //console.log("File");
-            //console.log(files);
-
             fdata.append(files[0].name, files[0]);
             $('#file_label').text(files[0].name);
             await $.ajax({
@@ -67,6 +64,7 @@
                         alert('Some error occured while uploading');
                     else {
                         console.log("Response");
+                        console.log(response);
                         $('#divPrint').html(response);
                     }
                 },
@@ -75,10 +73,6 @@
                 }
             });
         });
-
-        function GenerateTable() {
-
-        }
 
     </script>
 }

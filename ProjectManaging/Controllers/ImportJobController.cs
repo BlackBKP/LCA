@@ -50,59 +50,48 @@ namespace ProjectManaging.Controllers
                 if (sFileExtension == ".xls")
                 {
                     HSSFWorkbook hssfwb = new HSSFWorkbook(stream); //This will read the Excel 97-2000 formats
-                    HSSFFormulaEvaluator formula = new HSSFFormulaEvaluator(hssfwb);
-                    formula.EvaluateAll();
-                    sheet = hssfwb.GetSheetAt(1); //get first sheet from workbook
+                    sheet = hssfwb.GetSheetAt(1);
                 }
                 else
                 {
                     XSSFWorkbook hssfwb = new XSSFWorkbook(stream); //This will read 2007 Excel format
-                    XSSFFormulaEvaluator formula = new XSSFFormulaEvaluator(hssfwb);
-                    formula.EvaluateAll();
-                    sheet = hssfwb.GetSheetAt(1); //get first sheet from workbook   
+                    sheet = hssfwb.GetSheetAt(1);
                 }
 
-                IRow headerRow = sheet.GetRow(0); //Get Header Row
-                int cellCount = 3;
+                IRow headerRow = sheet.GetRow(0);
+                int cellCount = headerRow.LastCellNum;
 
                 sb.Append("<table class='table table-sm table-hover' style='width:100%'>");
-                for(int i = 0; i < sheet.LastRowNum;i++)
+                sb.Append("<thead><tr>");
+                for (int i = 1; i < cellCount; i++)
                 {
-                    IRow row = sheet.GetRow(i);
+                    sb.Append("<td>" + headerRow.GetCell(i) + "</td>");
+                }
+                sb.Append("</tr></thead>");
+
+                IRow row;
+                sb.Append("<tbody>");
+                for (int i = 1; i < sheet.LastRowNum;i++)
+                {
+                    row = sheet.GetRow(i);
                     if (row == null) 
                         continue;
                     if (row.Cells.All(d => d.CellType == CellType.Blank)) 
                         continue;
+                    if (row.Cells.All(c => c.NumericCellValue == 0))
+                        continue;
 
-                    if (i == 0)
+                    sb.Append("<tr>");
+                    for (int j = 1; j < cellCount; j++)
                     {
-                        sb.Append("<thead><tr>");
-                        for (int j = 0; j < cellCount; j++)
-                        {
-                            if (row.GetCell(j) != null)
-                                sb.Append("<td>" + row.GetCell(j).ToString() + "</td>");
-                        }
-                        sb.Append("</tr></thead>");
+                        if(j == 1)
+                            sb.Append("<td>" + row.GetCell(j).DateCellValue + "</td>");
+                        else
+                            sb.Append("<td>" + row.GetCell(j).NumericCellValue + "</td>");
                     }
-                    else
-                    {
-                        sb.Append("<tbody><tr>");
-                        for (int j = 0; j < cellCount; j++)
-                        {
-                            if (row.GetCell(j) != null)
-                            {
-                                if (row.GetCell(j).CellType == CellType.String)
-                                    sb.Append("<td>" + row.GetCell(j).StringCellValue + "</td>");
-                                else if (row.GetCell(j).CellType == CellType.Numeric)
-                                    sb.Append("<td>" + row.GetCell(j).NumericCellValue.ToString() + "</td>");
-                                else
-                                    sb.Append("<td></td>");
-                            }
-                        }
-                        sb.Append("</tr></tbody>");
-                    }
+                    sb.Append("</tr>");
                 }
-                sb.Append("</table>");
+                sb.Append("</tbody></table>");
             }
             return this.Content(sb.ToString());
         }
