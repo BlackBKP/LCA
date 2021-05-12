@@ -16,6 +16,91 @@ namespace ProjectManaging.Services
              this.DB = new ConnectDB();
         }
 
+        public List<SpentPerWeekModel> GetSpentCostPerWeeks()
+        {
+            List<SpentPerWeekModel> spws = new List<SpentPerWeekModel>();
+            SqlConnection con = DB.Connect();
+            con.Open();
+
+            string str_cmd = "select Labor_Costs.Job_ID," +
+                                   " SUM((cast(Labor_Cost as int) + cast(OT_Labor_Cost as int) + cast(Accommodation_Cost as int) + cast(Compensation_Cost as int))) OVER(ORDER BY Labor_Costs.Job_ID ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as Acc_Cost," +
+                                   " week," +
+                                   " Month," +
+                                   " (s1.Estimated_Budget * 1.0) as Budget100," +
+                                   " (s1.Estimated_Budget * 0.8) as Budget80," +
+                                   " (s1.Estimated_Budget * 0.7) as Budget70," +
+                                   " (s1.Estimated_Budget * 0.5) as Budget50," +
+                                   " s1.Work_Completion," +
+                                   " (cast(Labor_Cost as int) + cast(OT_Labor_Cost as int) + cast(Accommodation_Cost as int) + cast(Compensation_Cost as int)) as spent_cost" +
+                                   " from Labor_Costs" +
+                                   " left join (select Job_ID,Estimated_Budget,Work_Completion from job) as s1 ON s1.Job_ID = Labor_Costs.Job_ID";
+
+            SqlCommand cmd = new SqlCommand(str_cmd, con);
+            SqlDataReader dr = cmd.ExecuteReader();
+
+            if (dr.HasRows)
+            {
+                while (dr.Read())
+                {
+                    SpentPerWeekModel spw = new SpentPerWeekModel()
+                    {
+                        job_id = dr["Job_ID"] != DBNull.Value ? dr["Job_ID"].ToString() : "",
+                        week = dr["week"] != DBNull.Value ? Convert.ToInt32(dr["week"]) : 0,
+                        month = dr["Month"] != DBNull.Value ? Convert.ToInt32(dr["Month"]) : 0,
+                        budget100 = dr["Budget100"] != DBNull.Value ? Convert.ToInt32(dr["budget100"]) : 0,
+                        budget80 = dr["Budget80"] != DBNull.Value ? Convert.ToInt32(dr["Budget80"]) : 0,
+                        budget70 = dr["Budget70"] != DBNull.Value ? Convert.ToInt32(dr["Budget70"]) : 0,
+                        budget50 = dr["Budget50"] != DBNull.Value ? Convert.ToInt32(dr["Budget50"]) : 0,
+                        work_completion = dr["Work_Completion"] != DBNull.Value ? Convert.ToInt32(dr["Work_Completion"]) : 0,
+                        spent_cost = dr["spent_cost"] != DBNull.Value ? Convert.ToInt32(dr["spent_cost"]) : 0,
+                        acc_cost = dr["Acc_Cost"] != DBNull.Value ? Convert.ToInt32(dr["Acc_Cost"]) : 0,
+                    };
+                    spws.Add(spw);
+                }
+                dr.Close();
+            }
+
+            con.Close();
+            return spws;
+        }
+
+        public List<SpentPerWeekModel> GetSpentPerWeeksByJob(string job_id)
+        {
+            List<SpentPerWeekModel> spws = new List<SpentPerWeekModel>();
+            SqlConnection con = DB.Connect();
+            con.Open();
+
+            string str_cmd = "select Labor_Costs.job_ID," +
+                                   " SUM((cast(Labor_Cost as int) + cast(OT_Labor_Cost as int) + cast(Accommodation_Cost as int) + cast(Compensation_Cost as int))) OVER(ORDER BY Labor_Costs.job_ID ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as Acc_Cost," +
+                                   " week," +
+                                   " Month," +
+                                   " (s1.Estimated_Budget * 1.0) as Budget100," +
+                                   " (s1.Estimated_Budget * 0.8) as Budget80," +
+                                   " (s1.Estimated_Budget * 0.7) as Budget70," +
+                                   " (s1.Estimated_Budget * 0.5) as Budget50," +
+                                   " s1.Work_Completion," +
+                                   " (cast(Labor_Cost as int) + cast(OT_Labor_Cost as int) + cast(Accommodation_Cost as int) + cast(Compensation_Cost as int)) as spent_cost" +
+                                   " from Labor_Costs" +
+                                   " left join (select job_ID,Estimated_Budget,Work_Completion from job) as s1 ON s1.job_ID = Labor_Costs.job_ID " +
+                                   " where Labor_Costs.job_ID = '" + job_id + "'";
+
+            SqlCommand cmd = new SqlCommand(str_cmd, con);
+
+            return spws;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
         public List<EmployeeModel> GetEmployees()
         {
             List<EmployeeModel> emps = new List<EmployeeModel>();
@@ -23,24 +108,156 @@ namespace ProjectManaging.Services
             con.Open();
             SqlCommand cmd = new SqlCommand("Select * FROM Employee",con);
             SqlDataReader dr = cmd.ExecuteReader();
-            
+
             if (dr.HasRows)
             {
                 while (dr.Read())
                 {
                     EmployeeModel emp = new EmployeeModel()
                     {
-                        emp_id = dr["Employee_ID"].ToString(),
-                        emp_name = dr["Employee_Name"].ToString(),
-                        emp_lname = dr["Employee_Surname"].ToString(),
-                        emp_pos = dr["Employee_Position"].ToString()
+                        employee_id = dr["Employee_ID"] != DBNull.Value ? dr["Employee_ID"].ToString() : "",
+                        employee_name = dr["Employee_Name"] != DBNull.Value ? dr["Employee_Name"].ToString() : "",
+                        employee_surname = dr["Employee_Surname"] != DBNull.Value ? dr["Employee_Surname"].ToString() : "",
+                        employee_position = dr["Employee_Position"] != DBNull.Value ? dr["Employee_Position"].ToString() : ""
                     };
                     emps.Add(emp);
                 }
                 dr.Close();
             }
+
             con.Close();
             return emps;
+        }
+
+        public List<HourModel> GetHours()
+        {
+            List<HourModel> hours = new List<HourModel>();
+            SqlConnection con = DB.Connect();
+            con.Open();
+            SqlCommand cmd = new SqlCommand("Select * FROM Hour", con);
+            SqlDataReader dr = cmd.ExecuteReader();
+
+            if (dr.HasRows)
+            {
+                while (dr.Read())
+                {
+                    HourModel hour = new HourModel()
+                    {
+                        job_id = dr["Job_ID"] != DBNull.Value ? dr["Job_ID"].ToString() : "",
+                        employee_id = dr["Employee_ID"] != DBNull.Value ? dr["Employee_ID"].ToString() : "",
+                        working_day = dr["Working_Day"] != DBNull.Value ? Convert.ToDateTime(dr["Working_Day"]) : DateTime.MinValue,
+                        week = dr["Week"] != DBNull.Value ? Convert.ToInt32(dr["Week"]) : 0,
+                        month = dr["Month"] != DBNull.Value ? Convert.ToInt32(dr["Month"]) : 0,
+                        hours = dr["Hours"] != DBNull.Value ? Convert.ToInt32(dr["Hours"]) : 0
+                    };
+                    hours.Add(hour);
+                }
+                dr.Close();
+            }
+
+            con.Close();
+            return hours;
+        }
+
+        public List<JobModel> GetJobs()
+        {
+            List<JobModel> jobs = new List<JobModel>();
+            SqlConnection con = DB.Connect();
+            con.Open();
+            SqlCommand cmd = new SqlCommand("Select * FROM Job", con);
+            SqlDataReader dr = cmd.ExecuteReader();
+
+            if (dr.HasRows)
+            {
+                while (dr.Read())
+                {
+                    JobModel job = new JobModel()
+                    {
+                        job_id = dr["Job_ID"] != DBNull.Value ? dr["Job_ID"].ToString() : "",
+                        job_name = dr["Job_Name"] != DBNull.Value ? dr["Job_Name"].ToString() : "",
+                        estimated_budget = dr["Estimated_Budget"] != DBNull.Value ? Convert.ToInt32(dr["Estimated_Budget"]) : 0,
+                        cost_to_date = dr["Cost_to_date"] != DBNull.Value ? Convert.ToInt32(dr["Cost_to_date"]) : 0,
+                        remaining_cost = dr["Remaining_Cost"] != DBNull.Value ? Convert.ToInt32(dr["Remaining_Cost"]) : 0,
+                        cost_usage = dr["Cost_Usage"] != DBNull.Value ? Convert.ToInt32(dr["Cost_Usage"]) : 0,
+                        work_completion = dr["Work_Completion"] != DBNull.Value ? Convert.ToInt32(dr["Work_Completion"]) : 0,
+                        total_normal_man_hour = dr["Total_Normal_Man_Hour"] != DBNull.Value ? Convert.ToInt32(dr["Total_Normal_Man_Hour"]) : 0,
+                        no_of_labor = dr["No_Of_Labor"] != DBNull.Value ? Convert.ToInt32(dr["No_Of_Labor"]) : 0,
+                        avg_cost_per_hour = dr["Avg_Cost_Per_Hour"] != DBNull.Value ? Convert.ToInt32(dr["Avg_Cost_Per_Hour"]) : 0,
+                        job_year = dr["Job_Year"] != DBNull.Value ? Convert.ToInt32(dr["Job_Year"]) : 0,
+                        lastest_update = dr["Latest_Update"] != DBNull.Value ? Convert.ToDateTime(dr["Latest_Update"]) : DateTime.MinValue,
+                    };
+                    jobs.Add(job);
+                }
+                dr.Close();
+            }
+
+            con.Close();
+            return jobs;
+        }
+
+        public List<LaborCostModel> GetLaborCosts()
+        {
+            List<LaborCostModel> lcs = new List<LaborCostModel>();
+            SqlConnection con = DB.Connect();
+            con.Open();
+            SqlCommand cmd = new SqlCommand("Select * FROM Labor_Costs", con);
+            SqlDataReader dr = cmd.ExecuteReader();
+
+            if (dr.HasRows)
+            {
+                while (dr.Read())
+                {
+                    LaborCostModel lc = new LaborCostModel()
+                    {
+                        job_id = dr["Job_ID"] != DBNull.Value ? dr["Job_ID"].ToString() : "",
+                        week = dr["Week"] != DBNull.Value ? Convert.ToInt32(dr["Week"]) : 0,
+                        month = dr["Month"] != DBNull.Value ? Convert.ToInt32(dr["Month"]) : 0,
+                        week_time = dr["Week_time"] != DBNull.Value ? dr["Week_time"].ToString() : "",
+                        labor_cost = (dr["Labor_Cost"] != DBNull.Value && dr["Labor_Cost"].ToString() != "") ? Convert.ToInt32(dr["Labor_Cost"]) : 0 ,
+                        ot_labor_cost = (dr["OT_Labor_Cost"] != DBNull.Value && dr["OT_Labor_Cost"].ToString() != "") ? Convert.ToInt32(dr["OT_Labor_Cost"]) : 0,
+                        accommodation_cost = (dr["Accommodation_Cost"] != DBNull.Value && dr["Accommodation_Cost"].ToString() != "") ? Convert.ToInt32(dr["Accommodation_Cost"]) : 0,
+                        compensation_cost = (dr["Compensation_Cost"] != DBNull.Value && dr["Compensation_Cost"].ToString() != "") ? Convert.ToInt32(dr["Compensation_Cost"]) : 0,
+                        no_of_labor_week = (dr["No_Of_Labor_Week"] != DBNull.Value && dr["No_Of_Labor_Week"].ToString() != "") ? Convert.ToInt32(dr["No_Of_Labor_Week"]) : 0
+                    };
+                    lcs.Add(lc);
+                }
+                dr.Close();
+            }
+
+            con.Close();
+            return lcs;
+        }
+
+        public List<OvertimeModel> GetOvertimes()
+        {
+            List<OvertimeModel> ots = new List<OvertimeModel>();
+            SqlConnection con = DB.Connect();
+            con.Open();
+            SqlCommand cmd = new SqlCommand("Select * FROM OT", con);
+            SqlDataReader dr = cmd.ExecuteReader();
+
+            if (dr.HasRows)
+            {
+                while (dr.Read())
+                {
+                    OvertimeModel ot = new OvertimeModel()
+                    {
+                        job_id = dr["Job_ID"] != DBNull.Value ? dr["Job_ID"].ToString() : "",
+                        employee_id =  dr["Employee_ID"] != DBNull.Value ? dr["Employee_ID"].ToString() : "",
+                        ot_1_5 = dr["OT_1_5"] != DBNull.Value ? Convert.ToInt32(dr["OT_1_5"]) : 0,
+                        ot_3 =  dr["OT_3"] != DBNull.Value ? Convert.ToInt32(dr["OT_3"]) : 0,
+                        ot_sum =  dr["OT_Sum"] != DBNull.Value ? Convert.ToInt32(dr["OT_Sum"]) : 0,
+                        week = dr["Week"] != DBNull.Value ? Convert.ToInt32(dr["Week"]) : 0,
+                        month =  dr["Month"] != DBNull.Value ? Convert.ToInt32(dr["Month"]) : 0,
+                        recording_time = dr["Recording_Time"] != DBNull.Value ? Convert.ToDateTime(dr["Recording_Time"]) : DateTime.MinValue
+                    };
+                    ots.Add(ot);
+                }
+                dr.Close();
+            }
+
+            con.Close();
+            return ots;
         }
     }
 }

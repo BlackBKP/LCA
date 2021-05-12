@@ -25,53 +25,46 @@ namespace ProjectManaging.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetEmps()
+        public JsonResult GetSpentCostPerWeeks()
+        {
+            List<List<SpentPerWeekModel>> projects = new List<List<SpentPerWeekModel>>();
+            List<SpentPerWeekModel> spws = Home.GetSpentCostPerWeeks();
+            string[] job_id = spws.Select(s => s.job_id).Distinct().ToArray();
+            for(int i = 0; i < job_id.Count(); i++)
+            {
+                projects.Add(spws.Where(w => w.job_id == job_id[i]).Select(s => s).ToList());
+            }
+            return Json(projects);
+        }
+
+        [HttpGet]
+        public JsonResult GetEmployees()
         {
             return Json(Home.GetEmployees());
         }
 
         [HttpGet]
+        public JsonResult GetHours()
+        {
+            return Json(Home.GetHours());
+        }
+
+        [HttpGet]
         public JsonResult GetJobs()
         {
-            List<JobModel> jobs = new List<JobModel>();
+            return Json(Home.GetJobs());
+        }
 
-            //Job 01
-            JobModel job = new JobModel()
-            {
-                job_id = "J21-0001",
-                pm = "Mister A",
-                budget = 10,
-                fortnight = new string[] { "JAN 1", "JAN 2", "FEB 1", "FEB 2", "MAR 1", "MAR 2" },
-                progress = new double[] { 15, 30, 50, 60, 70, 85 },
-                spent = new double[] { 1, 2, 4, 5, 7, 8 },
-            };
-            jobs.Add(job);
+        [HttpGet]
+        public JsonResult GetLaborCosts()
+        {
+            return Json(Home.GetLaborCosts());
+        }
 
-            //Job 02
-            job = new JobModel()
-            {
-                job_id = "J21-0002",
-                pm = "Mister B",
-                budget = 5,
-                fortnight = new string[] { "JAN 1","", "JAN 2", "", "FEB 1", "", "FEB 2", "", "MAR 1", "", "MAR 2" },
-                progress = new double[] { 15,27.5, 30,35, 40,50, 60,70, 80,90, 100 },
-                spent = new double[] { 0.5,0.75, 1,1.5, 2,2.25, 2.5,2.75, 3,3.25, 3.5 },
-            };
-            jobs.Add(job);
-
-            //Job 03
-            job = new JobModel()
-            {
-                job_id = "J21-0003",
-                pm = "Mister C",
-                budget = 1,
-                fortnight = new string[] { "JAN 2", "FEB 1", "FEB 2", "MAR 1" },
-                progress = new double[] { 13, 32, 47, 66 },
-                spent = new double[] { 0.05, 0.12, 0.31, 0.44 },
-            };
-            jobs.Add(job);
-
-            return Json(jobs);
+        [HttpGet]
+        public JsonResult GetOvertimes()
+        {
+            return Json(Home.GetOvertimes());
         }
 
         public IActionResult About()

@@ -9,11 +9,11 @@ namespace ProjectManaging.Models
     {
         public string job_id { get; set; }
 
-        public string employee { get; set; }
+        public string employee_id { get; set; }
 
         public DateTime working_day { get; set; }
 
-        public int weel { get; set; }
+        public int week { get; set; }
 
         public int month { get; set; }
 

@@ -19,7 +19,7 @@ namespace ProjectManaging.Models
 
         public int ot_labor_cost { get; set; }
 
-        public int accomodation_cost { get; set; }
+        public int accommodation_cost { get; set; }
 
         public int compensation_cost { get; set; }
 
