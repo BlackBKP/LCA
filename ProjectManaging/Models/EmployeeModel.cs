@@ -7,12 +7,12 @@ namespace ProjectManaging.Models
 {
     public class EmployeeModel
     {
-        public string emp_id { get; set; }
+        public string employee_id { get; set; }
 
-        public string emp_name { get; set; }
+        public string employee_name { get; set; }
 
-        public string emp_lname { get; set; }
+        public string employee_surname { get; set; }
 
-        public string emp_pos { get; set; }
+        public string employee_position { get; set; }
     }
 }
