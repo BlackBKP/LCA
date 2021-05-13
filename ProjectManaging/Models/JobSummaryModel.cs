@@ -9,35 +9,37 @@ namespace ProjectManaging.Models
     {
         public string job_id { get; set; }
 
-        public int estimate_budget { get; set; }
+        public int estimated_budget { get; set; }
 
-        public double labor_cost { get; set; }
+        public int labor_cost { get; set; }
 
-        public double labor_cost_ot { get; set; }
+        public int ot_labor_cost { get; set; }
 
-        public double accomodation_cost { get; set; }
+        public int accomodation_cost { get; set; }
 
-        public double compensation_cost { get; set; }
+        public int compensation_cost { get; set; }
 
-        public double cost_to_date { get; set; }
+        public int cost_to_date { get; set; }
 
-        public double remainning_cost { get; set; }
+        public int cost_usage { get; set; }
 
-        public double percent_cost_usage { get; set; }
+        public int remainning_cost { get; set; }
 
-        public double percent_work_completion { get; set; }
+        public int work_completion { get; set; }
 
-        public double normal_manhour { get; set; }
+        public int normal_manhour { get; set; }
 
-        public double x15_manhour { get; set; }
+        public int hours { get; set; }
 
-        public double x30_manhour { get; set; }
+        public int ot_1_5 { get; set; }
 
-        public double total_manhour { get; set; }
+        public int ot_3 { get; set; }
 
-        public int number_of_labor { get; set; }
+        public int total_man_hour { get; set; }
 
-        public double avg_labor_cost_per_hour { get; set; }
+        public int no_of_labor { get; set; }
+
+        public int avg_labor_cost_per_hour { get; set; }
 
     }
 }
