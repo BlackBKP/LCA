@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ProjectManaging.Interfaces;
 using ProjectManaging.Models;
+using ProjectManaging.Services;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,6 +12,8 @@ namespace ProjectManaging.Controllers
 {
     public class ManHourController : Controller
     {
+        IConnectDB DB;
+
         public IActionResult Index()
         {
             return View();
@@ -23,26 +28,40 @@ namespace ProjectManaging.Controllers
 
         public List<MPHModel> GetMPHModels()
         {
+            this.DB = new ConnectDB();
             List<MPHModel> mphs = new List<MPHModel>();
-            string[] weeks = new string[] { "JAN 1", "JAN 2", "FEB 1", "FEB 2", "MAR 1", "MAR 2", "APR 1", "APR 2", "MAY 1", "MAY 2", "JUN 1", "JUN 2", 
-                                            "JUL 1", "JUL 2", "AUG 1", "AUG 2", "SEP 1", "SEP 2", "OCT 1", "OCT 2", "NOV 1", "NOV 2", "DEC 1", "DEC 2" };
+            SqlConnection con = DB.Connect();
+            con.Open();
+            string str_cmd = "select Hour.job_ID, " +
+                                    "week, " +
+                                    "Month, " +
+                                    "SUM(Hours) as Normal, " +
+                                    "SUM(s1.OT_1_5) as OT_1_5, " +
+                                    "SUM(s1.OT_3) as OT_3, " +
+                                    "SUM(SUM(Hour.Hours + s1.OT_1_5 + s1.OT_3))OVER(partition by Hour.job_ID ORDER BY Hour.job_ID, Month, week ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as acc_hour " +
+                                    "from Hour left join (select job_ID, OT_1_5, OT_3 from OT) as s1 ON s1.job_ID = Hour.job_ID group by Hour.job_ID,Month,week order by job_id, Month, week";
+            SqlCommand cmd = new SqlCommand(str_cmd, con);
+            SqlDataReader dr = cmd.ExecuteReader();
 
-            //Job-01
-            MPHModel mph = new MPHModel();
-            mph.job_id = "J21-0001";
-            mph.week = new string[] { "JAN 1", "JAN 2", "FEB 1", "FEB 2", "MAR 1", "MAR 2" };
-            mph.normal = new int[] { 200, 200, 192, 200, 192, 166, 100};
-            mph.overtime = new int[] { 50, 46, 44, 46, 20, 10};
-            mphs.Add(mph);
-
-            //Job-02
-            mph = new MPHModel();
-            mph.job_id = "J21-0002";
-            mph.week = new string[] { "JAN 1", "JAN 2", "FEB 1" };
-            mph.normal = new int[] { 196, 200, 192 };
-            mph.overtime = new int[] { 20, 12, 16 };
-            mphs.Add(mph);
-
+            if (dr.HasRows)
+            {
+                while (dr.Read())
+                {
+                    MPHModel mph = new MPHModel()
+                    {
+                        job_id = dr["Job_ID"] != DBNull.Value ? dr["Job_ID"].ToString() : "",
+                        week = dr["Week"] != DBNull.Value ? Convert.ToInt32(dr["Week"]) : 0,
+                        month = dr["Month"] != DBNull.Value ? Convert.ToInt32(dr["Month"]) : 0,
+                        normal = dr["Normal"] != DBNull.Value ? Convert.ToInt32(dr["Normal"]) : 0,
+                        ot_1_5 = dr["OT_1_5"] != DBNull.Value ? Convert.ToInt32(dr["OT_1_5"]) : 0,
+                        ot_3 = dr["OT_3"] != DBNull.Value ? Convert.ToInt32(dr["OT_3"]) : 0,
+                        acc_hour = dr["acc_hour"] != DBNull.Value ? Convert.ToInt32(dr["acc_hour"]) : 0,
+                    };
+                    mphs.Add(mph);
+                }
+                dr.Close();
+            }
+            con.Close();
             return mphs;
         }
     }

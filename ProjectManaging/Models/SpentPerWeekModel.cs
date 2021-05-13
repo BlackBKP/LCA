@@ -25,6 +25,8 @@ namespace ProjectManaging.Models
 
         public int spent_cost { get; set; }
 
+        public int acc_work_completion { get; set; }
+
         public int acc_cost { get; set; }
     }
 }

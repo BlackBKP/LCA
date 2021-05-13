@@ -9,10 +9,24 @@ namespace ProjectManaging.Models
     {
         public string job_id { get; set; }
 
+        public int week { get; set; }
+
+        public int month { get; set; }
+
+        public int normal { get; set; }
+
+        public int ot_1_5 { get; set; }
+
+        public int ot_3 { get; set; }
+
+        public int acc_hour { get; set; }
+
+        /*public string job_id { get; set; }
+
         public string[] week { get; set; }
 
         public int[] normal { get; set; }
 
-        public int[] overtime { get; set; }
+        public int[] overtime { get; set; }*/
     }
 }

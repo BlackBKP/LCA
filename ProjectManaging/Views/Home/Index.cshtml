@@ -59,6 +59,7 @@
                 var budget100 = [];
                 var budget150 = [];
                 var acc_cost = [];
+                var acc_work_completion = [];
                 var spent_cost = [];
                 var work_completion = [];
                 var color_spent = [];
@@ -73,12 +74,14 @@
                     budget100.push(jobs[i][j].budget100);
                     budget150.push(jobs[i][j].budget100 * 1.2);
                     acc_cost.push(jobs[i][j].acc_cost);
+                    //acc_work_completion.push((jobs[i][j].acc_work_completion / 100) * jobs[i][j].budget100);
+                    acc_work_completion.push(jobs[i][j].acc_work_completion);
                     spent_cost.push(jobs[i][j].spent_cost);
-                    work_completion.push((jobs[i][j].work_completion / 100) * jobs[i][j].budget100);
-                    color_spent.push('rgba(250,200,0,0.75)');
+                    @*work_completion.push((jobs[i][j].work_completion / 100) * jobs[i][j].budget100);
+                    color_spent.push('rgba(250,200,0,0.75)');*@
                 }
          
-                weeks.push("Last Progress");
+                @*weeks.push("Last Progress");
                 budget50.push(jobs[i][j-1].budget50);
                 budget70.push(jobs[i][j-1].budget70);
                 budget80.push(jobs[i][j-1].budget80);
@@ -87,7 +90,7 @@
                 acc_cost.push(jobs[i][j-1].acc_cost);
                 spent_cost.push((jobs[i][j - 1].work_completion / 100) * jobs[i][j - 1].budget100);
                 work_completion.push((jobs[i][j-1].work_completion / 100) * jobs[i][j-1].budget100);
-                color_spent.push('rgba(255,0,200,0.75)');
+                color_spent.push('rgba(255,0,200,0.75)');*@
 
                 var ctx = document.getElementById(job_id).getContext('2d');
                 var chart = new Chart(ctx, {
@@ -101,6 +104,8 @@
                                 data: acc_cost,
                                 backgroundColor: 'rgba(0, 0, 255, 1)',
                                 borderColor: 'rgba(0, 0, 255, 1)',
+                                yAxisID: 'first-y-axis',
+                                order: 0
                             },
                             {
                                 label: "70% Budget",
@@ -109,6 +114,8 @@
                                 borderDash: [10, 5],
                                 backgroundColor: 'rgba(255,255,255,0.2)',
                                 borderColor: 'rgba(255, 255, 0, 0.3)',
+                                yAxisID: 'first-y-axis',
+                                order :0
                             },
                             {
                                 label: "80% Budget",
@@ -120,6 +127,8 @@
                                 },
                                 borderDash: [10, 5],
                                 borderColor: ['rgba(255, 200, 50, 0)'],
+                                yAxisID: 'first-y-axis',
+                                order: 0
                             },
                             {
                                 label: '100% of Budget',
@@ -131,6 +140,7 @@
                                 },
                                 borderDash: [10, 5],
                                 borderColor: ['rgba(255, 0, 0, 0)'],
+                                yAxisID: 'first-y-axis',
                             },
                             {
                                 label: '> 100% of Budget',
@@ -140,20 +150,34 @@
                                     above: 'rgba(255,0,0,0.5)',
                                     below: 'rgba(255, 255, 255,0)',
                                 },
-                            },
-                            {
-                                label: 'Progress (Accumulation)',
-                                type:'line',
-                                data: work_completion,
-                                backgroundColor: 'rgba(0, 255, 0, 0.75)',
-                                borderColor: 'rgba(0, 255, 0, 0.75)',
+                                yAxisID: 'first-y-axis',
+                                order: 0
                             },
                             {
                                 label: 'Progress/Fortnight',
                                 data: spent_cost,
                                 type: 'bar',
-                                backgroundColor: color_spent,
-                                borderColor: color_spent,
+                                backgroundColor: 'rgba(255,0,0,1)',
+                                borderColor: 'rgba(255,0,0,1)',
+                                yAxisID: 'first-y-axis',
+                                order: 0
+                            },
+                            {
+                                label: 'Progressssssss',
+                                data: acc_work_completion,
+                                type: 'line',
+                                backgroundColor:'rgba(0,255,0,1)',
+                                borderColor: 'rgba(0,255,0,1)',
+                                yAxisID: 'second-y-axis',
+                            },
+                            {
+                                label: 'Progress (Accumulation)',
+                                type: 'line',
+                                data: work_completion,
+                                backgroundColor: 'rgba(0, 255, 0, 0.75)',
+                                borderColor: 'rgba(0, 255, 0, 0.75)',
+                                yAxisID: 'second-y-axis',
+                                order: 1
                             },
                         ]
                     },
@@ -172,19 +196,41 @@
                                     beginAtZero: true,
                                 }
                             }],
-                            yAxes: [{
-                                gridLines: {
-                                    display: true,
-                                    color: "white",
+                            yAxes:[
+                                {
+                                    id: 'first-y-axis',
+                                    type: 'linear',
+                                    position: 'left',
+                                    gridLines: {
+                                        display: true,
+                                        color: "white",
+                                    },
+                                    scaleLabel: {
+                                        display: false,
+                                        fontColor: "white"
+                                    },
+                                    ticks: {
+                                        beginAtZero: true,
+                                    }
                                 },
-                                scaleLabel: {
-                                    display: false,
-                                    fontColor: "white"
-                                },
-                                ticks: {
-                                    beginAtZero: true,
+                                {
+                                    id: 'second-y-axis',
+                                    type: 'linear',
+                                    position: 'right',
+                                    gridLines: {
+                                        display: true,
+                                        color: "white",
+                                        labelString: 'Progress (%)'
+                                    },
+                                    scaleLabel: {
+                                        display: false,
+                                        fontColor: "white"
+                                    },
+                                    ticks: {
+                                        beginAtZero: true,
+                                    }
                                 }
-                            }]
+                            ]
                         },
                         maintainAspectRatio: false,
                         tooltips: {

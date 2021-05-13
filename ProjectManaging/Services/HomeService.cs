@@ -30,7 +30,8 @@ namespace ProjectManaging.Services
                                    " (s1.Estimated_Budget * 0.8) as Budget80," +
                                    " (s1.Estimated_Budget * 0.7) as Budget70," +
                                    " (s1.Estimated_Budget * 0.5) as Budget50," +
-                                   " s1.Work_Completion," +
+                                   " SUM(Labor_Costs.Work_Completion) OVER(PARTITION BY Labor_Costs.job_ID  ORDER BY Labor_Costs.job_ID ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as Acc_Work_Completion, " +
+                                   " Labor_Costs.Work_Completion," +
                                    " (cast(Labor_Cost as int) + cast(OT_Labor_Cost as int) + cast(Accommodation_Cost as int) + cast(Compensation_Cost as int)) as spent_cost" +
                                    " from Labor_Costs" +
                                    " left join (select Job_ID,Estimated_Budget,Work_Completion from job) as s1 ON s1.Job_ID = Labor_Costs.Job_ID";
@@ -53,6 +54,7 @@ namespace ProjectManaging.Services
                         budget50 = dr["Budget50"] != DBNull.Value ? Convert.ToInt32(dr["Budget50"]) : 0,
                         work_completion = dr["Work_Completion"] != DBNull.Value ? Convert.ToInt32(dr["Work_Completion"]) : 0,
                         spent_cost = dr["spent_cost"] != DBNull.Value ? Convert.ToInt32(dr["spent_cost"]) : 0,
+                        acc_work_completion = dr["Acc_Work_Completion"] != DBNull.Value ? Convert.ToInt32(dr["Acc_Work_Completion"]) : 0,
                         acc_cost = dr["Acc_Cost"] != DBNull.Value ? Convert.ToInt32(dr["Acc_Cost"]) : 0,
                     };
                     spws.Add(spw);
