@@ -11,7 +11,7 @@
 @section Scripts
 {
     <script type="text/javascript">
-
+        var months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
         $(document).ready(function () {
             GetData();
         });
@@ -27,37 +27,72 @@
                 success: function (response) {
                     console.log("Response");
                     console.log(response);
-                    GenChart(response);
+                    GenManPowerChart(response);
                 }
             });
         }
 
-        function GenChart(data) {
+        function GenManPowerChart(data) {
             $('#projects').empty();
             for (var i = 0; i < data.length; i++) {
-                var str = '<div class="card card-dark"><div class="card-header"><span class="card-title">' + data[i].job_id + '</span></div>';
-                str += '<div class="card-body"><canvas id="' + data[i].job_id + '" style="height:400px"></canvas></div></div>';
+                var job_year = data[i][0].job_id.substring(0, 3);
+                var job_number = data[i][0].job_id.substring(4, data[i][0].job_id.length);
+                var job_id = job_year + '-' + job_number.padStart(4, '0');
+
+                var str = '<div class="card card-dark"><div class="card-header"><span class="card-title">' + job_id + '</span></div>';
+                str += '<div class="card-body"><canvas id="' + job_id + '" style="height:400px"></canvas></div></div>';
                 $('#projects').append(str);
 
-                var ctx = document.getElementById(data[i].job_id).getContext('2d');
+                var weeks = [];
+                var normal = [];
+                var ot_1_5 = [];
+                var ot_3 = [];
+                var acc_hour = [];
+                for (var j = 0; j < data[i].length; j++) {
+                    var week = months[data[i][j].month] + ' ' + data[i][j].week;
+                    weeks.push(week);
+                    normal.push(data[i][j].normal);
+                    ot_1_5.push(data[i][j].ot_1_5);
+                    ot_3.push(data[i][j].ot_3);
+                    acc_hour.push(data[i][j].acc_hour);
+                }
+
+                var ctx = document.getElementById(job_id).getContext('2d');
                 var myChart = new Chart(ctx, {
                     type: 'bar',
                     data: {
-                        labels: data[i].week,
+                        labels: weeks,
                         datasets: [
                             {
+                                type: 'bar',
                                 label: 'Normal',
-                                data: data[i].normal,
+                                data: normal,
                                 backgroundColor: 'rgba(32, 67, 198, 1)',
                                 borderColor: 'rgba(32, 67, 198, 1)',
                                 borderWidth: 1
                             },
                             {
-                                label: 'Overtime',
-                                data: data[i].overtime,
+                                type: 'bar',
+                                label: 'Overtime 1.5',
+                                data: ot_1_5,
                                 backgroundColor: 'rgba(40, 121, 191, 1)',
                                 borderColor: 'rgba(40, 121, 191, 1)',
                                 borderWidth: 1
+                            },
+                            {
+                                type: 'bar',
+                                label: 'Overtime 3.0',
+                                data: ot_3,
+                                backgroundColor: 'rgba(40, 121, 191, 1)',
+                                borderColor: 'rgba(40, 121, 191, 1)',
+                                borderWidth: 1
+                            },
+                            {
+                                type: 'line',
+                                label: 'Total (Accumulation)',
+                                data: acc_hour,
+                                backgroundColor: 'rgba(255,0,0,1)',
+                                borderColor: 'rgba(255,0,0,1)'
                             }
                         ]
                     },
@@ -67,10 +102,10 @@
                                 ticks: {
                                     beginAtZero: true
                                 },
-                                stacked: false
+                                stacked: true
                             },
                             xAxes: {
-                                stacked: false
+                                stacked: true
                             }
                         },
                         maintainAspectRatio: false

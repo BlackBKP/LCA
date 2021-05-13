@@ -62,9 +62,8 @@
                 var acc_work_completion = [];
                 var spent_cost = [];
                 var work_completion = [];
-                var j = 0;
              
-                for (j = 0; j < jobs[i].length; j++) {
+                for (var j = 0; j < jobs[i].length; j++) {
                     var week = months[jobs[i][j].month] + ' ' + jobs[i][j].week; 
                     weeks.push(week);
                     budget50.push(jobs[i][j].budget50);

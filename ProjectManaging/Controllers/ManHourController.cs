@@ -22,11 +22,11 @@ namespace ProjectManaging.Controllers
         [HttpGet]
         public JsonResult GetData()
         {
-            List<MPHModel> mphs = GetMPHModels();
-            return Json(mphs);
+            List<List<MPHModel>> lmphs = GetMPHModels();
+            return Json(lmphs);
         }
 
-        public List<MPHModel> GetMPHModels()
+        public List<List<MPHModel>> GetMPHModels()
         {
             this.DB = new ConnectDB();
             List<MPHModel> mphs = new List<MPHModel>();
@@ -62,7 +62,14 @@ namespace ProjectManaging.Controllers
                 dr.Close();
             }
             con.Close();
-            return mphs;
+
+            List<List<MPHModel>> lmphs = new List<List<MPHModel>>();
+            string[] job_id = mphs.Select(s => s.job_id).Distinct().ToArray();
+            for(int i = 0; i < job_id.Count(); i++)
+            {
+                lmphs.Add(mphs.Where(w => w.job_id == job_id[i]).Select(s => s).ToList());
+            }
+            return lmphs;
         }
     }
 }
