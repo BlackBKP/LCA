@@ -7,7 +7,7 @@
 
     <div class="info-box bg-dark">
         <div class="info-box-content">
-            <h3 class="info-box-text">Job's Spent</h3>
+            <h3 class="info-box-text">JOB SPENT</h3>
         </div>
     </div>
     
@@ -62,7 +62,6 @@
                 var acc_work_completion = [];
                 var spent_cost = [];
                 var work_completion = [];
-                var color_spent = [];
                 var j = 0;
              
                 for (j = 0; j < jobs[i].length; j++) {
@@ -74,23 +73,10 @@
                     budget100.push(jobs[i][j].budget100);
                     budget150.push(jobs[i][j].budget100 * 1.2);
                     acc_cost.push(jobs[i][j].acc_cost);
-                    //acc_work_completion.push((jobs[i][j].acc_work_completion / 100) * jobs[i][j].budget100);
                     acc_work_completion.push(jobs[i][j].acc_work_completion);
                     spent_cost.push(jobs[i][j].spent_cost);
-                    @*work_completion.push((jobs[i][j].work_completion / 100) * jobs[i][j].budget100);
-                    color_spent.push('rgba(250,200,0,0.75)');*@
+                    work_completion.push(jobs[i][j].work_completion);
                 }
-         
-                @*weeks.push("Last Progress");
-                budget50.push(jobs[i][j-1].budget50);
-                budget70.push(jobs[i][j-1].budget70);
-                budget80.push(jobs[i][j-1].budget80);
-                budget100.push(jobs[i][j-1].budget100);
-                budget150.push(jobs[i][j-1].budget100 * 1.2);
-                acc_cost.push(jobs[i][j-1].acc_cost);
-                spent_cost.push((jobs[i][j - 1].work_completion / 100) * jobs[i][j - 1].budget100);
-                work_completion.push((jobs[i][j-1].work_completion / 100) * jobs[i][j-1].budget100);
-                color_spent.push('rgba(255,0,200,0.75)');*@
 
                 var ctx = document.getElementById(job_id).getContext('2d');
                 var chart = new Chart(ctx, {
@@ -99,25 +85,47 @@
                         labels: weeks,
                         datasets: [
                             {
+                                type: 'bar',
+                                label: 'Budget Spent',
+                                data: spent_cost,
+                                backgroundColor: 'rgba(255,0,0,1)',
+                                borderColor: 'rgba(255,0,0,1)',
+                                yAxisID:'spent',
+                            },
+                            {
                                 type: 'line',
-                                label: "Budget Spent (Accumulation)",
+                                label: "Total Spent",
                                 data: acc_cost,
                                 backgroundColor: 'rgba(0, 0, 255, 1)',
                                 borderColor: 'rgba(0, 0, 255, 1)',
-                                yAxisID: 'first-y-axis',
-                                order: 0
+                                yAxisID: 'spent',
                             },
                             {
+                                label: 'Progress',
+                                data: work_completion,
+                                type: 'line',
+                                backgroundColor: 'rgba(0,255,0,1)',
+                                borderColor: 'rgba(0,255,0,1)',
+                                yAxisID: 'progress',
+                            },
+                            {
+                                label: 'Total Progress',
+                                type: 'line',
+                                data: acc_work_completion,
+                                backgroundColor: 'rgba(0, 255, 0, 0.75)',
+                                borderColor: 'rgba(0, 255, 0, 0.75)',
+                                yAxisID: 'progress',
+                            },
+                            {
+                                type: 'line',
                                 label: "70% Budget",
                                 data: budget70,
                                 fill: false,
-                                borderDash: [10, 5],
                                 backgroundColor: 'rgba(255,255,255,0.2)',
                                 borderColor: 'rgba(255, 255, 0, 0.3)',
-                                yAxisID: 'first-y-axis',
-                                order :0
                             },
                             {
+                                type: 'line',
                                 label: "80% Budget",
                                 data: budget80,
                                 fill: {
@@ -127,10 +135,9 @@
                                 },
                                 borderDash: [10, 5],
                                 borderColor: ['rgba(255, 200, 50, 0)'],
-                                yAxisID: 'first-y-axis',
-                                order: 0
                             },
                             {
+                                type: 'line',
                                 label: '100% of Budget',
                                 data: budget100,
                                 fill: {
@@ -140,9 +147,9 @@
                                 },
                                 borderDash: [10, 5],
                                 borderColor: ['rgba(255, 0, 0, 0)'],
-                                yAxisID: 'first-y-axis',
                             },
                             {
+                                type: 'line',
                                 label: '> 100% of Budget',
                                 data: budget150,
                                 fill: {
@@ -150,87 +157,29 @@
                                     above: 'rgba(255,0,0,0.5)',
                                     below: 'rgba(255, 255, 255,0)',
                                 },
-                                yAxisID: 'first-y-axis',
-                                order: 0
-                            },
-                            {
-                                label: 'Progress/Fortnight',
-                                data: spent_cost,
-                                type: 'bar',
-                                backgroundColor: 'rgba(255,0,0,1)',
-                                borderColor: 'rgba(255,0,0,1)',
-                                yAxisID: 'first-y-axis',
-                                order: 0
-                            },
-                            {
-                                label: 'Progressssssss',
-                                data: acc_work_completion,
-                                type: 'line',
-                                backgroundColor:'rgba(0,255,0,1)',
-                                borderColor: 'rgba(0,255,0,1)',
-                                yAxisID: 'second-y-axis',
-                            },
-                            {
-                                label: 'Progress (Accumulation)',
-                                type: 'line',
-                                data: work_completion,
-                                backgroundColor: 'rgba(0, 255, 0, 0.75)',
-                                borderColor: 'rgba(0, 255, 0, 0.75)',
-                                yAxisID: 'second-y-axis',
-                                order: 1
                             },
                         ]
                     },
                     options: {
                         scales: {
-                            xAxes: [{
-                                gridLines: {
+                            'spent': {
+                                type: 'linear',
+                                position: 'left',
+                                title: {
                                     display: true,
-                                    color: "white",
+                                    text: 'Spent(BAHT)'
                                 },
-                                scaleLabel: {
-                                    display: false,
-                                    fontColor: "white"
+                                beginAtZero:true
+                            },
+                            'progress': {
+                                type: 'linear',
+                                position: 'right',
+                                title: {
+                                    display: true,
+                                    text: 'Progress(%)'
                                 },
-                                ticks: {
-                                    beginAtZero: true,
-                                }
-                            }],
-                            yAxes:[
-                                {
-                                    id: 'first-y-axis',
-                                    type: 'linear',
-                                    position: 'left',
-                                    gridLines: {
-                                        display: true,
-                                        color: "white",
-                                    },
-                                    scaleLabel: {
-                                        display: false,
-                                        fontColor: "white"
-                                    },
-                                    ticks: {
-                                        beginAtZero: true,
-                                    }
-                                },
-                                {
-                                    id: 'second-y-axis',
-                                    type: 'linear',
-                                    position: 'right',
-                                    gridLines: {
-                                        display: true,
-                                        color: "white",
-                                        labelString: 'Progress (%)'
-                                    },
-                                    scaleLabel: {
-                                        display: false,
-                                        fontColor: "white"
-                                    },
-                                    ticks: {
-                                        beginAtZero: true,
-                                    }
-                                }
-                            ]
+                                beginAtZero: true,
+                            }
                         },
                         maintainAspectRatio: false,
                         tooltips: {
