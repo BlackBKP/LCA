@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ProjectManaging.Interfaces;
 using ProjectManaging.Models;
+using ProjectManaging.Services;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,9 +12,49 @@ namespace ProjectManaging.Controllers
 {
     public class NPERORatioController : Controller
     {
+        IConnectDB DB;
+
         public IActionResult Index()
         {
             return View();
+        }
+
+        [HttpGet]
+        public JsonResult GetData()
+        {
+            return Json(Query());
+        }
+
+        public List<NORModel> Query()
+        {
+            this.DB = new ConnectDB();
+            List<NORModel> nprs = new List<NORModel>();
+            SqlConnection con = DB.Connect();
+            con.Open();
+
+            string str_cmd = "select Hour.job_ID, " +
+                             "SUM(Hours)as Normal, " +
+                             "SUM(s1.OT_1_5 + s1.OT_3) as OT " +
+                             "from Hour left join (select job_ID, OT_1_5, OT_3 from OT) as s1 ON s1.job_ID = Hour.job_ID group by Hour.job_ID order by job_id";
+            SqlCommand cmd = new SqlCommand(str_cmd, con);
+            SqlDataReader dr = cmd.ExecuteReader();
+
+            if (dr.HasRows)
+            {
+                while (dr.Read())
+                {
+                    NORModel npr = new NORModel()
+                    {
+                        job_id = dr["Job_ID"] != DBNull.Value ? dr["Job_ID"].ToString() : "",
+                        normal = dr["Normal"] != DBNull.Value ? Convert.ToInt32(dr["Normal"]) : 0,
+                        overtime = dr["OT"] != DBNull.Value ? Convert.ToInt32(dr["OT"]) : 0,
+                    };
+                    nprs.Add(npr);
+                }
+                dr.Close();
+            }
+            con.Close();
+            return nprs;
         }
 
         public List<NORModel> GetNORModels()

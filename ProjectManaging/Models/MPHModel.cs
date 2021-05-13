@@ -21,12 +21,5 @@ namespace ProjectManaging.Models
 
         public int acc_hour { get; set; }
 
-        /*public string job_id { get; set; }
-
-        public string[] week { get; set; }
-
-        public int[] normal { get; set; }
-
-        public int[] overtime { get; set; }*/
     }
 }

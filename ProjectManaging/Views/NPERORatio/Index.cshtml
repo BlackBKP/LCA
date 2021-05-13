@@ -24,14 +24,14 @@
         async function GetData() {
             await $.ajax({
                 type: "GET",
-                url: '@Url.Action("GetNPOR", "NPERORatio")',
+                url: '@Url.Action("GetData", "NPERORatio")',
 	            contentType: 'application/x-www-form-urlencoded',
                 data: {
 
                 },
                 success: function (response) {
-                    //console.log("Data");
-                    //console.log(response);
+                    console.log("Data");
+                    console.log(response);
                     GenChart(response);
                 }
             });
@@ -55,11 +55,6 @@
                                 'rgba(40, 121, 191,1)',
                                 'rgba(32, 67, 198,1)'
                             ],
-                            @*borderColor: [
-                                'rgba(40, 121, 191,1)',
-                                'rgba(32, 67, 198,1)'
-                            ],
-                            borderWidth: 0*@
                         }]
                     },
                     options: {
