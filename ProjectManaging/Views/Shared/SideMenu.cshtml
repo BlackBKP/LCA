@@ -14,15 +14,22 @@
 
                 <li class="nav-item">
                     <a class="nav-link" asp-controller="Home" asp-action="Index">
-                        <i class="nav-icon fas fa-home"></i>
-                        <p>Home</p>
+                        <i class="nav-icon fas fa-chart-line"></i>
+                        <p>Spent</p>
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" asp-controller="ProjectView" asp-action="Index">
-                        <i class="nav-icon fas fa-tasks"></i>
-                        <p>Project View</p>
+                    <a class="nav-link" asp-controller="ManHour" asp-action="Index">
+                        <i class="nav-icon fas fa-chart-bar"></i>
+                        <p>Manpower</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="NPERORatio" asp-action="Index">
+                        <i class="nav-icon fas fa-chart-pie"></i>
+                        <p>Normal Overtime Ratio</p>
                     </a>
                 </li>
 
@@ -34,32 +41,31 @@
                 </li>
 
                 <li class="nav-item">
+                    <a class="nav-link" asp-controller="ProjectView" asp-action="Index">
+                        <i class="nav-icon fas fa-tasks"></i>
+                        <p>Project View</p>
+                    </a>
+                </li>
+
+
+
+                <li class="nav-item">
                     <a class="nav-link" asp-controller="Job" asp-action="Index">
                         <i class="nav-icon fas fa-book"></i>
                         <p>Job</p>
                     </a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="ManHour" asp-action="Index">
-                        <i class="nav-icon fas fa-chart-bar"></i>
-                        <p>Man/Hour</p>
-                    </a>
-                </li>
 
-                <li class="nav-item">
+
+                @*<li class="nav-item">
                     <a class="nav-link" asp-controller="SalaryHour" asp-action="Index">
                         <i class="nav-icon fas fa-money-bill"></i>
                         <p>Salary/Hour</p>
                     </a>
-                </li>
+                </li>*@
 
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="NPERORatio" asp-action="Index">
-                        <i class="nav-icon fas fa-chart-pie"></i>
-                        <p>Normal/OT Ratio</p>
-                    </a>
-                </li>
+
 
                 <li class="nav-item">
                     <a class="nav-link" asp-controller="Project" asp-action="Index">

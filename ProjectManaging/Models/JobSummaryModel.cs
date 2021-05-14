@@ -27,7 +27,7 @@ namespace ProjectManaging.Models
 
         public int work_completion { get; set; }
 
-        public int normal_manhour { get; set; }
+        //public int normal_manhour { get; set; }
 
         public int hours { get; set; }
 

@@ -3,7 +3,7 @@
 
     <div class="info-box bg-dark">
         <div class="info-box-content">
-            <h3 class="info-box-text">Summaries</h3>
+            <h3 class="info-box-text">SUMMARY</h3>
         </div>
     </div>
 
@@ -25,88 +25,18 @@
 
                         <th style="text-align:center">Cost to Date</th>
                         <th style="text-align:center">Remainning Cost</th>
-                        <th style="text-align:center">Percent Cost Usage</th>
-                        <th style="text-align:center">Percent Work Completion</th>
+                        <th style="text-align:center">Cost Usage(%)</th>
+                        <th style="text-align:center">Work Completion(%)</th>
 
-                        <th style="text-align:center">Total Normal Man Hour</th>
-                        <th style="text-align:center">Total 1.5X Man Hour</th>
-                        <th style="text-align:center">Total 3.0X Man Hour</th>
+                        <th style="text-align:center">Normal Man Hour</th>
+                        <th style="text-align:center">1.5 Man Hour</th>
+                        <th style="text-align:center">3.0 Man Hour</th>
                         <th style="text-align:center">Total Man Hour</th>
                         <th style="text-align:center">Number of Labor</th>
                         <th style="text-align:center">Average Labor Cost Per Hour</th>
                     </tr>
                 </thead>
                 <tbody>
-
-                    @*<!-- Project 1 -->
-                    <tr style="height:50px">
-
-                        <!-- Job Number -->
-                        <td style="text-align:center;vertical-align:middle">
-                            <span>J21-XXXX</span>
-                        </td>
-                        <!-- Estimated Budget -->
-                        <td style="text-align:center;vertical-align:middle">
-                            <span>10,000,000</span>
-                        </td>
-                        <!-- Labor Cost -->
-                        <td style="text-align:center;vertical-align:middle">
-                            <span>4,000,000</span></td>
-                        <!-- OT Labor Cost -->
-                        <td style="text-align:center;vertical-align:middle">
-                            <span>2,000,000</span>
-                        </td>
-                        <!-- Accomodation Cost -->
-                        <td style="text-align:center;vertical-align:middle">
-                            <span>1,000,000</span>
-                        </td>
-                        <!-- Compensation Cost -->
-                        <td style="text-align:center;vertical-align:middle">
-                            <span>1,000,000</span>
-                        </td>
-                        <!-- Cost to Date -->
-                        <td style="text-align:center;vertical-align:middle">
-                            <span>8,000,000</span>
-                        </td>
-                        <!-- Remaining Cost -->
-                        <td style="text-align:center;vertical-align:middle">
-                            <span>2,000,000</span>
-                        </td>
-                        <!-- Percent Cost Usage -->
-                        <td style="text-align:center;vertical-align:middle">
-                            <span>80 %</span>
-                        </td>
-                        <!-- Percent Work Completion -->
-                        <td style="text-align:center;vertical-align:middle">
-                            <span>75 %</span>
-                        </td>
-
-                        <!-- Total Normal Man Hour -->
-                        <td style="text-align:center;vertical-align:middle">
-                            <span>10,000</span>
-                        </td>
-                        <!-- Total 1.5X Man Hour -->
-                        <td style="text-align:center;vertical-align:middle">
-                            <span>6,000</span>
-                        </td>
-                        <!-- Total 3.0X Man Hour -->
-                        <td style="text-align:center;vertical-align:middle">
-                            <span>5,000</span>
-                        </td>
-                        <!-- Total Man Hour -->
-                        <td style="text-align:center;vertical-align:middle">
-                            <span>11,500</span>
-                        </td>
-                        <!-- Number of Labor -->
-                        <td style="text-align:center;vertical-align:middle">
-                            <span>100</span>
-                        </td>
-                        <!-- Average Labor Cost Per Hour -->
-                        <td style="text-align:center;vertical-align:middle">
-                            <span>400</span>
-                        </td>
-
-                    </tr>*@
 
                 </tbody>
             </table>
@@ -142,22 +72,24 @@
         function GenSummaryTable(summaries) {
             var datas = [];
             for (var i = 0; i < summaries.length; i++) {
+                var job_year = summaries[i].job_id.substring(0, 3);
+                var job_number = summaries[i].job_id.substring(4, summaries[i].job_id.length).padStart(4,'0');
                 datas.push([
-                    summaries[i].job_id,
-                    summaries[i].estimate_budget,
+                    job_year + '-' + job_number,
+                    summaries[i].estimated_budget,
                     summaries[i].labor_cost,
-                    summaries[i].labor_cost_ot,
+                    summaries[i].ot_labor_cost,
                     summaries[i].accomodation_cost,
                     summaries[i].compensation_cost,
                     summaries[i].cost_to_date,
                     summaries[i].remainning_cost,
-                    summaries[i].percent_cost_usage,
-                    summaries[i].percent_work_completion,
-                    summaries[i].normal_manhour,
-                    summaries[i].x15_manhour,
-                    summaries[i].x30_manhour,
-                    summaries[i].total_manhour,
-                    summaries[i].number_of_labor,
+                    summaries[i].cost_usage,
+                    summaries[i].work_completion,
+                    summaries[i].hours,
+                    summaries[i].ot_1_5,
+                    summaries[i].ot_3,
+                    summaries[i].total_man_hour,
+                    summaries[i].no_of_labor,
                     summaries[i].avg_labor_cost_per_hour,
                 ]);
             }

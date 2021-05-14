@@ -64,25 +64,29 @@ namespace ProjectManaging.Controllers
                         accomodation_cost = dr["Accommodation_Cost"] != DBNull.Value ? Convert.ToInt32(dr["Accommodation_Cost"]) : 0,
                         compensation_cost = dr["Compensation_Cost"] != DBNull.Value ? Convert.ToInt32(dr["Compensation_Cost"]) : 0,
                         cost_to_date = dr["Cost_to_Date"] != DBNull.Value ? Convert.ToInt32(dr["Cost_to_Date"]) : 0,
-                        //remainning_cost = dr[]
+                        remainning_cost = dr["Remaining_Cost"] != DBNull.Value ? Convert.ToInt32(dr["Remaining_Cost"]) : 0,
                         cost_usage = dr["Cost_Usage"] != DBNull.Value ? Convert.ToInt32(dr["Cost_Usage"]) : 0,
+                        work_completion = dr["Work_Completion"] != DBNull.Value ? Convert.ToInt32(dr["Work_Completion"]) : 0,
+                        hours = dr["Hours"] != DBNull.Value ? Convert.ToInt32(dr["Hours"]) : 0,
+                        ot_1_5 = dr["OT_1_5"] != DBNull.Value ? Convert.ToInt32(dr["OT_1_5"]) : 0,
+                        ot_3 = dr["OT_3"] != DBNull.Value ? Convert.ToInt32(dr["OT_3"]) : 0,
+                        total_man_hour = dr["Total_Man_Hour"] != DBNull.Value ? Convert.ToInt32(dr["Total_Man_Hour"]) : 0,
+                        no_of_labor = dr["No_Of_Labor"] != DBNull.Value ? Convert.ToInt32(dr["No_Of_Labor"]) : 0,
+                        avg_labor_cost_per_hour = dr["avg_labor_cost_per_hour"] != DBNull.Value ? Convert.ToInt32(dr["avg_labor_cost_per_hour"]) : 0,
                     };
                     jobs.Add(job);
                 }
                 dr.Close();
             }
             con.Close();
-
-
-
-
             return jobs;
         }
 
         [HttpGet]
         public JsonResult GetJobsSummary()
         {
-            List<JobSummaryModel> jobs = new List<JobSummaryModel>();
+            List<JobSummaryModel> jobs = Query();
+            //List<JobSummaryModel> jobs = new List<JobSummaryModel>();
 
             /*
             //Job 1
