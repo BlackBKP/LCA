@@ -59,12 +59,11 @@
                 var budget100 = [];
                 var budget150 = [];
                 var acc_cost = [];
-                var acc_work_completion = [];
+                var progress = [];
                 var spent_cost = [];
-                var work_completion = [];
              
                 for (var j = 0; j < jobs[i].length; j++) {
-                    var week = months[jobs[i][j].month] + ' ' + jobs[i][j].week; 
+                    var week = months[jobs[i][j].month - 1] + ' ' + jobs[i][j].week + ' ' + jobs[i][j].year; 
                     weeks.push(week);
                     budget50.push(jobs[i][j].budget50);
                     budget70.push(jobs[i][j].budget70);
@@ -72,9 +71,8 @@
                     budget100.push(jobs[i][j].budget100);
                     budget150.push(jobs[i][j].budget100 * 1.2);
                     acc_cost.push(jobs[i][j].acc_cost);
-                    acc_work_completion.push(jobs[i][j].acc_work_completion);
+                    progress.push(jobs[i][j].progress);
                     spent_cost.push(jobs[i][j].spent_cost);
-                    work_completion.push(jobs[i][j].work_completion);
                 }
 
                 var ctx = document.getElementById(job_id).getContext('2d');
@@ -101,20 +99,20 @@
                             },
                             {
                                 label: 'Progress',
-                                data: work_completion,
+                                data: progress,
                                 type: 'line',
                                 backgroundColor: 'rgba(0,255,0,1)',
                                 borderColor: 'rgba(0,255,0,1)',
                                 yAxisID: 'progress',
                             },
-                            {
+                            @*{
                                 label: 'Total Progress',
                                 type: 'line',
                                 data: acc_work_completion,
                                 backgroundColor: 'rgba(0, 255, 0, 0.75)',
                                 borderColor: 'rgba(0, 255, 0, 0.75)',
                                 yAxisID: 'progress',
-                            },
+                            },*@
                             {
                                 type: 'line',
                                 label: "70% Budget",
@@ -168,7 +166,12 @@
                                     display: true,
                                     text: 'Spent(BAHT)'
                                 },
-                                beginAtZero:true
+                                beginAtZero: true,
+                                Min: 0,
+                                Max: 4000000,
+                                ticks: {
+                                    stepSize: 500000
+                                }
                             },
                             'progress': {
                                 type: 'linear',
@@ -177,7 +180,12 @@
                                     display: true,
                                     text: 'Progress(%)'
                                 },
-                                beginAtZero: true,
+                                @*beginAtZero: true,*@
+                                Min: 0,
+                                Max: 100,
+                                ticks: {
+                                    stepSize: 10
+                                }
                             }
                         },
                         maintainAspectRatio: false,

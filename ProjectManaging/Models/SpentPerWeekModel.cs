@@ -13,6 +13,8 @@ namespace ProjectManaging.Models
 
         public int month { get; set; }
 
+        public int year { get; set; }
+
         public int budget100 { get; set; }
 
         public int budget80 { get; set; }
@@ -21,11 +23,9 @@ namespace ProjectManaging.Models
 
         public int budget50 { get; set; }
 
-        public int work_completion { get; set; }
+        public int progress { get; set; }
 
         public int spent_cost { get; set; }
-
-        public int acc_work_completion { get; set; }
 
         public int acc_cost { get; set; }
     }

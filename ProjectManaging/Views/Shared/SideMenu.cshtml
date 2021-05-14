@@ -13,6 +13,13 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
                 <li class="nav-item">
+                    <a class="nav-link" asp-controller="ProjectView" asp-action="Index">
+                        <i class="nav-icon fas fa-tasks"></i>
+                        <p>Job View</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
                     <a class="nav-link" asp-controller="Home" asp-action="Index">
                         <i class="nav-icon fas fa-chart-line"></i>
                         <p>Spent</p>
@@ -33,37 +40,31 @@
                     </a>
                 </li>
 
-                <li class="nav-item">
+                <!-- UnComment -->
+                @*<li class="nav-item">
                     <a class="nav-link" asp-controller="Summary" asp-action="Index">
                         <i class="nav-icon fas fa-table"></i>
                         <p>Summary</p>
                     </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="ProjectView" asp-action="Index">
-                        <i class="nav-icon fas fa-tasks"></i>
-                        <p>Project View</p>
-                    </a>
-                </li>
-
-
-
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Job" asp-action="Index">
-                        <i class="nav-icon fas fa-book"></i>
-                        <p>Job</p>
-                    </a>
-                </li>
+                </li>*@
 
 
 
                 @*<li class="nav-item">
-                    <a class="nav-link" asp-controller="SalaryHour" asp-action="Index">
-                        <i class="nav-icon fas fa-money-bill"></i>
-                        <p>Salary/Hour</p>
+                    <a class="nav-link" asp-controller="Job" asp-action="Index">
+                        <i class="nav-icon fas fa-book"></i>
+                        <p>Job</p>
                     </a>
                 </li>*@
+
+
+
+                @*<li class="nav-item">
+            <a class="nav-link" asp-controller="SalaryHour" asp-action="Index">
+                <i class="nav-icon fas fa-money-bill"></i>
+                <p>Salary/Hour</p>
+            </a>
+        </li>*@
 
 
 

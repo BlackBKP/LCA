@@ -16,8 +16,9 @@
 @section Scripts
 {
     <script type="text/javascript">
-
+        
         $(document).ready(function () {
+            @*Chart.plugins.register(ChartDataLabels);*@
             GetData();
         });
 
@@ -57,6 +58,7 @@
                             ],
                         }]
                     },
+                    @*plugins: [ChartDataLabels],*@
                     options: {
                         maintainAspectRatio: false,
                         tooltips: {
