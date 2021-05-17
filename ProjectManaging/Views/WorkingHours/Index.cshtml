@@ -1,0 +1,82 @@
+﻿<!-- Working Hours Index -->
+<div class="container-fluid" style="padding-top:10px">
+    <div class="info-box bg-dark">
+        <div class="info-box-content">
+            <h3 class="info-box-text">Working Hours</h3>
+        </div>
+    </div>
+
+    <div class="card card-dark">
+        <div class="card-header">
+            <span class="card-title">Import Working Hours</span>
+        </div>
+        <div class="card-body">
+            <form>
+                <div class="form-row">
+                    <label>Select Year</label>
+                    <select id="select_whs_year" class="form-control">
+                        <option>2021</option>
+                        <option>2020</option>
+                        <option>2019</option>
+                    </select>
+                </div>
+                <br />
+                <div class="form-row">
+                    <label for="select_whs_job_number">Job Number</label>
+                    <select id="select_whs_job_number" class="form-control">
+                        <option>J21-0001</option>
+                        <option>J21-0002</option>
+                        <option>J21-0003</option>
+                        <option>J21-0004</option>
+                        <option>J21-0005</option>
+                    </select>
+                </div>
+                <br />
+                <div class="form-row">
+                    <label>Select Month</label>
+                    <select id="select_whs_month" class="form-control">
+                        <option>JAN 1</option>
+                        <option>JAN 2</option>
+                        <option>FEB 1</option>
+                    </select>
+                </div>
+                <br />
+                <div class="form-row">
+                    <label>
+                        Select File
+                    </label>
+                    <input id="input_modal_whs_file" class="form-control-file" type="file" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card card-dark">
+        <div class="card-header">
+            <span class="card-title">Uploaded Content</span>
+        </div>
+        <div class="card-body">
+            <table id="table_working_hours" class="table table-sm table-hover">
+                <thead>
+                    <tr>
+                        <th>Staff ID</th>
+                        <th>Date</th>
+                        <th>Hours</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>640185</td>
+                        <td>01/04/21</td>
+                        <td>8</td>
+                    </tr>
+                    <tr>
+                        <td>640185</td>
+                        <td>02/04/21</td>
+                        <td>8</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

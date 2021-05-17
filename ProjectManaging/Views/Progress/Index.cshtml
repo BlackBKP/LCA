@@ -1,0 +1,348 @@
+﻿<!-- Progress Index -->
+<div class="container-fluid" style="padding-top:10px">
+
+    <div class="info-box bg-dark">
+        <div class="info-box-content">
+            <h3 class="info-box-text">Progress</h3>
+        </div>
+    </div>
+
+    <div class="card card-dark">
+        <div class="card-header">
+            <span class="card-title">Import Progress</span>
+            <div class="card-tools">
+                <button type="button" class="btn btn-dark btn-sm" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-dark btn-sm" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <form>
+                <div class="form-row">
+                    <label>Select Year</label>
+                    <select id="select_progress_year" class="form-control">
+                        <option>2021</option>
+                        <option>2020</option>
+                        <option>2019</option>
+                    </select>
+                </div>
+                <br />
+                <div class="form-row">
+                    <label>Select Month</label>
+                    <select id="select_progress_month" class="form-control">
+                        <option>JAN 1</option>
+                        <option>JAN 2</option>
+                        <option>FEB 1</option>
+                    </select>
+                </div>
+                <br />
+                <div class="form-row">
+                    <label>
+                        Select File
+                    </label>
+                    <input id="input_modal_progress_file" class="form-control-file" type="file" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card card-dark">
+        <div class="card-header">
+            <span class="card-title">
+                Uploaded Content
+            </span>
+            <div class="card-tools">
+                <button type="button" class="btn btn-dark btn-sm" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-dark btn-sm" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+
+        </div>
+    </div>
+
+    <div class="card card-dark">
+        <div class="card-header">
+            <span class="card-title">Job's Progress</span>
+            <div class="card-tools">
+                <button type="button" class="btn btn-dark btn-sm" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-dark btn-sm" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <table class="table table-sm table-hover">
+                <thead>
+                    <tr>
+                        <th style="text-align:center">Job ID</th>
+                        <th style="text-align:center">Name</th>
+                        <th style="text-align:center">Budget</th>
+                        <th style="text-align:center">Remain</th>
+                        <th style="text-align:center"></th>
+                        <th style="text-align:center">Progress</th>
+                        <th style="text-align:center"></th>
+                        <th style="text-align:center"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="vertical-align:middle;text-align:left">J21-0001</td>
+                        <td style="vertical-align:middle;text-align:left">Job 1</td>
+                        <td style="vertical-align:middle;text-align:center">10M</td>
+                        <td style="vertical-align:middle;text-align:center">
+                            <div class="progress progress-xs progress-striped active">
+                                <div class="progress-bar bg-primary" style="width: 80%"></div>
+                            </div>
+                        </td>
+                        <td style="vertical-align:middle;text-align:center">
+                            <span class="badge bg-primary">
+                                80%
+                            </span>
+                        </td>
+                        <td style="vertical-align:middle;text-align:center">
+                            <div class="progress progress-xs progress-striped active">
+                                <div class="progress-bar bg-primary" style="width: 90%"></div>
+                            </div>
+                        </td>
+                        <td style="vertical-align:middle;text-align:center">
+                            <span class="badge bg-primary">
+                                90%
+                            </span>
+                        </td>
+                        <td style="vertical-align:middle;text-align:center">
+                            <button class="btn btn-primary form-control">
+                                <i class="fas fa-search"></i>
+                                <span>Detail</span>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="vertical-align:middle;text-align:left">J21-0002</td>
+                        <td style="vertical-align:middle;text-align:left">Job 2</td>
+                        <td style="vertical-align:middle;text-align:center">
+                            5M
+                        </td>
+                        <td style="vertical-align:middle;text-align:center">
+                            <div class="progress progress-xs progress-striped active">
+                                <div class="progress-bar bg-primary" style="width: 75%"></div>
+                            </div>
+                        </td>
+                        <td style="vertical-align:middle;text-align:center">
+                            <span class="badge bg-primary">
+                                75%
+                            </span>
+                        </td>
+                        <td style="vertical-align:middle;text-align:center">
+                            <div class="progress progress-xs progress-striped active">
+                                <div class="progress-bar bg-primary" style="width: 60%"></div>
+                            </div>
+                        </td>
+                        <td style="vertical-align:middle;text-align:center">
+                            <span class="badge bg-primary">
+                                60%
+                            </span>
+                        </td>
+                        <td style="vertical-align:middle;text-align:center">
+                            <button class="btn btn-primary form-control">
+                                <i class="fas fa-search"></i>
+                                <span>Detail</span>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="vertical-align:middle;text-align:left">J21-0003</td>
+                        <td style="vertical-align:middle;text-align:left">Job 3</td>
+                        <td style="vertical-align:middle;text-align:center">
+                            500K
+                        </td>
+                        <td style="vertical-align:middle;text-align:center">
+                            <div class="progress progress-xs progress-striped active">
+                                <div class="progress-bar bg-primary" style="width: 50%"></div>
+                            </div>
+                        </td>
+                        <td style="vertical-align:middle;text-align:center">
+                            <span class="badge bg-primary">
+                                50%
+                            </span>
+                        </td>
+                        <td style="vertical-align:middle;text-align:center">
+                            <div class="progress progress-xs progress-striped active">
+                                <div class="progress-bar bg-primary" style="width: 40%"></div>
+                            </div>
+                        </td>
+                        <td style="vertical-align:middle;text-align:center">
+                            <span class="badge bg-primary">
+                                40%
+                            </span>
+                        </td>
+                        <td style="vertical-align:middle;text-align:center">
+                            <button class="btn btn-primary form-control">
+                                <i class="fas fa-search"></i>
+                                <span>Detail</span>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card card-dark">
+        <div class="card-header">
+            <span class="card-title">
+                J21-0001
+            </span>
+            <div class="card-tools">
+                <button type="button" class="btn btn-dark btn-sm" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-dark btn-sm" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="form-row">
+                <div class="col-2">
+                    <label class="col-form-label" for="budget">
+                        Estimate Budget
+                    </label>
+                </div>
+                <div class="col-9">
+                    <input class="form-control" id="budget" type="text" />
+                </div>
+                <div class="col-1">
+                    <label class="col-form-label">
+                        BAHT
+                    </label>
+                </div>
+            </div>
+            <br />
+            <table class="table table-sm table-hover">
+                <thead>
+                    <tr>
+                        <th style="width:5%">#</th>
+                        <th style="width:15%">Month</th>
+                        <th style="width:30%">Budget Spent</th>
+                        <th style="width:5%"></th>
+                        <th style="width:30%">Progress</th>
+                        <th style="width:5%"></th>
+                        <th style="width:10%"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="vertical-align:middle">1</td>
+                        <td style="vertical-align:middle">JAN</td>
+                        <td style="vertical-align:middle">
+                            <div class="progress progress-xs progress-striped active">
+                                <div class="progress-bar bg-primary" style="width:13%"></div>
+                            </div>
+                        </td>
+                        <td style="vertical-align:middle">
+                            <span class="badge bg-primary">
+                                13%
+                            </span>
+                        </td>
+                        <td style="vertical-align:middle">
+                            <div class="progress progress-xs progress-striped active">
+                                <div class="progress-bar bg-primary" style="width:10%"></div>
+                            </div>
+                        </td>
+                        <td style="vertical-align:middle">
+                            <span class="badge bg-primary">
+                                10%
+                            </span>
+                        </td>
+                        <td style="vertical-align:middle">
+                            <button class="btn btn-primary form-control">
+                                <i class="fas fa-pencil-alt"></i>
+                                <span>Update</span>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="vertical-align:middle">2</td>
+                        <td style="vertical-align:middle">FEB</td>
+                        <td style="vertical-align:middle">
+                            <div class="progress progress-xs progress-striped active">
+                                <div class="progress-bar bg-primary" style="width:26%"></div>
+                            </div>
+                        </td>
+                        <td style="vertical-align:middle">
+                            <span class="badge bg-primary">
+                                26%
+                            </span>
+                        </td>
+                        <td style="vertical-align:middle">
+                            <div class="progress progress-xs progress-striped active">
+                                <div class="progress-bar bg-primary" style="width:30%"></div>
+                            </div>
+                        </td>
+                        <td style="vertical-align:middle">
+                            <span class="badge bg-primary">
+                                30%
+                            </span>
+                        </td>
+                        <td style="vertical-align:middle">
+                            <button class="btn btn-primary form-control">
+                                <i class="fas fa-pencil-alt"></i>
+                                <span> Update</span>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="vertical-align:middle">3</td>
+                        <td style="vertical-align:middle">MAR</td>
+                        <td style="vertical-align:middle">
+                            <div class="progress progress-xs progress-striped active">
+                                <div class="progress-bar bg-primary" style="width:40%"></div>
+                            </div>
+                        </td>
+                        <td style="vertical-align:middle">
+                            <span class="badge bg-primary">
+                                40%
+                            </span>
+                        </td>
+                        <td style="vertical-align:middle">
+                            <div class="progress progress-xs progress-striped active">
+                                <div class="progress-bar bg-primary" style="width:47%"></div>
+                            </div>
+                        </td>
+                        <td style="vertical-align:middle">
+                            <span class="badge bg-primary">
+                                47%
+                            </span>
+                        </td>
+                        <td style="vertical-align:middle">
+                            <button class="btn btn-primary form-control">
+                                <i class="fas fa-pencil-alt"></i>
+                                <span> Update</span>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            console.log("Ready");
+        })
+    </script>
+}
