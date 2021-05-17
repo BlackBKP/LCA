@@ -9,7 +9,7 @@
 
     <div class="row">
         <div class="col-2">
-            <div class="info-box bg-gradient-dark" style="width:100%;">
+            <div class="info-box bg-dark" style="width:100%">
                 <div class="info-box-content row">
                     <div class="col-4 text-center">
                         <label class="info-box-text" for="ProjectYears" style="height:100%">Year</label>
@@ -24,39 +24,49 @@
                 </div>
             </div>
 
-            <div class="card card-dark">
-                <div class="card-header">
-                    <span class="card-title">JOB ID</span>
-                </div>
-                <div class="card-body" style="padding:0px">
-                    <ul id="pj_lists" class="list-group">
-                    </ul>
+            <div class="info-box bg-dark" style="height:90px">
+                <div class="info-box-content text-center">
+                    <h3 class="info-box-text">
+                        Job Lists
+                    </h3>
                 </div>
             </div>
 
+            <ul id="pj_lists" class="list-group">
+            </ul>
+
             <div class="row">
                 <div class="col-12">
-                    
+
                 </div>
             </div>
-            
+
         </div>
         <div class="col-10">
-            <div class="info-box bg-gradient-dark" style="width:100%;">
+            <div class="info-box bg-dark" style="width:100%;">
                 <div class="info-box-content">
-                    <h4 class="info-box-text">
-                        JOB ID : J21-0001
-                    </h4>
+                    <div class="row">
+                        <div class="col-3">
+                            <h4 class="info-box-text">
+                                JOB ID : J21-0001
+                            </h4>
+                        </div>
+                        <div class="col-9">
+                            <h4 class="info-box-text">
+                                Name : JOB A
+                            </h4>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-3">
-                    <div class="info-box bg-dark">
-                        <i class="fas fa-chart-line info-box-icon"></i>
+                    <div class="info-box bg-dark" style="height:90px">
+                        <i class="fas fa-chart-line info-box-icon bg-teal"></i>
                         <div class="info-box-content">
-                            <span class="info-box-text">Progress</span>
-                            <span class="info-box-number">80/100</span>
+                            <span class="info-box-text" style="font-weight:bold">Progress</span>
+                            @*<span class="info-box-number">80/100</span>*@
                             <div class="progress">
                                 <div class="progress-bar" style="width:80%"></div>
                             </div>
@@ -67,29 +77,41 @@
                     </div>
                 </div>
                 <div class="col-3">
-                    <div class="info-box bg-dark">
-                        <i class="fas fa-coins info-box-icon"></i>
+                    <div class="info-box bg-dark" style="height:90px">
+                        <i class="fas fa-money-bill-wave info-box-icon bg-lightblue"></i>
                         <div class="info-box-content">
                             <span class="info-box-text">Budget Spent</span>
                             <span class="info-box-number">75/100</span>
+                            <div class="progress">
+                                <div class="progress-bar" style="width:75%"></div>
+                            </div>
+                            <span class="progress-description">
+                                75% Spent
+                            </span>
                         </div>
                     </div>
                 </div>
                 <div class="col-3">
-                    <div class="info-box bg-dark">
-                        <i class="fas fa-users info-box-icon"></i>
+                    <div class="info-box bg-dark" style="height:90px">
+                        <i class="fas fa-coins info-box-icon bg-danger"></i>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Budget Remain</span>
+                            <span class="info-box-number">25/100</span>
+                            <div class="progress">
+                                <div class="progress-bar" style="width:25%"></div>
+                            </div>
+                            <span class="progress-description">
+                                25% of Budget left
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="info-box bg-dark" style="height:90px">
+                        <i class="fas fa-users info-box-icon bg-warning"></i>
                         <div class="info-box-content">
                             <span class="info-box-text">Manpower Per Hour</span>
                             <span class="info-box-number">22</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-3">
-                    <div class="info-box bg-dark">
-                        <i class="fas fa-money-bill-wave info-box-icon"></i>
-                        <div class="info-box-content">
-                            <span class="info-box-text">Salary Per Hour</span>
-                            <span class="info-box-number">40</span>
                         </div>
                     </div>
                 </div>
@@ -100,14 +122,6 @@
                     <span class="card-title">
                         Spent Per Fortnight
                     </span>
-                    <div class="card-tools">
-                        <button type="button" class="btn btn-dark btn-sm" data-card-widget="collapse">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                        <button type="button" class="btn btn-dark btn-sm" data-card-widget="remove">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
                 </div>
                 <div class="card-body">
                     <canvas id="canvas_1" style="height:400px"></canvas>
@@ -119,14 +133,6 @@
                     <span class="card-title">
                         Manpower Per Hour
                     </span>
-                    <div class="card-tools">
-                        <button type="button" class="btn btn-dark btn-sm" data-card-widget="collapse">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                        <button type="button" class="btn btn-dark btn-sm" data-card-widget="remove">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
                 </div>
                 <div class="card-body">
                     <canvas id="canvas_2" style="height:400px"></canvas>
@@ -138,14 +144,6 @@
                     <span class="card-title">
                         Normal Per Overtime Ratio
                     </span>
-                    <div class="card-tools">
-                        <button type="button" class="btn btn-dark btn-sm" data-card-widget="collapse">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                        <button type="button" class="btn btn-dark btn-sm" data-card-widget="remove">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
                 </div>
                 <div class="card-body">
                     <canvas id="canvas_4" style="height:400px"></canvas>
@@ -210,8 +208,8 @@
             var str = '';
             for (var i = 1; i < 28; i++) {
                 str += '<li class="list-group-item" style="padding:1px">';
-                str += '<button type="button" class="btn form-control" style="background-color:rgba(32,67,198,1);color:rgba(255,255,255,1)">';
-                str += '<strong>J21 - ' + i.toString().padStart(4, "0") + '</strong></button >';
+                str += '<button type="button" class="btn form-control" style="background-color:rgba(40,121,191,1);color:rgba(255,255,255,1)">';
+                str += 'J21 - ' + i.toString().padStart(4, "0") + '</button >';
                 str += '</li>';
             }
             $('#pj_lists').append(str);
