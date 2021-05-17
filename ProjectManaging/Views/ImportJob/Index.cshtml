@@ -24,7 +24,7 @@
             </button>
         </div>
         <div class="col-3">
-            <button class="btn btn-dark form-control" style="height:100px">
+            <button id="btn_import_progress" class="btn btn-dark form-control" style="height:100px">
                 Import Job's Progress
             </button>
         </div>
@@ -68,8 +68,6 @@
         </div>
     </div>
 
-    
-
     <div class="card">
         <div class="card-header">
             <span class="card-title">Uploaded Content</span>
@@ -81,9 +79,30 @@
 
 </div>
 
+<partial name="ModalImportJob" />
+<partial name="ModalImportWorkHours" />
+<partial name="ModalImportOvertimes" />
+<partial name="ModalImportProgress" />
+
 @section Scripts
 {
     <script type="text/javascript">
+
+        $('#btn_import_jobs').on('click', function () {
+            $('#modal_import_job').modal("show");
+        });
+
+        $('#btn_import_hours').on('click', function () {
+            $('#modal_import_working_hours').modal("show");
+        });
+
+        $('#btn_import_ots').on('click', function () {
+            $('#modal_import_overtimes').modal("show");
+        });
+
+        $('#btn_import_progress').on('click', function () {
+            $('#modal_import_progress').modal("show");
+        });
 
         $('#import_file_ot').on('change', async function () {
             $('#divPrint').empty();
