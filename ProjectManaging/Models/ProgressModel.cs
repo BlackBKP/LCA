@@ -13,12 +13,16 @@ namespace ProjectManaging.Models
 
         public string job_name { get; set; }
 
-        public int job_year { get; set; }
+        public int year { get; set; }
 
         public int month { get; set; }
 
         public int estimated_budget { get; set; }
 
         public int job_progress { get; set; }
+
+        public int spent_cost { get; set; }
+
+        public int remainning_cost { get; set; }
     }
 }

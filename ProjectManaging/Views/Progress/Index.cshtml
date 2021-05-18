@@ -1,6 +1,15 @@
 ﻿<!-- Progress Index -->
 <div class="container-fluid" style="padding-top:10px">
 
+    <style>
+
+        table.dataTable tbody td {
+            vertical-align:middle;
+            cursor:pointer;
+        }
+
+    </style>
+
     <div class="info-box bg-dark">
         <div class="info-box-content">
             <h3 class="info-box-text">Progress</h3>
@@ -81,7 +90,7 @@
             </div>
         </div>
         <div class="card-body">
-            <table class="table table-sm table-hover">
+            <table id="table_jobs" class="table table-sm table-hover" style="width:100%">
                 <thead>
                     <tr>
                         <th style="text-align:center">Job ID</th>
@@ -91,115 +100,15 @@
                         <th style="text-align:center"></th>
                         <th style="text-align:center">Progress</th>
                         <th style="text-align:center"></th>
-                        <th style="text-align:center"></th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td style="vertical-align:middle;text-align:left">J21-0001</td>
-                        <td style="vertical-align:middle;text-align:left">Job 1</td>
-                        <td style="vertical-align:middle;text-align:center">10M</td>
-                        <td style="vertical-align:middle;text-align:center">
-                            <div class="progress progress-xs progress-striped active">
-                                <div class="progress-bar bg-primary" style="width: 80%"></div>
-                            </div>
-                        </td>
-                        <td style="vertical-align:middle;text-align:center">
-                            <span class="badge bg-primary">
-                                80%
-                            </span>
-                        </td>
-                        <td style="vertical-align:middle;text-align:center">
-                            <div class="progress progress-xs progress-striped active">
-                                <div class="progress-bar bg-primary" style="width: 90%"></div>
-                            </div>
-                        </td>
-                        <td style="vertical-align:middle;text-align:center">
-                            <span class="badge bg-primary">
-                                90%
-                            </span>
-                        </td>
-                        <td style="vertical-align:middle;text-align:center">
-                            <button class="btn btn-primary form-control">
-                                <i class="fas fa-search"></i>
-                                <span>Detail</span>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="vertical-align:middle;text-align:left">J21-0002</td>
-                        <td style="vertical-align:middle;text-align:left">Job 2</td>
-                        <td style="vertical-align:middle;text-align:center">
-                            5M
-                        </td>
-                        <td style="vertical-align:middle;text-align:center">
-                            <div class="progress progress-xs progress-striped active">
-                                <div class="progress-bar bg-primary" style="width: 75%"></div>
-                            </div>
-                        </td>
-                        <td style="vertical-align:middle;text-align:center">
-                            <span class="badge bg-primary">
-                                75%
-                            </span>
-                        </td>
-                        <td style="vertical-align:middle;text-align:center">
-                            <div class="progress progress-xs progress-striped active">
-                                <div class="progress-bar bg-primary" style="width: 60%"></div>
-                            </div>
-                        </td>
-                        <td style="vertical-align:middle;text-align:center">
-                            <span class="badge bg-primary">
-                                60%
-                            </span>
-                        </td>
-                        <td style="vertical-align:middle;text-align:center">
-                            <button class="btn btn-primary form-control">
-                                <i class="fas fa-search"></i>
-                                <span>Detail</span>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="vertical-align:middle;text-align:left">J21-0003</td>
-                        <td style="vertical-align:middle;text-align:left">Job 3</td>
-                        <td style="vertical-align:middle;text-align:center">
-                            500K
-                        </td>
-                        <td style="vertical-align:middle;text-align:center">
-                            <div class="progress progress-xs progress-striped active">
-                                <div class="progress-bar bg-primary" style="width: 50%"></div>
-                            </div>
-                        </td>
-                        <td style="vertical-align:middle;text-align:center">
-                            <span class="badge bg-primary">
-                                50%
-                            </span>
-                        </td>
-                        <td style="vertical-align:middle;text-align:center">
-                            <div class="progress progress-xs progress-striped active">
-                                <div class="progress-bar bg-primary" style="width: 40%"></div>
-                            </div>
-                        </td>
-                        <td style="vertical-align:middle;text-align:center">
-                            <span class="badge bg-primary">
-                                40%
-                            </span>
-                        </td>
-                        <td style="vertical-align:middle;text-align:center">
-                            <button class="btn btn-primary form-control">
-                                <i class="fas fa-search"></i>
-                                <span>Detail</span>
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
             </table>
         </div>
     </div>
 
-    <div class="card card-dark">
+    <div id="card_job_detail" class="card card-dark" style="display:none">
         <div class="card-header">
-            <span class="card-title">
+            <span id="job_number_detail" class="card-title">
                 J21-0001
             </span>
             <div class="card-tools">
@@ -213,36 +122,33 @@
         </div>
         <div class="card-body">
             <div class="form-row">
-                <div class="col-2">
-                    <label class="col-form-label" for="budget">
-                        Estimate Budget
-                    </label>
-                </div>
-                <div class="col-9">
-                    <input class="form-control" id="budget" type="text" />
-                </div>
-                <div class="col-1">
-                    <label class="col-form-label">
-                        BAHT
-                    </label>
-                </div>
+                <label for="job_name">
+                    Job Name
+                </label>
+                <input id="job_name" class="form-control" type="text"/>
             </div>
             <br />
-            <table class="table table-sm table-hover">
+            <div class="form-row">
+                <label for="job_estimated_budget">
+                    Estimated Budget
+                </label>
+                <input id="job_estimated_budget" class="form-control" type="text"/>
+            </div>
+            <br />
+            <table id="table_details" class="table table-sm table-hover" style="width:100%">
                 <thead>
                     <tr>
-                        <th style="width:5%">#</th>
+                        <th>Year</th>
                         <th style="width:15%">Month</th>
                         <th style="width:30%">Budget Spent</th>
-                        <th style="width:5%"></th>
+                        <th style="width:5%">%</th>
                         <th style="width:30%">Progress</th>
-                        <th style="width:5%"></th>
-                        <th style="width:10%"></th>
+                        <th style="width:5%">%</th>
+                        <th style="width:10%">BTN</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td style="vertical-align:middle">1</td>
                         <td style="vertical-align:middle">JAN</td>
                         <td style="vertical-align:middle">
                             <div class="progress progress-xs progress-striped active">
@@ -272,7 +178,6 @@
                         </td>
                     </tr>
                     <tr>
-                        <td style="vertical-align:middle">2</td>
                         <td style="vertical-align:middle">FEB</td>
                         <td style="vertical-align:middle">
                             <div class="progress progress-xs progress-striped active">
@@ -302,7 +207,6 @@
                         </td>
                     </tr>
                     <tr>
-                        <td style="vertical-align:middle">3</td>
                         <td style="vertical-align:middle">MAR</td>
                         <td style="vertical-align:middle">
                             <div class="progress progress-xs progress-striped active">
@@ -324,12 +228,6 @@
                                 47%
                             </span>
                         </td>
-                        <td style="vertical-align:middle">
-                            <button class="btn btn-primary form-control">
-                                <i class="fas fa-pencil-alt"></i>
-                                <span> Update</span>
-                            </button>
-                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -341,6 +239,10 @@
 @section Scripts
 {
     <script type="text/javascript">
+        var table_jobs;
+        var table_details;
+        var jobs = [];
+
         $(document).ready(function () {
             GetData();
         })
@@ -356,8 +258,133 @@
                 success: function (response) {
                     console.log("Response");
                     console.log(response);
+                    jobs = response;
+                    GenJobsTable();
                 }
             });
+        }
+
+        function GenJobsTable() {
+            var datas = [];
+            for (var i = 0; i < jobs.length; i++) {
+                datas.push([
+                    jobs[i][jobs.length].job_number,
+                    jobs[i][jobs.length].job_name,
+                    jobs[i][jobs.length].estimated_budget,
+                    jobs[i][jobs.length].remainning_cost,
+                    jobs[i][jobs.length].remainning_cost / jobs[i][jobs.length].estimated_budget * 100,
+                    jobs[i][jobs.length].job_progress,
+                    jobs[i][jobs.length].job_progress,
+                ]);
+            }
+
+            if (table_jobs != null)
+                $('#table_jobs').DataTable().destroy();
+
+            table_jobs = $('#table_jobs').DataTable({
+                data: datas,
+                pagingType: "full_numbers",
+                columnDefs: [
+                    {
+                        targets: [4, 6],
+                        orderable: false,
+                        searchable: false
+                    },
+                ],
+                rowCallback: function (row, data) {
+
+                    $('td', row).eq(2).css("text-align", "center");
+                    $('td', row).eq(3).css("text-align", "center");
+                    $('td', row).eq(4).css("text-align", "center");
+                    $('td', row).eq(5).css("text-align", "center");
+                    $('td', row).eq(6).css("text-align", "center");
+
+                    var remain_str = '<div class="progress progress-xs progress-striped active">';
+                    remain_str += '<div class="progress-bar bg-primary" style="width: ' + Math.round(data[4]) + '%"></div></div>';
+                    $('td', row).eq(3).html(remain_str);
+                    var remain_percent_str = '<span class="badge bg-primary">' + Math.round(data[4]) + '%</span>';
+                    $('td', row).eq(4).html(remain_percent_str);
+                    var progress_str = '<div class="progress progress-xs progress-striped active">';
+                    progress_str += '<div class="progress-bar bg-primary" style="width: ' + Math.round(data[5]) + '%"></div></div>';
+                    $('td', row).eq(5).html(progress_str);
+                    var progress_percent_str = '<span class="badge bg-primary">' + Math.round(data[6]) + '%</span>';
+                    $('td', row).eq(6).html(progress_percent_str);
+
+                }
+            });
+
+            $('#table_jobs tbody').on('click', 'tr', function () {
+                GenJobsDetail(table_jobs.row(this).data()[0]);
+            });
+
+        }
+
+        function GenJobsDetail(job_id) {
+            var index = -1;
+            for (var i = 0; i < jobs.length; i++) {
+                if (jobs[i][0].job_number == job_id)
+                    index = i;
+            }
+
+            if (index > -1) {
+                console.log(jobs[index]);
+                var card = document.getElementById("card_job_detail");
+                card.style.display = "block";
+                $('#job_number_detail').text("Job Number: " + jobs[index][0].job_number);
+                $('#job_name').val(jobs[index][0].job_name);
+                $('#job_estimated_budget').val(jobs[index][0].estimated_budget);
+            }
+
+            if(table_details != null)
+                $('#table_details').DataTable().destroy();
+
+            var datas = [];
+            for (var i = 0; i < jobs[index].length; i++) {
+                datas.push([
+                    jobs[index][i].year,
+                    jobs[index][i].month,
+                    jobs[index][i].spent_cost,
+                    jobs[index][i].spent_cost / jobs[index][i].estimated_budget * 100,
+                    jobs[index][i].job_progress,
+                    jobs[index][i].job_progress,
+                    0
+                ]);
+            }
+
+            table_details = $('#table_details').DataTable({
+                data: datas,
+                pagingType: "full_numbers",
+                columnDefs: [
+                    {
+                        targets: [3, 5, 6],
+                        orderable: false,
+                        searchable: false
+                    },
+                ],
+                rowCallback: function (row, data) {
+
+                    $('td', row).eq(2).css("text-align", "center");
+                    $('td', row).eq(3).css("text-align", "center");
+                    $('td', row).eq(4).css("text-align", "center");
+                    $('td', row).eq(5).css("text-align", "center");
+                    $('td', row).eq(6).css("text-align", "center");
+
+                    var remain_str = '<div class="progress progress-xs progress-striped active">';
+                    remain_str += '<div class="progress-bar bg-primary" style="width: ' + Math.round(data[4]) + '%"></div></div>';
+                    $('td', row).eq(2).html(remain_str);
+                    var remain_percent_str = '<span class="badge bg-primary">' + Math.round(data[4]) + '%</span>';
+                    $('td', row).eq(3).html(remain_percent_str);
+                    var progress_str = '<div class="progress progress-xs progress-striped active">';
+                    progress_str += '<div class="progress-bar bg-primary" style="width: ' + Math.round(data[5]) + '%"></div></div>';
+                    $('td', row).eq(4).html(progress_str);
+                    var progress_percent_str = '<span class="badge bg-primary">' + Math.round(data[6]) + '%</span>';
+                    $('td', row).eq(5).html(progress_percent_str);
+
+                    $('td', row).eq(6).html('<button class="btn btn-primary form-control">Edit</button>');
+                }
+            });
+
+
         }
 
     </script>
