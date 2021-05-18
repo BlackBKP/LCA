@@ -11,6 +11,7 @@ namespace ProjectManaging.Services
     public class HomeService : IHome
     {
         IConnectDB DB;
+
         public HomeService()
         {
              this.DB = new ConnectDB();
@@ -22,21 +23,20 @@ namespace ProjectManaging.Services
             SqlConnection con = DB.Connect();
             con.Open();
 
-            string str_cmd = "select Labor_Costs.job_ID, " +
-                                     "SUM((cast(Labor_Cost as int) + cast(OT_Labor_Cost as int) + cast(Accommodation_Cost as int) + cast(Compensation_Cost as int))) OVER(PARTITION BY Labor_Costs.job_ID ORDER BY Labor_Costs.job_ID ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as Acc_Cost, " +
-                                     "week, " +
-                                     "Labor_Costs.Month, " +
-                                     "Labor_Costs.Year, " +
-                                     "(s1.Estimated_Budget * 1.0) as Budget100, " +
-                                     "(s1.Estimated_Budget * 0.8) as Budget80, " +
-                                     "(s1.Estimated_Budget * 0.7) as Budget70, " +
-                                     "(s1.Estimated_Budget * 0.5) as Budget50, " +
-                                     "((cast(s2.Job_Progress as int) +  lag(s2.Job_Progress,1) over (partition by s2.Job_ID order by s2.Job_ID))/2.0) as Progress, " +
-                                     "(cast(Labor_Cost as int) + cast(OT_Labor_Cost as int) + cast(Accommodation_Cost as int) + cast(Compensation_Cost as int)) as spent_cost " +
-                                     "from Labor_Costs " +
-                                     "left join (select job_ID,Estimated_Budget from job) as s1 ON s1.job_ID = Labor_Costs.job_ID " +
-                                     "left join (select Job_ID,Job_Progress,Month,Year from Progress) as s2 ON s2.Job_ID = Labor_Costs.job_ID and s2.Year = Labor_Costs.Year and s2.Month = Labor_Costs.Month " +
-                                     "order by Labor_Costs.job_ID,Labor_Costs.Month,Labor_Costs.week";
+            string str_cmd = "select Labor_Costs.Job_ID, " +
+                                    "SUM((cast(Labor_Cost as int) + cast(OT_Labor_Cost as int) + cast(Accommodation_Cost as int) + cast(Compensation_Cost as int))) OVER(PARTITION BY Labor_Costs.job_ID ORDER BY Labor_Costs.job_ID ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as Acc_Cost, " +
+                                    "week, " +
+                                    "Labor_Costs.Month, " +
+                                    "Labor_Costs.Year, " +
+                                    "(s1.Estimated_Budget * 1.0) as Budget100, " +
+                                    "(s1.Estimated_Budget * 0.8) as Budget80, " +
+                                    "(s1.Estimated_Budget * 0.7) as Budget70, " +
+                                    "(s1.Estimated_Budget * 0.5) as Budget50, " +
+                                    "((cast(s2.Job_Progress as int) + lag(s2.Job_Progress,1) over (partition by s2.Job_ID order by s2.Job_ID))/2.0) as Progress, " +
+                                    "(cast(Labor_Cost as int) + cast(OT_Labor_Cost as int) + cast(Accommodation_Cost as int) + cast(Compensation_Cost as int)) as spent_cost " +
+                                    "from Labor_Costs left join (select job_ID,Estimated_Budget from job) as s1 ON s1.job_ID = Labor_Costs.job_ID " +
+                                    "left join (select Job_ID, Job_Progress, Month, Year from Progress) as s2 ON s2.Job_ID = Labor_Costs.job_ID and s2.Year = Labor_Costs.Year and s2.Month = Labor_Costs.Month " +
+                                    "order by Labor_Costs.job_ID, Labor_Costs.Year, Labor_Costs.Month, Labor_Costs.week";
 
             SqlCommand cmd = new SqlCommand(str_cmd, con);
             SqlDataReader dr = cmd.ExecuteReader();
@@ -74,22 +74,22 @@ namespace ProjectManaging.Services
             SqlConnection con = DB.Connect();
             con.Open();
 
-            string str_cmd = "select Labor_Costs.job_ID, " +
-                                     "SUM((cast(Labor_Cost as int) + cast(OT_Labor_Cost as int) + cast(Accommodation_Cost as int) + cast(Compensation_Cost as int))) OVER(PARTITION BY Labor_Costs.job_ID ORDER BY Labor_Costs.job_ID ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as Acc_Cost, " +
-                                     "week, " +
-                                     "Labor_Costs.Month, " +
-                                     "Labor_Costs.Year, " +
-                                     "(s1.Estimated_Budget * 1.0) as Budget100, " +
-                                     "(s1.Estimated_Budget * 0.8) as Budget80, " +
-                                     "(s1.Estimated_Budget * 0.7) as Budget70, " +
-                                     "(s1.Estimated_Budget * 0.5) as Budget50, " +
-                                     "((cast(s2.Job_Progress as int) +  lag(s2.Job_Progress,1) over (partition by s2.Job_ID order by s2.Job_ID))/2.0) as Progress, " +
-                                     "(cast(Labor_Cost as int) + cast(OT_Labor_Cost as int) + cast(Accommodation_Cost as int) + cast(Compensation_Cost as int)) as spent_cost " +
-                                     "from Labor_Costs " +
-                                     "left join (select job_ID,Estimated_Budget from job) as s1 ON s1.job_ID = Labor_Costs.job_ID " +
-                                     "left join (select Job_ID,Job_Progress,Month,Year from Progress) as s2 ON s2.Job_ID = Labor_Costs.job_ID and s2.Year = Labor_Costs.Year and s2.Month = Labor_Costs.Month " +
-                                     "where Labor_Costs.job_ID = '" + job_id + "' " +
-                                     "order by Labor_Costs.job_ID,Labor_Costs.Month,Labor_Costs.week";
+            string str_cmd = "select Labor_Costs.Job_ID, " +
+                                    "SUM((cast(Labor_Cost as int) + cast(OT_Labor_Cost as int) + cast(Accommodation_Cost as int) + cast(Compensation_Cost as int))) OVER(PARTITION BY Labor_Costs.job_ID ORDER BY Labor_Costs.job_ID ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as Acc_Cost, " +
+                                    "week, " +
+                                    "Labor_Costs.Month, " +
+                                    "Labor_Costs.Year, " +
+                                    "(s1.Estimated_Budget * 1.0) as Budget100, " +
+                                    "(s1.Estimated_Budget * 0.8) as Budget80, " +
+                                    "(s1.Estimated_Budget * 0.7) as Budget70, " +
+                                    "(s1.Estimated_Budget * 0.5) as Budget50, " +
+                                    "((cast(s2.Job_Progress as int) + lag(s2.Job_Progress,1) over (partition by s2.Job_ID order by s2.Job_ID))/2.0) as Progress, " +
+                                    "(cast(Labor_Cost as int) + cast(OT_Labor_Cost as int) + cast(Accommodation_Cost as int) + cast(Compensation_Cost as int)) as spent_cost " +
+                                    "from Labor_Costs left join (select job_ID,Estimated_Budget from job) as s1 ON s1.job_ID = Labor_Costs.job_ID " +
+                                    "left join (select Job_ID, Job_Progress, Month, Year from Progress) as s2 ON s2.Job_ID = Labor_Costs.job_ID and s2.Year = Labor_Costs.Year and s2.Month = Labor_Costs.Month " +
+                                    "where Labor_Costs.job_ID = '" + job_id + "' " +
+                                    "order by Labor_Costs.job_ID, Labor_Costs.Year, Labor_Costs.Month, Labor_Costs.week";
+
             SqlCommand cmd = new SqlCommand(str_cmd, con);
 
             return spws;

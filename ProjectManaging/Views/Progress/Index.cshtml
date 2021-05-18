@@ -342,7 +342,23 @@
 {
     <script type="text/javascript">
         $(document).ready(function () {
-            console.log("Ready");
+            GetData();
         })
+
+        async function GetData() {
+            await $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetData", "Progress")',
+	            contentType: 'application/x-www-form-urlencoded',
+                data: {
+
+                },
+                success: function (response) {
+                    console.log("Response");
+                    console.log(response);
+                }
+            });
+        }
+
     </script>
 }

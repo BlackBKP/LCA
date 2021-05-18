@@ -9,6 +9,8 @@ namespace ProjectManaging.Models
     {
         public string job_id { get; set; }
 
+        public int year { get; set; }
+
         public int week { get; set; }
 
         public int month { get; set; }
