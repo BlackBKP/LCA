@@ -9,9 +9,15 @@
 
     <div class="card card-dark" style="width:100%">
         <div class="card-header">
-            <span class="card-title">Summary</span>
+            <span class="card-title">JOBS</span>
             <div class="card-tools">
-                <button type="button" class="btn btn-dark btn-sm" data-card-widget="collapse">
+                <button id="btn_cost_details" type="button" class="btn btn-dark">
+                    Show Cost Detail
+                </button>
+                <button id="btn_mph_details" type="button" class="btn btn-dark">
+                    Show Man Power Detail
+                </button>
+                <button type="button" class="btn btn-dark" data-card-widget="collapse">
                     <i class="fas fa-minus"></i>
                 </button>
                 <button type="button" class="btn btn-dark btn-sm" data-card-widget="remove">
@@ -56,6 +62,7 @@
 {
     <script type="text/javascript">
         var table;
+        var summaries = [];
 
         $(document).ready(function () {
             GetJobsSummary();
@@ -72,12 +79,13 @@
                 success: function (response) {
                     console.log("Response");
                     console.log(response);
-                    GenSummaryTable(response);
+                    summaries = response;
+                    GenSummaryTable();
                 }
             });
         }
 
-        function GenSummaryTable(summaries) {
+        function GenSummaryTable() {
             var datas = [];
             for (var i = 0; i < summaries.length; i++) {
                 var job_year = summaries[i].job_id.substring(0, 3);
@@ -103,18 +111,70 @@
             }
 
             if (table != null)
-                table == null
+                $('#summary_table').DataTable().destroy();
 
             table = $('#summary_table').DataTable({
                 data: datas,
                 pagingType: "full_numbers",
                 columnDefs: [
                     {
-                        targets: []
+                        targets: [2, 3, 4, 5],
+                        visible: show_cost_details,
+                        searchable: show_cost_details,
                     },
+                    {
+                        targets: [10, 11, 12],
+                        visible: show_mph_details,
+                        searchable: show_mph_details,
+                    }
                 ],
+                rowCallback: function (row, data) {
+                    if (show_cost_details) {
+                        $('td', row).eq(2).addClass('bg-orange');
+                        $('td', row).eq(3).addClass('bg-orange');
+                        $('td', row).eq(4).addClass('bg-orange');
+                        $('td', row).eq(5).addClass('bg-orange');
+                    }
+
+                    if (show_cost_details && show_mph_details) {
+                        $('td', row).eq(10).addClass('bg-blue');
+                        $('td', row).eq(11).addClass('bg-blue');
+                        $('td', row).eq(12).addClass('bg-blue');
+                    }
+                    else if (!show_cost_details && show_mph_details) {
+                        $('td', row).eq(6).addClass('bg-blue');
+                        $('td', row).eq(7).addClass('bg-blue');
+                        $('td', row).eq(8).addClass('bg-blue');
+                    }
+                }
             });
         }
+
+        var show_cost_details = false;
+        $('#btn_cost_details').on('click', function() {
+            if (show_cost_details == false) {
+                show_cost_details = true;
+                $('#btn_cost_details').html("Hide Cost Detail");
+            }
+            else {
+                show_cost_details = false;
+                $('#btn_cost_details').html("Show Cost Detail");
+            }
+            GenSummaryTable();
+        });
+
+        var show_mph_details = false;
+        $('#btn_mph_details').on('click', function () {
+            if (show_mph_details == false) {
+                show_mph_details = true;
+                $('#btn_mph_details').html("Hide Man Power Detail");
+            }
+            else {
+                show_mph_details = false;
+                $('#btn_mph_details').html("Show Man Power Detail");
+            }
+            GenSummaryTable();
+        });
 
     </script>
 }
