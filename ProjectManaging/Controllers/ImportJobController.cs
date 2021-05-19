@@ -23,6 +23,8 @@ namespace ProjectManaging.Controllers
 
         public int week { get; set; }
 
+        public string week_time { get; set; }
+
         public int labor_cost { get; set; }
 
         public int ot_cost { get; set; }
@@ -159,7 +161,7 @@ namespace ProjectManaging.Controllers
                 for (int i = 5; i < cellCount; i++)
                 {
                     if (i == 7)
-                        sb.Append("<td>Month</td><td>Week</td>");
+                        sb.Append("<td>Month</td><td>Week</td><td>Week Time</td>");
                     else
                         sb.Append("<td>" + headerRow.GetCell(i) + "</td>");
                 }
@@ -190,7 +192,7 @@ namespace ProjectManaging.Controllers
                             string str = row.GetCell(j).StringCellValue;
                             string month = str.Split(' ')[1].ToUpper().Substring(0, 3);
                             job.week = str.Split('-')[0] == "1" ? 1 : 2;
-                            job.month = Array.IndexOf(months, month) + 1;
+                            job.month = (Array.IndexOf(months, month) + 1);
                         }
                         else if (j == 8)
                             job.labor_cost = Convert.ToInt32(row.GetCell(j).NumericCellValue);
@@ -208,8 +210,9 @@ namespace ProjectManaging.Controllers
                             string str = row.GetCell(j).StringCellValue;
                             int week = str.Split('-')[0] == "1" ? 1 : 2;
                             string month = str.Split(' ')[1].ToUpper().Substring(0, 3);
-                            sb.Append("<td>" + ( Array.IndexOf(months,month) + 1 ) + "</td>");//month
+                            sb.Append("<td>" + Array.IndexOf(months,month) + 1 + "</td>");//month
                             sb.Append("<td>" + week + "</td>");//week
+                            sb.Append("<td>" + row.GetCell(j).StringCellValue + "</td>");//Week Time
                         }  
                         else if(j==5 || j == 6)
                         {

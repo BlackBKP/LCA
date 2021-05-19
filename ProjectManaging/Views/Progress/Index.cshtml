@@ -58,7 +58,7 @@
         </div>
     </div>
 
-    <div class="card card-dark">
+    <div id="card_uploaded_content" class="card card-dark" style="display:none">
         <div class="card-header">
             <span class="card-title">
                 Uploaded Content
@@ -138,97 +138,17 @@
             <table id="table_details" class="table table-sm table-hover" style="width:100%">
                 <thead>
                     <tr>
-                        <th>Year</th>
+                        <th style="width:5%">Year</th>
                         <th style="width:15%">Month</th>
                         <th style="width:30%">Budget Spent</th>
-                        <th style="width:5%">%</th>
+                        <th style="width:5%"></th>
                         <th style="width:30%">Progress</th>
-                        <th style="width:5%">%</th>
-                        <th style="width:10%">BTN</th>
+                        <th style="width:5%"></th>
+                        <th style="width:10%"></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td style="vertical-align:middle">JAN</td>
-                        <td style="vertical-align:middle">
-                            <div class="progress progress-xs progress-striped active">
-                                <div class="progress-bar bg-primary" style="width:13%"></div>
-                            </div>
-                        </td>
-                        <td style="vertical-align:middle">
-                            <span class="badge bg-primary">
-                                13%
-                            </span>
-                        </td>
-                        <td style="vertical-align:middle">
-                            <div class="progress progress-xs progress-striped active">
-                                <div class="progress-bar bg-primary" style="width:10%"></div>
-                            </div>
-                        </td>
-                        <td style="vertical-align:middle">
-                            <span class="badge bg-primary">
-                                10%
-                            </span>
-                        </td>
-                        <td style="vertical-align:middle">
-                            <button class="btn btn-primary form-control">
-                                <i class="fas fa-pencil-alt"></i>
-                                <span>Update</span>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="vertical-align:middle">FEB</td>
-                        <td style="vertical-align:middle">
-                            <div class="progress progress-xs progress-striped active">
-                                <div class="progress-bar bg-primary" style="width:26%"></div>
-                            </div>
-                        </td>
-                        <td style="vertical-align:middle">
-                            <span class="badge bg-primary">
-                                26%
-                            </span>
-                        </td>
-                        <td style="vertical-align:middle">
-                            <div class="progress progress-xs progress-striped active">
-                                <div class="progress-bar bg-primary" style="width:30%"></div>
-                            </div>
-                        </td>
-                        <td style="vertical-align:middle">
-                            <span class="badge bg-primary">
-                                30%
-                            </span>
-                        </td>
-                        <td style="vertical-align:middle">
-                            <button class="btn btn-primary form-control">
-                                <i class="fas fa-pencil-alt"></i>
-                                <span> Update</span>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="vertical-align:middle">MAR</td>
-                        <td style="vertical-align:middle">
-                            <div class="progress progress-xs progress-striped active">
-                                <div class="progress-bar bg-primary" style="width:40%"></div>
-                            </div>
-                        </td>
-                        <td style="vertical-align:middle">
-                            <span class="badge bg-primary">
-                                40%
-                            </span>
-                        </td>
-                        <td style="vertical-align:middle">
-                            <div class="progress progress-xs progress-striped active">
-                                <div class="progress-bar bg-primary" style="width:47%"></div>
-                            </div>
-                        </td>
-                        <td style="vertical-align:middle">
-                            <span class="badge bg-primary">
-                                47%
-                            </span>
-                        </td>
-                    </tr>
+                    @* Generate by JavaScript *@
                 </tbody>
             </table>
         </div>
@@ -242,7 +162,7 @@
         var table_jobs;
         var table_details;
         var jobs = [];
-
+        var months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
         $(document).ready(function () {
             GetData();
         })
@@ -342,7 +262,7 @@
             for (var i = 0; i < jobs[index].length; i++) {
                 datas.push([
                     jobs[index][i].year,
-                    jobs[index][i].month,
+                    months[jobs[index][i].month - 1],
                     jobs[index][i].spent_cost,
                     jobs[index][i].spent_cost / jobs[index][i].estimated_budget * 100,
                     jobs[index][i].job_progress,
@@ -362,22 +282,23 @@
                     },
                 ],
                 rowCallback: function (row, data) {
-
+                    $('td', row).eq(0).css("text-align", "center");
+                    $('td', row).eq(1).css("text-align", "center");
                     $('td', row).eq(2).css("text-align", "center");
                     $('td', row).eq(3).css("text-align", "center");
                     $('td', row).eq(4).css("text-align", "center");
                     $('td', row).eq(5).css("text-align", "center");
                     $('td', row).eq(6).css("text-align", "center");
 
-                    var remain_str = '<div class="progress progress-xs progress-striped active">';
-                    remain_str += '<div class="progress-bar bg-primary" style="width: ' + Math.round(data[4]) + '%"></div></div>';
-                    $('td', row).eq(2).html(remain_str);
-                    var remain_percent_str = '<span class="badge bg-primary">' + Math.round(data[4]) + '%</span>';
-                    $('td', row).eq(3).html(remain_percent_str);
+                    var budget_spent_str = '<div class="progress progress-xs progress-striped active">';
+                    budget_spent_str += '<div class="progress-bar bg-primary" style="width: ' + Math.round(data[3]) + '%"></div></div>';
+                    $('td', row).eq(2).html(budget_spent_str);
+                    var spent_percent_str = '<span class="badge bg-primary">' + Math.round(data[3]) + '%</span>';
+                    $('td', row).eq(3).html(spent_percent_str);
                     var progress_str = '<div class="progress progress-xs progress-striped active">';
                     progress_str += '<div class="progress-bar bg-primary" style="width: ' + Math.round(data[5]) + '%"></div></div>';
                     $('td', row).eq(4).html(progress_str);
-                    var progress_percent_str = '<span class="badge bg-primary">' + Math.round(data[6]) + '%</span>';
+                    var progress_percent_str = '<span class="badge bg-primary">' + Math.round(data[5]) + '%</span>';
                     $('td', row).eq(5).html(progress_percent_str);
 
                     $('td', row).eq(6).html('<button class="btn btn-primary form-control">Edit</button>');

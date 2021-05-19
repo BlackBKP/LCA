@@ -39,19 +39,6 @@ namespace ProjectManaging.Controllers
             SqlConnection con = DB.Connect();
             con.Open();
 
-            /*string str_cmd = "select Progress.Job_ID, " +
-                                    "job.Job_Number, " +
-                                    "job.Job_Name, " +
-                                    "job.Estimated_Budget, " +
-                                    "Progress.Job_Progress, " +
-                                    "Progress.Month, " +
-                                    "Progress.Year, " +
-                                    "(cast(s1.Labor_Cost as int) + cast(s1.OT_Labor_Cost as int) + cast(s1.Accommodation_Cost as int) + cast(s1.Compensation_Cost as int)) as spent_cost, " +
-                                    "(job.Estimated_Budget - (cast(s1.Labor_Cost as int) + cast(s1.OT_Labor_Cost as int) + cast(s1.Accommodation_Cost as int) + cast(s1.Compensation_Cost as int))) as remainning_cost " +
-                                    "from Progress " +
-                                    "left join job on job.Job_ID = Progress.Job_ID left join (select Job_ID,Month,Year,sum(cast(Labor_Cost as int)) as Labor_Cost, sum(cast(OT_Labor_Cost as int)) as OT_Labor_Cost,sum(cast(Accommodation_Cost as int)) as Accommodation_Cost,sum(cast(Compensation_Cost as int))as Compensation_Cost from Labor_Costs group by Job_ID,Year,Month) as s1 ON s1.Job_ID = Progress.Job_ID and s1.Year = Progress.Year and s1.Month = Progress.Month";
-*/
-
             string str_cmd = "select Progress.Job_ID, " +
                                     "job.Job_Number, " +
                                     "job.Job_Name, " +
