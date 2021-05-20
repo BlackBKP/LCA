@@ -1,13 +1,15 @@
 ﻿<!-- Progress Index -->
+@{
+    ViewData["Title"] = "Import Progress";
+}
 <div class="container-fluid" style="padding-top:10px">
 
     <style>
 
         table.dataTable tbody td {
-            vertical-align:middle;
-            cursor:pointer;
+            vertical-align: middle;
+            cursor: pointer;
         }
-
     </style>
 
     <div class="info-box bg-dark">
@@ -125,14 +127,14 @@
                 <label for="job_name">
                     Job Name
                 </label>
-                <input id="job_name" class="form-control" type="text"/>
+                <input id="job_name" class="form-control" type="text" />
             </div>
             <br />
             <div class="form-row">
                 <label for="job_estimated_budget">
                     Estimated Budget
                 </label>
-                <input id="job_estimated_budget" class="form-control" type="text"/>
+                <input id="job_estimated_budget" class="form-control" type="text" />
             </div>
             <br />
             <table id="table_details" class="table table-sm table-hover" style="width:100%">

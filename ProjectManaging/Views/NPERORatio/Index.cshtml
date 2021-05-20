@@ -1,4 +1,7 @@
 ﻿<!-- Normal Per OT Ratio Index -->
+@{
+    ViewData["Title"] = "Normar Overtime Ratio";
+}
 <div class="container-fluid" style="padding-top:10px">
 
     <div class="info-box bg-dark">
@@ -16,7 +19,7 @@
 @section Scripts
 {
     <script type="text/javascript">
-        
+
         $(document).ready(function () {
             @*Chart.plugins.register(ChartDataLabels);*@
             GetData();
