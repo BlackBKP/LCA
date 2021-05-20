@@ -45,16 +45,14 @@
                 </div>
                 <br />
                 <div id="div_file_upload" class="form-row" style="display:none">
-                    <label>
-                        Select File
-                    </label>
-                    <input id="input_modal_whs_file" class="form-control-file" type="file" />
+                    <label id="import_file_label">Select File</label>
+                    <input id="import_file" class="form-control-file" type="file" />
                 </div>
             </form>
         </div>
     </div>
 
-    <div id="div_uploaded_content" class="card card-dark" style="display:none">
+    <div id="card_upload" class="card card-dark" style="display:none">
         <div class="card-header">
             <span class="card-title">Uploaded Content</span>
             <div class="card-tools">
@@ -67,6 +65,13 @@
             </div>
         </div>
         <div class="card-body">
+            <label for="job_id">Job ID</label>
+            <input id="job_id" class="form-control" type="text" disabled />
+            <label for="year">Year</label>
+            <input id="year" class="form-control" type="text" disabled />
+            <label for="week_time">Month</label>
+            <input id="week_time" class="form-control" type="text" disabled />
+            <br />
             <table id="table_working_hours" class="table table-sm table-hover">
                 <thead>
                     <tr>
@@ -76,30 +81,37 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>640185</td>
-                        <td>01/04/21</td>
-                        <td>8</td>
-                    </tr>
-                    <tr>
-                        <td>640185</td>
-                        <td>02/04/21</td>
-                        <td>8</td>
-                    </tr>
+                    @* Generate By JavaScript *@
                 </tbody>
             </table>
         </div>
         <div class="card-footer">
-            <button id="btn_import" class="btn btn-primary" type="button" style="float:right">
+            <button id="btn_confirm_import" class="btn btn-primary" type="button" style="float:right">
                 Import
             </button>
         </div>
     </div>
 </div>
 
-@section Scripts 
+<!-- Modal -->
+<div class="modal" id="modal_upload" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Upload</h5>
+            </div>
+            <div class="modal-body">
+                Uploading Please Wait
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
 {
     <script type="text/javascript">
+        var jobs = [];
+        var table;
 
         $(document).ready(function () {
             GenerateYearOptions();
@@ -187,6 +199,108 @@
                 str += '<option value="' + months[i] + '">' + months[i] + '</option>';
             }
             $('#select_whs_month').append(str);
+        }
+
+        $('#import_file').on('change', async function () {
+            var fileExtension = ['xls', 'xlsx'];
+            var filename = $('#import_file').val();
+
+            if (filename.length == 0) {
+                alert("Please Select a File");
+            }
+            else {
+                var extension = filename.replace(/^.*\./, '');
+                if ($.inArray(extension, fileExtension) == -1) {
+                    alert("Please select only excel files.");
+                }
+            }
+
+            var fdata = new FormData();
+            var fileupload = $('#import_file').get(0);
+            var files = fileupload.files;
+
+            var j = $('#select_whs_job_number').val();
+            var y = $('#select_whs_year').val();
+            var m = $('#select_whs_month').val();
+
+            fdata.append(files[0].name, files[0]);
+            $('#import_file_label').text(files[0].name);
+
+            await $.ajax({
+                type: "POST",
+                url: '@Url.Action("SetJobDetails", "WorkingHours")',
+	            contentType: 'application/x-www-form-urlencoded',
+                data: { j, y, m },
+            });
+
+            await $.ajax({
+                type: "POST",
+                url: "WorkingHours/Import",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("XSRF-TOKEN",
+                        $('input:hidden[name="__RequestVerificationToken"]').val());
+                },
+                data: fdata,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    if (response.length == 0)
+                        alert('Some error occured while uploading');
+                    else {
+                        console.log("Response");
+                        console.log(response);
+                        jobs = response;
+                        GenUploadData();
+                    }
+                },
+            });
+        });
+
+        function GenUploadData() {
+            var mm = [" ", "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+            $('#card_upload').show();
+            $('#job_id').val(jobs[0].job_id);
+            $('#year').val(jobs[0].working_day.substring(0,4));
+            $('#week_time').val(mm[jobs[0].month] + ' ' + jobs[0].week);
+
+
+            var datas = [];
+            for (var i = 0; i < jobs.length; i++) {
+                datas.push([
+                    jobs[i].employee_id,
+                    jobs[i].working_day.substring(0,10),
+                    jobs[i].hours
+                ]);
+            }
+
+            if (table != null)
+                $('#table_working_hours').DataTable().destroy();
+
+            $('#table_working_hours').DataTable({
+                data: datas,
+                pagingType: "full_numbers",
+                lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]]
+            });
+        }
+
+        $('#btn_confirm_import').on('click', function () {
+            ConfirmImport();
+        });
+
+        function ConfirmImport() {
+            $('#btn_confirm_import').attr('disabled', true);
+            $('#modal_upload').modal("show");
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("ConfirmImport", "WorkingHours")',
+	            contentType: 'application/x-www-form-urlencoded',
+                data: {
+
+                },
+                success: function (response) {
+                    
+                }
+            })
         }
 
     </script>

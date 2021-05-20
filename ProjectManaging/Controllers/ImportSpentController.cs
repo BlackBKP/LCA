@@ -146,8 +146,6 @@ namespace ProjectManaging.Controllers
                 SqlCommand cmd = new SqlCommand(str_cmd, con);
                 SqlDataReader dr = cmd.ExecuteReader();
 
-
-
                 List<JobSpentModel> uploaded_jobs = new List<JobSpentModel>();
                 if (dr.HasRows)
                 {
