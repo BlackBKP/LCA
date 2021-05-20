@@ -5,58 +5,66 @@
 <div class="container-fluid" style="padding-top:10px">
     <div class="info-box bg-dark">
         <div class="info-box-content">
-            <h3 class="info-box-text">Overtimes</h3>
+            <h3 class="info-box-text">IMPORT OVERTIMES</h3>
         </div>
     </div>
 
     <div class="card card-dark">
         <div class="card-header">
-            <span class="card-title">Import Overtimes</span>
+            <span class="card-title">Select File</span>
+            <div class="card-tools">
+                <button type="button" class="btn btn-dark" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-dark btn-sm" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
         </div>
         <div class="card-body">
             <form>
                 <div class="form-row">
                     <label>Select Year</label>
                     <select id="select_ots_year" class="form-control">
-                        <option>2021</option>
-                        <option>2020</option>
-                        <option>2019</option>
+                        @* Generate By JavaScript *@
                     </select>
                 </div>
                 <br />
                 <div class="form-row">
                     <label for="select_ots_job_number">Job Number</label>
                     <select id="select_ots_job_number" class="form-control">
-                        <option>J21-0001</option>
-                        <option>J21-0001</option>
-                        <option>J21-0001</option>
-                        <option>J21-0001</option>
-                        <option>J21-0001</option>
+                        @* Generate By JavaScript *@
                     </select>
                 </div>
                 <br />
                 <div class="form-row">
                     <label>Select Month</label>
                     <select id="select_ots_month" class="form-control">
-                        <option>JAN 1</option>
-                        <option>JAN 2</option>
-                        <option>FEB 1</option>
+                        @* Generate By JavaScript *@
                     </select>
                 </div>
                 <br />
-                <div class="form-row">
+                <div id="div_file" class="form-row" style="display:none">
                     <label>
                         Select File
                     </label>
-                    <input id="input_modal_ots_file" class="form-control-file" type="file" />
+                    <input id="input_ots_file" class="form-control-file" type="file" />
                 </div>
             </form>
         </div>
     </div>
 
-    <div class="card card-dark">
+    <div id="div_file_upload" class="card card-dark" style="display:none">
         <div class="card-header">
             <span class="card-title">Uploaded Content</span>
+            <div class="card-tools">
+                <button type="button" class="btn btn-dark" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-dark btn-sm" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
         </div>
         <div class="card-body">
             <table class="table table-sm table-hover">
@@ -70,7 +78,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    @*<tr>
                         <td>20/04/21</td>
                         <td>640184</td>
                         <td>4</td>
@@ -83,10 +91,101 @@
                         <td>4</td>
                         <td>0</td>
                         <td>4</td>
-                    </tr>
+                    </tr>*@
                 </tbody>
             </table>
         </div>
     </div>
 
 </div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            GetJobNumbers();
+            GenerateYearOptions();
+            GenerateMonthOptions();
+        })
+
+        function GenerateYearOptions() {
+            $('#select_ots_year').find('option').remove();
+            var str = '<option disabled selected>Please Select Year</option>';
+            var current_year = new Date();
+            for (var i = 0; i < 10; i++) {
+                var year = parseInt(current_year.getFullYear()) - i;
+                str += '<option value="' + year + '">' + year + '</option>';
+            }
+            $('#select_ots_year').append(str);
+        }
+
+        function GetJobNumbers() {
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetJobNumbers", "Overtimes")',
+	            contentType: 'application/x-www-form-urlencoded',
+                data: {
+
+                },
+                success: function (response) {
+                    GenerateJobNumberOptions(response);
+                }
+            })
+        }
+
+        $('#select_ots_year').on('change', function () {
+            if ($('#select_ots_year').val() != null && $('#select_ots_job_number').val() != null && $('#select_ots_month').val() != null) {
+                $('#div_file').css('display', 'block');
+            }
+            else {
+                $('#div_file').css('display', 'none');
+            }
+        });
+
+        $('#select_ots_job_number').on('change', function () {
+            if ($('#select_ots_year').val() != null && $('#select_ots_job_number').val() != null && $('#select_ots_month').val() != null) {
+                $('#div_file').css('display', 'block');
+            }
+            else {
+                $('#div_file').css('display', 'none');
+            }
+        });
+
+        $('#select_ots_month').on('change', function () {
+            if ($('#select_ots_year').val() != null && $('#select_ots_job_number').val() != null && $('#select_ots_month').val() != null) {
+                $('#div_file').css('display', 'block');
+            }
+            else {
+                $('#div_file').css('display', 'none');
+            }
+        });
+
+        function GenerateJobNumberOptions(job_id) {
+            $('#select_ots_job_number').find('option').remove();
+            var str = '<option disabled selected>Please Select Job Number</option>';
+            for (var i = 0; i < job_id.length; i++) {
+                str += '<option value="' + job_id[i] + '">' + job_id[i].substring(0, 3) + '-' + job_id[i].substring(3, job_id[i].length) + '</option>';
+            }
+            $('#select_ots_job_number').append(str);
+        }
+
+        $('#input_ots_file').on('change', function () {
+            $('#div_file_upload').css('display', 'block');
+        });
+
+        function GenerateMonthOptions() {
+            var months = [
+                "JAN 1", "JAN 2", "FEB 1", "FEB 2", "MAR 1", "MAR 2", "APR 1", "APR 2", "MAY 1", "MAY 2", "JUN 1", "JUN 2",
+                "JUL 1", "JUL 2", "AUG 1", "AUG 2", "SEP 1", "SEP 2", "OCT 1", "OCT 2", "NOV 1", "NOV 2", "DEC 1", "DEC 2"
+            ];
+            $('#select_ots_month').find('option').remove();
+            var str = '<option disabled selected>Please Select Month</option>';
+            for (var i = 0; i < months.length; i++) {
+                str += '<option value="' + months[i] + '">' + months[i] + '</option>';
+            }
+            $('#select_ots_month').append(str);
+        }
+
+    </script>
+}
