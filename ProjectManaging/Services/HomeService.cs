@@ -95,18 +95,6 @@ namespace ProjectManaging.Services
             return spws;
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
         public List<EmployeeModel> GetEmployees()
         {
             List<EmployeeModel> emps = new List<EmployeeModel>();

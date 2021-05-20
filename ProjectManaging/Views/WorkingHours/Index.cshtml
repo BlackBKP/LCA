@@ -119,10 +119,6 @@
             GetJobNumbers();
         });
 
-        $('#btn_import').on('click', function () {
-
-        });
-
         $('#select_whs_year').on('change', function () {
             if ($('#select_whs_year').val() != null && $('#select_whs_job_number').val() != null && $('#select_whs_month').val() != null) {
                 $('#div_file_upload').css('display', 'block');
@@ -148,10 +144,6 @@
             else {
                 $('#div_file_upload').css('display', 'none');
             }
-        });
-
-        $('#input_modal_whs_file').on('change', function () {
-            $('#div_uploaded_content').css('display', 'block');
         });
 
         function GetJobNumbers() {

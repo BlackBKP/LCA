@@ -15,7 +15,6 @@ namespace ProjectManaging.Services
             SqlConnection cnn;
             connetionString = @"Data Source=192.168.15.202;Initial Catalog=Manhour;User ID=sa;Password=p@ssw0rd";
             cnn = new SqlConnection(connetionString);
-            
             return cnn;
         }
     }
