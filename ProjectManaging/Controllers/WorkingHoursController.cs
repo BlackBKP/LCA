@@ -72,7 +72,6 @@ namespace ProjectManaging.Controllers
             job_id = j;
             year = y;
             month = m;
-            var vv = j;
         }
 
         public JsonResult Import()
@@ -143,7 +142,7 @@ namespace ProjectManaging.Controllers
                                                                 "Working_Day, " +
                                                                 "Week, " +
                                                                 "Month, " +
-                                                                "Hours, " +
+                                                                "Hours) " +
                                                      "VALUES(@Job_ID," +
                                                             "@Employee_ID, " +
                                                             "@Working_Day, " +

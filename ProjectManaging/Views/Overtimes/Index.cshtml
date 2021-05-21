@@ -65,7 +65,14 @@
             </div>
         </div>
         <div class="card-body">
-            <table class="table table-sm table-hover">
+            <label for="job_id">Job ID</label>
+            <input id="job_id" class="form-control" type="text" disabled />
+            <label for="year">Year</label>
+            <input id="year" class="form-control" type="text" disabled />
+            <label for="week_time">Month</label>
+            <input id="week_time" class="form-control" type="text" disabled />
+            <br />
+            <table id="table_overtimes" class="table table-sm table-hover">
                 <thead>
                     <tr>
                         <th>Date</th>
@@ -80,6 +87,11 @@
                 </tbody>
             </table>
         </div>
+        <div class="card-footer">
+            <button id="btn_confirm_import" class="btn btn-primary" type="button" style="float:right">
+                Import
+            </button>
+        </div>
     </div>
 
 </div>
@@ -87,6 +99,8 @@
 @section Scripts
 {
     <script type="text/javascript">
+        var table;
+        var jobs;
 
         $(document).ready(function () {
             GetJobNumbers();
@@ -186,21 +200,21 @@
             var fileupload = $('#import_file').get(0);
             var files = fileupload.files;
 
-            @*var j = $('#select_whs_job_number').val();
-            var y = $('#select_whs_year').val();
-            var m = $('#select_whs_month').val();*@
+            var j = $('#select_ots_job_number').val();
+            var y = $('#select_ots_year').val();
+            var m = $('#select_ots_month').val();
 
             fdata.append(files[0].name, files[0]);
             $('#import_file_label').text(files[0].name);
 
-            @*await $.ajax({
+            await $.ajax({
                 type: "POST",
-                url: '@Url.Action("SetJobDetails", "WorkingHours")',
+                url: '@Url.Action("SetJobDetails", "Overtimes")',
 	            contentType: 'application/x-www-form-urlencoded',
                 data: { j, y, m },
-            });*@
+            });
 
-            @*await $.ajax({
+            await $.ajax({
                 type: "POST",
                 url: "Overtimes/Import",
                 beforeSend: function (xhr) {
@@ -220,10 +234,56 @@
                         GenUploadData();
                     }
                 },
-            });*@
+            });
         });
 
+        function GenUploadData() {
+            var mm = [" ", "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+            $('#card_upload').show();
+            $('#job_id').val(jobs[0].job_id);
+            $('#year').val(jobs[0].recording_time.substring(0, 4));
+            $('#week_time').val(mm[jobs[0].month] + ' ' + jobs[0].week);
 
+            var datas = [];
+            for (var i = 0; i < jobs.length; i++) {
+                datas.push([
+                    jobs[i].recording_time,
+                    jobs[i].employee_id,
+                    jobs[i].ot_1_5,
+                    jobs[i].ot_3,
+                    jobs[i].ot_sum
+                ]);
+            }
+
+            if (table != null)
+                $('#table_overtimes').DataTable().destroy();
+
+            table = $('#table_overtimes').DataTable({
+                data: datas,
+                pagingType: "full_numbers",
+                lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]]
+            });
+        }
+
+        $('#btn_confirm_import').on('click', function () {
+            ConfirmImport();
+        });
+
+        function ConfirmImport() {
+            $('#btn_confirm_import').attr('disabled', true);
+            $('#modal_upload').modal("show");
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("ConfirmImport", "Overtimes")',
+	            contentType: 'application/x-www-form-urlencoded',
+                data: {
+
+                },
+                success: function (response) {
+
+                }
+            })
+        }
 
     </script>
 }
