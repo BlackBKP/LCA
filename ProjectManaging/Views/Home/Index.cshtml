@@ -41,7 +41,8 @@
 
         function GenSpentChart(jobs) {
             console.log(jobs);
-            for (var i = 0; i < jobs.length; i++) {
+            var i = 0;
+            for (i = 0; i < jobs.length; i++) {
                 var job_year = jobs[i][0].job_id.substring(0, 3);
                 var job_number = jobs[i][0].job_id.substring(4, jobs[i][0].job_id.length);
                 var job_id = job_year + '-' + job_number.padStart(4, '0');
@@ -59,7 +60,6 @@
                 var budget70 = [];
                 var budget80 = [];
                 var budget100 = [];
-                var budget150 = [];
                 var acc_cost = [];
                 var progress = [];
                 var spent_cost = [];
@@ -71,7 +71,6 @@
                     budget70.push(jobs[i][j].budget70);
                     budget80.push(jobs[i][j].budget80);
                     budget100.push(jobs[i][j].budget100);
-                    budget150.push(jobs[i][j].budget100 * 1.2);
                     acc_cost.push(jobs[i][j].acc_cost);
                     progress.push(jobs[i][j].progress);
                     spent_cost.push(jobs[i][j].spent_cost);
@@ -107,14 +106,6 @@
                                 borderColor: 'rgba(0,255,0,1)',
                                 yAxisID: 'progress',
                             },
-                            @*{
-                                label: 'Total Progress',
-                                type: 'line',
-                                data: acc_work_completion,
-                                backgroundColor: 'rgba(0, 255, 0, 0.75)',
-                                borderColor: 'rgba(0, 255, 0, 0.75)',
-                                yAxisID: 'progress',
-                            },*@
                             {
                                 type: 'line',
                                 label: "70% Budget",
@@ -147,16 +138,6 @@
                                 borderDash: [10, 5],
                                 borderColor: ['rgba(255, 0, 0, 0)'],
                             },
-                            {
-                                type: 'line',
-                                label: '> 100% of Budget',
-                                data: budget150,
-                                fill: {
-                                    value: budget100[0],
-                                    above: 'rgba(255,0,0,0.5)',
-                                    below: 'rgba(255, 255, 255,0)',
-                                },
-                            },
                         ]
                     },
                     options: {
@@ -168,11 +149,10 @@
                                     display: true,
                                     text: 'Spent(BAHT)'
                                 },
-                                beginAtZero: true,
-                                Min: 0,
-                                Max: 4000000,
+                                suggestedMin: 0,
+                                suggestedMax: budget100[0],
                                 ticks: {
-                                    stepSize: 500000
+                                    stepSize: budget100[0] / 10
                                 }
                             },
                             'progress': {
@@ -182,22 +162,34 @@
                                     display: true,
                                     text: 'Progress(%)'
                                 },
-                                @*beginAtZero: true,*@
-                                Min: 0,
-                                Max: 100,
+                                grid: {
+                                    display: false,
+                                },
+                                suggestedMin: 0,
+                                suggestedMax: 100,
                                 ticks: {
                                     stepSize: 10
                                 }
                             }
                         },
                         maintainAspectRatio: false,
-                        tooltips: {
-                            callbacks: {
-                                label: function (tooltipItem, data) {
-                                    var ds_index = tooltipItem.datasetIndex;
-                                    var t_index = tooltipItem.index;
-                                    var max_budget = data.datasets[2].data[0];
-                                    return data.datasets[ds_index].label + ': ' + parseInt((data.datasets[ds_index].data[t_index] / max_budget) * 100) + ' %';
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function (context) {
+                                        var lbl = context.dataset.label;
+                                        if (lbl == "Progress") {
+                                           // var Budget = jobs[context.chart.id][0].budget100;
+                                            var value = context.dataset.data[context.dataIndex];
+                                            //console.log(Budget);
+                                           // console.log(value);
+                                            //var percent = value / Budget * 100;
+                                            return value + " %";
+
+                                        } else if (lbl == "Total Spent") {
+                                            return context.dataset.data[context.dataIndex].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                        }
+                                    }
                                 }
                             }
                         }
