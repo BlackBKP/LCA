@@ -19,9 +19,7 @@
                     </div>
                     <div class="col-8">
                         <select class="form-control" id="ProjectYears" style="width:100%">
-                            <option>2021</option>
-                            <option>2020</option>
-                            <option>2019</option>
+                            @* Generate By JavaScript *@
                         </select>
                     </div>
                 </div>
@@ -153,42 +151,6 @@
                 </div>
             </div>
 
-            @*<div class="card card-dark">
-                    <div class="card-header">
-                        <span class="card-title">Tables</span>
-                    </div>
-                    <div class="card-body">
-                        <table class="table table-sm table-hover">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Normal</th>
-                                    <th>Overtime</th>
-                                    <th>Salary</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>#01</td>
-                                    <td>Black</td>
-                                    <td>80</td>
-                                    <td>0</td>
-                                    <td>8,000</td>
-                                </tr>
-
-                                <tr>
-                                    <td>#02</td>
-                                    <td>Staff A</td>
-                                    <td>76</td>
-                                    <td>4</td>
-                                    <td>8,000</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>*@
-
         </div>
     </div>
 
@@ -198,13 +160,47 @@
 {
     <script type="text/javascript">
 
+        var list_job_id = [];
+
         $(document).ready(function () {
+            GenerateYearOption();
             GenProjectOptions();
             GenSPFChart();
             GenMPHChart();
-            //GenSPHChart();
             GenNPOChart();
         });
+
+        function GenerateYearOption() {
+            $('#ProjectYears').find('option').remove();
+            var str = '<option selected>ALL</option>';
+            var current_year = new Date();
+            for (var i = 0; i < 10; i++) {
+                var year = parseInt(current_year.getFullYear()) - i;
+                str += '<option value="' + year + '">' + year + '</option>';
+            }
+            $('#ProjectYears').append(str);
+        }
+
+        $('#ProjectYears').on('change', function () {
+            GetJobID();
+        });
+
+        function GetJobID() {
+            var y = $('#ProjectYears').val();
+            if (y == "ALL") {
+                console.log("Get All Job");
+                $.ajax({
+
+                });
+            }
+            else {
+                console.log("Get Job in " + y);
+                $.ajax({
+
+                });
+            }
+        }
+
 
         function GenProjectOptions() {
             $('#pj_lists').empty();
@@ -308,47 +304,6 @@
         function GenMPHChart() {
             var ctx2 = document.getElementById('canvas_2').getContext('2d');
             var chart2 = new Chart(ctx2, {
-                type: 'bar',
-                data: {
-                    labels: ['JAN 1', 'JAN 2', 'FEB 1', 'FEB 2', 'MAR 1', 'MAR 2'],
-                    datasets: [
-                        {
-                            label: 'Normal',
-                            data: [10, 9, 10, 11, 7, 6],
-                            backgroundColor: 'rgba(32,67,198,1)'
-                        },
-                        {
-                            label: 'Overtimes',
-                            data: [4, 3.5, 2.5, 1, 1.5, 0.5],
-                            backgroundColor: 'rgba(40,121,191,1)'
-                        }
-                    ],
-                },
-                options: {
-                    scales: {
-                        xAxes: [
-                            {
-                                stacked: true
-                            }
-                        ],
-                        yAxes: [
-                            {
-                                ticks: {
-                                    beginAtZero: true
-                                },
-                                stacked: true
-                            },
-                        ]
-                    },
-                    maintainAspectRatio: false
-                }
-            });
-        }
-
-        //Salary per hour
-        function GenSPHChart() {
-            var ctx3 = document.getElementById('canvas_3').getContext('2d');
-            var chart3 = new Chart(ctx3, {
                 type: 'bar',
                 data: {
                     labels: ['JAN 1', 'JAN 2', 'FEB 1', 'FEB 2', 'MAR 1', 'MAR 2'],
