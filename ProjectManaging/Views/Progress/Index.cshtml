@@ -234,8 +234,8 @@
 
                 },
                 success: function (response) {
-                    console.log("Response");
-                    console.log(response);
+                    @*console.log("Response");
+                    console.log(response);*@
                     jobs = response;
                     GenJobsTable();
                 }
@@ -244,15 +244,18 @@
 
         function GenJobsTable() {
             var datas = [];
+            var last_index;
+            @*console.log("Total Job: " + jobs.length);*@
             for (var i = 0; i < jobs.length; i++) {
+                last_index = jobs[i].length - 1;
                 datas.push([
-                    jobs[i][jobs.length].job_number,
-                    jobs[i][jobs.length].job_name,
-                    jobs[i][jobs.length].estimated_budget,
-                    jobs[i][jobs.length].remainning_cost,
-                    jobs[i][jobs.length].remainning_cost / jobs[i][jobs.length].estimated_budget * 100,
-                    jobs[i][jobs.length].job_progress,
-                    jobs[i][jobs.length].job_progress,
+                    jobs[i][last_index].job_number,
+                    jobs[i][last_index].job_name,
+                    jobs[i][last_index].estimated_budget,
+                    jobs[i][last_index].remainning_cost,
+                    jobs[i][last_index].remainning_cost / jobs[i][last_index].estimated_budget * 100,
+                    jobs[i][last_index].job_progress,
+                    jobs[i][last_index].job_progress,
                 ]);
             }
 
@@ -294,7 +297,6 @@
             $('#table_jobs tbody').on('click', 'tr', function () {
                 GenJobsDetail(table_jobs.row(this).data()[0]);
             });
-
         }
 
         function GenJobsDetail(job_id) {
