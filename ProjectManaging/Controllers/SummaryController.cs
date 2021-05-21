@@ -32,9 +32,10 @@ namespace ProjectManaging.Controllers
                                     "s1.OT_Labor_Cost, " +
                                     "s1.Accommodation_Cost, " +
                                     "s1.Compensation_Cost, " +
+                                    "s1.Social_Security, " +
                                     "s1.Cost_to_Date, " +
                                     "(cast(job.Estimated_Budget as int) - cast(s1.Cost_to_Date as int)) as Remaining_Cost, " +
-                                    "((cast(s1.Cost_to_Date as float) / cast(job.Estimated_Budget as float)) *100) as Cost_Usage, " +
+                                    "((cast(s1.Cost_to_Date as float) / cast(job.Estimated_Budget as float)) * 100) as Cost_Usage, " +
                                     "s4.Last_Progress as Work_Completion, " +
                                     "s2.Hours, " +
                                     "s3.OT_1_5, " +
@@ -42,12 +43,8 @@ namespace ProjectManaging.Controllers
                                     "(s2.Hours + s3.OT_1_5 + s3.OT_3) as Total_Man_Hour, " +
                                     "s5.No_Of_Labor_Week as No_Of_Labor, " +
                                     "(cast(s1.Cost_to_Date as float) / (s2.Hours + s3.OT_1_5 + s3.OT_3)) as avg_labor_cost_per_hour " +
-                                    "from job left join (select job_ID, SUM(cast(Labor_Cost as int))as Labor_Cost, " +
-                                    "SUM(cast(OT_Labor_Cost as int)) as OT_Labor_Cost, " +
-                                    "SUM(cast(Accommodation_Cost as int)) as Accommodation_Cost, " +
-                                    "SUM(cast(Compensation_Cost as int)) as Compensation_Cost, " +
-                                    "(SUM(cast(Labor_Cost as int)) + SUM(cast(OT_Labor_Cost as int)) + SUM(cast(Accommodation_Cost as int)) + SUM(cast(Compensation_Cost as int))) as Cost_to_Date " +
-                                    "from Labor_Costs group by job_ID) as s1 ON s1.job_ID = job.job_ID " +
+                                    "from job " +
+                                    "left join (select job_ID, SUM(cast(Labor_Cost as int))as Labor_Cost, SUM(cast(OT_Labor_Cost as int)) as OT_Labor_Cost, SUM(cast(Accommodation_Cost as int)) as Accommodation_Cost, SUM(cast(Compensation_Cost as int)) as Compensation_Cost, SUM(Social_Security) as Social_Security, (SUM(cast(Labor_Cost as int)) + SUM(cast(OT_Labor_Cost as int)) + SUM(cast(Accommodation_Cost as int)) + SUM(cast(Compensation_Cost as int)) + SUM(Social_Security)) as Cost_to_Date from Labor_Costs group by job_ID) as s1 ON s1.job_ID = job.job_ID " +
                                     "left join (select job_ID,SUM(Hours) as Hours from Hour group by Job_ID) as s2 ON s2.job_ID = job.job_ID " +
                                     "left join (select job_ID,SUM(OT_1_5) as OT_1_5 , SUM(OT_3) as OT_3 from OT group by job_ID) as s3 ON s3.job_ID = job.job_ID " +
                                     "left join (select Job_ID,Max(cast(Job_Progress as int)) as Last_Progress from Progress group by Job_ID) as s4 ON s4.Job_ID = job.Job_ID " +
@@ -68,6 +65,7 @@ namespace ProjectManaging.Controllers
                         ot_labor_cost = dr["OT_Labor_Cost"] != DBNull.Value ? Convert.ToInt32(dr["OT_Labor_Cost"]) : 0,
                         accomodation_cost = dr["Accommodation_Cost"] != DBNull.Value ? Convert.ToInt32(dr["Accommodation_Cost"]) : 0,
                         compensation_cost = dr["Compensation_Cost"] != DBNull.Value ? Convert.ToInt32(dr["Compensation_Cost"]) : 0,
+                        social_security = dr["Social_Security"] != DBNull.Value ? Convert.ToInt32(dr["Social_Security"]) : 0,
                         cost_to_date = dr["Cost_to_Date"] != DBNull.Value ? Convert.ToInt32(dr["Cost_to_Date"]) : 0,
                         remainning_cost = dr["Remaining_Cost"] != DBNull.Value ? Convert.ToInt32(dr["Remaining_Cost"]) : 0,
                         cost_usage = dr["Cost_Usage"] != DBNull.Value ? Convert.ToInt32(dr["Cost_Usage"]) : 0,

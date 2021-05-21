@@ -19,6 +19,8 @@ namespace ProjectManaging.Models
 
         public int compensation_cost { get; set; }
 
+        public int social_security { get; set; }
+
         public int cost_to_date { get; set; }
 
         public int cost_usage { get; set; }

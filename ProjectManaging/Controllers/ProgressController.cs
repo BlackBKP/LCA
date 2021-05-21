@@ -46,11 +46,11 @@ namespace ProjectManaging.Controllers
                                     "Progress.Job_Progress, " +
                                     "Progress.Month, " +
                                     "Progress.Year, " +
-                                    "sum((cast(s1.Labor_Cost as int) + cast(s1.OT_Labor_Cost as int) + cast(s1.Accommodation_Cost as int) + cast(s1.Compensation_Cost as int))) OVER(PARTITION BY s1.job_ID ORDER BY s1.job_ID ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as acc_spent_cost, " +
-                                    "(job.Estimated_Budget - sum((cast(s1.Labor_Cost as int) +cast(s1.OT_Labor_Cost as int) + cast(s1.Accommodation_Cost as int) + cast(s1.Compensation_Cost as int))) OVER(PARTITION BY s1.job_ID ORDER BY s1.job_ID ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)) as remainning_cost " +
+                                    "sum((cast(s1.Labor_Cost as int) + cast(s1.OT_Labor_Cost as int) + cast(s1.Accommodation_Cost as int) + cast(s1.Compensation_Cost as int) + s1.Social_Security)) OVER(PARTITION BY s1.job_ID ORDER BY s1.job_ID ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as acc_spent_cost, " +
+                                    "(job.Estimated_Budget - sum((cast(s1.Labor_Cost as int) + cast(s1.OT_Labor_Cost as int) + cast(s1.Accommodation_Cost as int) + cast(s1.Compensation_Cost as int) + s1.Social_Security)) OVER(PARTITION BY s1.job_ID ORDER BY s1.job_ID ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)) as remaining_cost " +
                                     "from Progress " +
-                                    "left join job on job.Job_ID = Progress.Job_ID left join ( select Job_ID,Month,Year,sum(cast(Labor_Cost as int)) as Labor_Cost,sum(cast(OT_Labor_Cost as int)) as OT_Labor_Cost,sum(cast(Accommodation_Cost as int)) as Accommodation_Cost,sum(cast(Compensation_Cost as int)) as Compensation_Cost from Labor_Costs group by Job_ID,Year,Month) as s1 ON s1.Job_ID = Progress.Job_ID and s1.Year = Progress.Year and s1.Month = Progress.Month";
-            
+                                    "left join job on job.Job_ID = Progress.Job_ID left join (select Job_ID,Month,Year,sum(cast(Labor_Cost as int)) as Labor_Cost,sum(cast(OT_Labor_Cost as int)) as OT_Labor_Cost,sum(cast(Accommodation_Cost as int)) as Accommodation_Cost,sum(cast(Compensation_Cost as int))as Compensation_Cost,sum(Social_Security) as Social_Security from Labor_Costs group by Job_ID,Year,Month) as s1 ON s1.Job_ID = Progress.Job_ID and s1.Year = Progress.Year and s1.Month = Progress.Month";
+
             SqlCommand cmd = new SqlCommand(str_cmd, con);
             SqlDataReader dr = cmd.ExecuteReader();
 
@@ -68,7 +68,7 @@ namespace ProjectManaging.Controllers
                         month = dr["Month"] != DBNull.Value ? Convert.ToInt32(dr["Month"]) : 0,
                         year = dr["Year"] != DBNull.Value ? Convert.ToInt32(dr["Year"]) : 0,
                         spent_cost = dr["acc_spent_cost"] != DBNull.Value ? Convert.ToInt32(dr["acc_spent_cost"]) : 0,
-                        remainning_cost = dr["remainning_cost"] != DBNull.Value ? Convert.ToInt32(dr["remainning_cost"]) : 0
+                        remainning_cost = dr["remaining_cost"] != DBNull.Value ? Convert.ToInt32(dr["remaining_cost"]) : 0
                     };
                     pgs.Add(pg);
                 }

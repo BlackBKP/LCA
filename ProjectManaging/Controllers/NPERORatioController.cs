@@ -33,9 +33,10 @@ namespace ProjectManaging.Controllers
             con.Open();
 
             string str_cmd = "select Hour.Job_ID, " +
-                                    "SUM(Hours)as Normal, " +
-                                    "s1.OT from Hour left join (select job_ID,(SUM(OT_1_5) + SUM(OT_3)) as OT from OT group by Job_ID) as s1 " +
-                                    "On s1.job_ID = Hour.job_ID group by Hour.Job_ID,s1.OT order by Job_ID";
+                                    "SUM(Hours) as Normal, " +
+                                    "s1.OT from Hour " +
+                                    "left join (select job_ID,(SUM(OT_1_5) + SUM(OT_3)) as OT from OT group by Job_ID) as s1 ON s1.job_ID = Hour.job_ID group by Hour.Job_ID,s1.OT " +
+                                    "order by Job_ID";
             SqlCommand cmd = new SqlCommand(str_cmd, con);
             SqlDataReader dr = cmd.ExecuteReader();
 

@@ -39,6 +39,7 @@
                         <th style="text-align:center">OT Labor Cost</th>
                         <th style="text-align:center">Accomodation Cost</th>
                         <th style="text-align:center">Compensation Cost</th>
+                        <th style="text-align:center">Social Security</th>
 
                         <th style="text-align:center">Cost to Date</th>
                         <th style="text-align:center">Remainning Cost</th>
@@ -99,6 +100,7 @@
                     summaries[i].ot_labor_cost,
                     summaries[i].accomodation_cost,
                     summaries[i].compensation_cost,
+                    summaries[i].social_security,
                     summaries[i].cost_to_date,
                     summaries[i].remainning_cost,
                     summaries[i].cost_usage,
@@ -120,12 +122,12 @@
                 pagingType: "full_numbers",
                 columnDefs: [
                     {
-                        targets: [2, 3, 4, 5],
+                        targets: [2, 3, 4, 5, 6],
                         visible: show_cost_details,
                         searchable: show_cost_details,
                     },
                     {
-                        targets: [10, 11, 12],
+                        targets: [11, 12, 13],
                         visible: show_mph_details,
                         searchable: show_mph_details,
                     }
@@ -137,12 +139,13 @@
                         $('td', row).eq(3).addClass('bg-orange');
                         $('td', row).eq(4).addClass('bg-orange');
                         $('td', row).eq(5).addClass('bg-orange');
+                        $('td', row).eq(6).addClass('bg-orange');
                     }
 
                     if (show_cost_details && show_mph_details) {
-                        $('td', row).eq(10).addClass('bg-blue');
                         $('td', row).eq(11).addClass('bg-blue');
                         $('td', row).eq(12).addClass('bg-blue');
+                        $('td', row).eq(13).addClass('bg-blue');
                     }
                     else if (!show_cost_details && show_mph_details) {
                         $('td', row).eq(6).addClass('bg-blue');
