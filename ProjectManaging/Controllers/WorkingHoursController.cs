@@ -106,7 +106,7 @@ namespace ProjectManaging.Controllers
                 IRow headerRow = sheet.GetRow(0);
                 int cellCount = headerRow.LastCellNum;
                 IRow row;
-                for (int i = 0; i < sheet.LastRowNum; i++)
+                for (int i = 0; i <= sheet.LastRowNum; i++)
                 {
                     row = sheet.GetRow(i);
                     if (row == null)

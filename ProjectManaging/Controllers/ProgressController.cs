@@ -1,10 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using NPOI.HSSF.UserModel;
+using NPOI.SS.UserModel;
+using NPOI.XSSF.UserModel;
 using ProjectManaging.Interfaces;
 using ProjectManaging.Models;
 using ProjectManaging.Services;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,7 +19,16 @@ namespace ProjectManaging.Controllers
 {
     public class ProgressController : Controller
     {
+        private readonly IHostingEnvironment _hostingEnvironment;
         IConnectDB DB;
+        static int year;
+        static string month;
+        static List<ProgressModel> ipgs;
+
+        public ProgressController(IHostingEnvironment hostingEnvironment)
+        {
+            _hostingEnvironment = hostingEnvironment;
+        }
 
         public IActionResult Index()
         {
@@ -78,6 +94,128 @@ namespace ProjectManaging.Controllers
             }
             con.Close();
             return pgs;
+        }
+
+        [HttpPost]
+        public void SetJobDetails(int y, string m)
+        {
+            year = y;
+            month = m;
+        }
+
+        public JsonResult Import()
+        {
+            IFormFile file = Request.Form.Files[0];
+            string folderName = "files";
+            string webRootPath = _hostingEnvironment.WebRootPath;
+            string newPath = Path.Combine(webRootPath, folderName);
+            ipgs = new List<ProgressModel>();
+            if (!Directory.Exists(newPath))
+            {
+                Directory.CreateDirectory(newPath);
+            }
+            if (file.Length > 0)
+            {
+                string sFileExtension = Path.GetExtension(file.FileName).ToLower();
+                ISheet sheet;
+                string fullPath = Path.Combine(newPath, file.FileName);
+                var stream = new FileStream(fullPath, FileMode.Create);
+                file.CopyTo(stream);
+                stream.Position = 0;
+                if (sFileExtension == ".xls")
+                {
+                    HSSFWorkbook hssfwb = new HSSFWorkbook(stream); //This will read the Excel 97-2000 formats
+                    sheet = hssfwb.GetSheetAt(0);
+                }
+                else
+                {
+                    XSSFWorkbook hssfwb = new XSSFWorkbook(stream); //This will read 2007 Excel format
+                    sheet = hssfwb.GetSheetAt(0);
+                }
+
+                IRow headerRow = sheet.GetRow(0);
+                int cellCount = headerRow.LastCellNum;
+                IRow row;
+                for (int i = 1; i <= sheet.LastRowNum; i++)
+                {
+                    row = sheet.GetRow(i);
+                    if (row == null)
+                        break;
+                    if (row.Cells.All(d => d.CellType == CellType.Blank))
+                        break;
+                    if (row.GetCell(0).StringCellValue.Trim() == "")
+                        break;
+
+                    ProgressModel ipg = new ProgressModel();
+                    DateTime update_time = DateTime.Now;
+
+                    ipg.job_id = row.GetCell(0).StringCellValue.Replace("-", String.Empty).Replace(" ", String.Empty);
+                    ipg.estimated_budget = Convert.ToInt32(row.GetCell(1).NumericCellValue);
+                    ipg.job_progress = Convert.ToInt32(row.GetCell(2).NumericCellValue);
+                    ipg.year = year;
+                    string[] months = new string[] { "", "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC" };
+                    ipg.month = Array.IndexOf(months,month);
+                    ipgs.Add(ipg);
+                }
+            }
+            return Json(ipgs);
+        }
+
+        [HttpPost]
+        public JsonResult ConfirmImport()
+        {
+            this.DB = new ConnectDB();
+            SqlConnection con = DB.Connect();
+            using (SqlCommand cmd = new SqlCommand("INSERT INTO Progress(" +
+                                                                "Job_ID, " +
+                                                                "Job_Progress, " +
+                                                                "Month, " +
+                                                                "Year) " +
+                                                     "VALUES(@Job_ID," +
+                                                            "@Job_Progress, " +
+                                                            "@Month, " +
+                                                            "@Year)", con))
+            {
+                con.Open();
+                cmd.CommandType = CommandType.Text;
+                cmd.Connection = con;
+                cmd.Parameters.Add("@Job_ID", SqlDbType.NVarChar);
+                cmd.Parameters.Add("@Job_Progress", SqlDbType.NVarChar);
+                cmd.Parameters.Add("@Month", SqlDbType.Int);
+                cmd.Parameters.Add("@Year", SqlDbType.Int);
+
+                for (int i = 0; i < ipgs.Count; i++)
+                {
+                    cmd.Parameters[0].Value = ipgs[i].job_id;
+                    cmd.Parameters[1].Value = ipgs[i].job_progress;
+                    cmd.Parameters[2].Value = ipgs[i].month;
+                    cmd.Parameters[3].Value = ipgs[i].year;
+                    cmd.ExecuteNonQuery();
+                }
+                con.Close();
+            }
+
+            using (SqlCommand cmd = new SqlCommand("INSERT INTO Job(" +
+                                                                "Job_ID, " +
+                                                                "Estimated_Budget) " +
+                                                     "VALUES(@Job_ID," +
+                                                            "@Estimated_Budget)", con))
+            {
+                con.Open();
+                cmd.CommandType = CommandType.Text;
+                cmd.Connection = con;
+                cmd.Parameters.Add("@Job_ID", SqlDbType.NVarChar);
+                cmd.Parameters.Add("@Estimated_Budget", SqlDbType.Int);
+
+                for (int i = 0; i < ipgs.Count; i++)
+                {
+                    cmd.Parameters[0].Value = ipgs[i].job_id;
+                    cmd.Parameters[1].Value = ipgs[i].estimated_budget;
+                    cmd.ExecuteNonQuery();
+                }
+                con.Close();
+            }
+            return Json("Done");
         }
     }
 }

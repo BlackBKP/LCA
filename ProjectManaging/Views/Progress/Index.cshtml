@@ -46,16 +46,14 @@
                 </div>
                 <br />
                 <div id="div_file" class="form-row" style="display:none">
-                    <label>
-                        Select File
-                    </label>
-                    <input id="input_progress_file" class="form-control-file" type="file" />
+                    <label id="import_file_label">Select File</label>
+                    <input id="import_file" class="form-control-file" type="file" />
                 </div>
             </form>
         </div>
     </div>
 
-    <div id="card_uploaded_content" class="card card-dark" style="display:none">
+    <div id="card_upload" class="card card-dark" style="display:none">
         <div class="card-header">
             <span class="card-title">
                 Uploaded Content
@@ -70,12 +68,16 @@
             </div>
         </div>
         <div class="card-body">
-            <table class="table table-sm table-hover" style="width:100%">
+            <label for="year">Year</label>
+            <input id="year" class="form-control" type="text" disabled />
+            <label for="week_time">Month</label>
+            <input id="week_time" class="form-control" type="text" disabled />
+            <br />
+            <table id="table_progress" class="table table-sm table-hover" style="width:100%">
                 <thead>
                     <tr>
                         <th style="text-align:center">Job ID</th>
-                        <th style="text-align:center">Year</th>
-                        <th style="text-align:center">Month</th>
+                        <th style="text-align:center">Estimated Budget</th>
                         <th style="text-align:center">Progress</th>
                     </tr>
                 </thead>
@@ -83,6 +85,11 @@
                     @* Generate By JavaScript *@
                 </tbody>
             </table>
+        </div>
+        <div class="card-footer">
+            <button id="btn_confirm_import" class="btn btn-primary" type="button" style="float:right">
+                Import
+            </button>
         </div>
     </div>
 
@@ -170,7 +177,9 @@
     <script type="text/javascript">
         var table_jobs;
         var table_details;
+        var table_progress;
         var jobs = [];
+        var import_jobs = [];
         var months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
         var week_time = [
             "JAN 1", "JAN 2", "FEB 1", "FEB 2", "MAR 1", "MAR 2", "APR 1", "APR 2", "MAY 1", "MAY 2", "JUN 1", "JUN 2",
@@ -202,10 +211,6 @@
             }
             $('#select_progress_month').append(str);
         }
-
-        $('#input_progress_file').on('change', function () {
-            $('#card_uploaded_content').css('display', 'block');
-        });
 
         $('#select_progress_year').on('change', function () {
             if ($('#select_progress_year').val() != null && $('#select_progress_month').val() != null) {
@@ -364,6 +369,105 @@
                     $('td', row).eq(6).html('<button class="btn btn-primary form-control">Edit</button>');
                 }
             });
+        }
+
+        $('#import_file').on('change', async function () {
+            var fileExtension = ['xls', 'xlsx'];
+            var filename = $('#import_file').val();
+
+            if (filename.length == 0) {
+                alert("Please Select a File");
+            }
+            else {
+                var extension = filename.replace(/^.*\./, '');
+                if ($.inArray(extension, fileExtension) == -1) {
+                    alert("Please select only excel files.");
+                }
+            }
+
+            var fdata = new FormData();
+            var fileupload = $('#import_file').get(0);
+            var files = fileupload.files;
+            var y = $('#select_progress_year').val();
+            var m = $('#select_progress_month').val();
+
+            fdata.append(files[0].name, files[0]);
+            $('#import_file_label').text(files[0].name);
+
+            await $.ajax({
+                type: "POST",
+                url: '@Url.Action("SetJobDetails", "Progress")',
+	            contentType: 'application/x-www-form-urlencoded',
+                data: { y, m },
+            });
+
+            await $.ajax({
+                type: "POST",
+                url: "Progress/Import",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("XSRF-TOKEN",
+                        $('input:hidden[name="__RequestVerificationToken"]').val());
+                },
+                data: fdata,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    if (response.length == 0)
+                        alert('Some error occured while uploading');
+                    else {
+                        //console.log("Response");
+                        //console.log(response);
+                        import_jobs = response;
+                        GenUploadData();
+                    }
+                },
+            });
+        });
+
+        function GenUploadData() {
+            var mm = [" ", "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+            var full_mm = [" ", "JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"];
+            $('#card_upload').show();
+            $('#year').val(import_jobs[0].year);
+            $('#week_time').val(mm[import_jobs[0].month]);
+
+            var datas = [];
+            for (var i = 0; i < import_jobs.length; i++) {
+                datas.push([
+                    import_jobs[i].job_id,
+                    import_jobs[i].estimated_budget,
+                    import_jobs[i].job_progress
+                ]);
+            }
+
+            if (table_progress != null)
+                $('#table_progress').DataTable().destroy();
+
+            table_progress = $('#table_progress').DataTable({
+                data: datas,
+                pagingType: "full_numbers",
+                lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+            });
+        }
+
+        $('#btn_confirm_import').on('click', function () {
+            ConfirmImport();
+        });
+
+        function ConfirmImport() {
+            $('#btn_confirm_import').attr('disabled', true);
+            //$('#modal_upload').modal("show");
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("ConfirmImport", "Progress")',
+	            contentType: 'application/x-www-form-urlencoded',
+                data: {
+
+                },
+                success: function (response) {
+
+                }
+            })
         }
 
     </script>

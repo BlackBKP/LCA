@@ -106,7 +106,7 @@ namespace ProjectManaging.Controllers
                 IRow headerRow = sheet.GetRow(0);
                 int cellCount = headerRow.LastCellNum;
                 IRow row;
-                for (int i = 1; i < sheet.LastRowNum; i++)
+                for (int i = 1; i <= sheet.LastRowNum; i++)
                 {
                     row = sheet.GetRow(i);
                     if (row == null)
@@ -180,9 +180,9 @@ namespace ProjectManaging.Controllers
                     cmd.Parameters[7].Value = ots[i].recording_time;
                     cmd.ExecuteNonQuery();
                 }
+                con.Close();
             }
             return Json("Done");
         }
-
     }
 }
