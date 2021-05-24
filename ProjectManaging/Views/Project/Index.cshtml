@@ -77,7 +77,7 @@
 
 <!-- Add Job Modal -->
 <div class="modal" id="modal_add_job">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
 
             <!-- Modal Header -->
@@ -114,7 +114,7 @@
 
             <!-- Modal Footer -->
             <div class="modal-footer">
-                <button id="btn_add_job" class="btn btn-primary" type="button">
+                <button id="btn_confirm_add" class="btn btn-primary" type="button" disabled>
                     Add
                 </button>
 
@@ -127,45 +127,58 @@
     </div>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="AddJobModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- Import Job Modal -->
-<div class="modal">
-    <div class="modal-dialog modal-dialog-centered">
+<div class="modal" id="ModalImportJobs">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
 
             <!-- Modal Header -->
             <div class="modal-header">
-
+                <h5>Import Jobs</h5>
+                <button class="close" type="button" data-dismiss="modal">
+                    &times;
+                </button>
             </div>
 
             <!-- Modal Body -->
             <div class="modal-body">
-
+                <form>
+                    <label>Select File</label>
+                    <input id="file_import" class="custom-file" type="file" />
+                    <div id="div_upload" style="display:none">
+                        <hr />
+                        <br />
+                        <label for="UploadedJobs">Uploaded Jobs</label>
+                        <table id="UploadedJobs" class="table table-sm table-hover" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Job ID</th>
+                                    <th>Job Name</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>J21-0001</td>
+                                    <td>TESTJOB (A)</td>
+                                </tr>
+                                <tr>
+                                    <td>J21-0002</td>
+                                    <td>TESTJOB (B)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
             </div>
 
             <!-- Modal Footer -->
             <div class="modal-footer">
-
+                <button class="btn btn-primary" disabled>
+                    Confirm
+                </button>
+                <button class="btn btn-danger">
+                    Cancel
+                </button>
             </div>
 
         </div>
@@ -187,12 +200,42 @@
         $('#input_job_year').on('keyup', function () {
             var job_id = "J" + $('#input_job_year').val().substring($('#input_job_year').val().length-2) + "-" + $('#input_job_number').val();
             $('#input_job_id').val(job_id);
+            EnableAddJob();
         });
 
         $('#input_job_number').on('keyup', function () {
             var job_id = "J" + $('#input_job_year').val().substring($('#input_job_year').val().length - 2) + "-" + $('#input_job_number').val();
             $('#input_job_id').val(job_id);
+            EnableAddJob();
         });
+
+        $('#input_job_name').on('keyup', function () {
+            EnableAddJob();
+        });
+
+        function EnableAddJob() {
+            if ($('#input_job_year').val() != "" && $('#input_job_number').val() != "" && $('#input_job_name').val() != "") {
+                $('#btn_confirm_add').attr('disabled', false);
+            }
+            else {
+                $('#btn_confirm_add').attr('disabled', true);
+            }
+        } 
+
+        $('#btn_confirm_add').on('click', function () {
+
+        });
+
+
+        $('#btn_import_job').on('click', function () {
+            $('#ModalImportJobs').modal("show");
+        });
+
+        $('#file_import').on('change', function () {
+            $('#div_upload').show();
+        });
+
+        
 
     </script>
 }
