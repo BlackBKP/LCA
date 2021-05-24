@@ -239,8 +239,8 @@
 
                 },
                 success: function (response) {
-                    @*console.log("Response");
-                    console.log(response);*@
+                    console.log("Response");
+                    console.log(response);
                     jobs = response;
                     GenJobsTable();
                 }
@@ -253,8 +253,9 @@
             @*console.log("Total Job: " + jobs.length);*@
             for (var i = 0; i < jobs.length; i++) {
                 last_index = jobs[i].length - 1;
+                var jn = jobs[i][last_index].job_number.trim() != "" ? jobs[i][last_index].job_number : jobs[i][last_index].job_id;
                 datas.push([
-                    jobs[i][last_index].job_number,
+                    jn,
                     jobs[i][last_index].job_name,
                     jobs[i][last_index].estimated_budget,
                     jobs[i][last_index].remainning_cost,
