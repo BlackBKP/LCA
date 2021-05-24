@@ -93,8 +93,8 @@ namespace ProjectManaging.Controllers
                         ot_cost = Convert.ToInt32(row.GetCell(12).NumericCellValue),
                         accomodate = Convert.ToInt32(row.GetCell(13).NumericCellValue),
                         compensate = Convert.ToInt32(row.GetCell(14).NumericCellValue),
-                        number_of_labor = Convert.ToInt32(row.GetCell(15).NumericCellValue),
-                        social_security = Convert.ToInt32(row.GetCell(16).NumericCellValue)
+                        social_security = Convert.ToInt32(row.GetCell(15).NumericCellValue),
+                        number_of_labor = Convert.ToInt32(row.GetCell(16).NumericCellValue)
                     };
                     jobs.Add(job);
                 }
