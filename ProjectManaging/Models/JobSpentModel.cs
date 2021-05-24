@@ -28,5 +28,7 @@ namespace ProjectManaging.Models
         public int compensate { get; set; }
 
         public int number_of_labor { get; set; }
+
+        public int social_security { get; set; }
     }
 }

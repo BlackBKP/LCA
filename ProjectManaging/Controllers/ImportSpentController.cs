@@ -69,7 +69,7 @@ namespace ProjectManaging.Controllers
                 for (int i = 3; i < sheet.LastRowNum; i++)
                 {
                     row = sheet.GetRow(i);
-                    if (row.GetCell(5).CellType == CellType.Blank)
+                    if (row.GetCell(8).StringCellValue == "")
                         break;
                     if (row == null)
                         break;
@@ -77,22 +77,25 @@ namespace ProjectManaging.Controllers
                         break;
                     if (row.Cells.All(c => c.NumericCellValue == 0))
                         break;
-                    JobSpentModel job = new JobSpentModel();
-                    string ss = row.GetCell(5).StringCellValue;
-                    job.job_id = ss.Split('-')[0].Trim() + ss.Split('-')[1].Trim();
-                    job.job_name = row.GetCell(6).StringCellValue;
-                    string[] months = new string[] { "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC" };
-                    string str = row.GetCell(7).StringCellValue;
-                    string month = str.Split(' ')[1].ToUpper().Substring(0, 3);
-                    job.week = str.Split('-')[0] == "1" ? 1 : 2;
-                    job.month = Array.IndexOf(months, month) + 1;
-                    job.year = Convert.ToInt32("20" + str.Substring(str.Length - 2));
-                    job.week_time = str;
-                    job.labor_cost = Convert.ToInt32(row.GetCell(8).NumericCellValue);
-                    job.ot_cost = Convert.ToInt32(row.GetCell(9).NumericCellValue);
-                    job.accomodate = Convert.ToInt32(row.GetCell(10).NumericCellValue);
-                    job.compensate = Convert.ToInt32(row.GetCell(11).NumericCellValue);
-                    job.number_of_labor = Convert.ToInt32(row.GetCell(12).NumericCellValue);
+
+                    string str_job_id = row.GetCell(8).StringCellValue.Trim();
+                    str_job_id = str_job_id.Replace("-", String.Empty).Replace(" ", String.Empty);
+
+                    JobSpentModel job = new JobSpentModel()
+                    {
+                        job_id = str_job_id,
+                        job_name = row.GetCell(9).StringCellValue,
+                        week = Convert.ToInt32(row.GetCell(5).NumericCellValue),
+                        month = Convert.ToInt32(row.GetCell(6).NumericCellValue),
+                        year = Convert.ToInt32(row.GetCell(7).NumericCellValue),
+                        week_time = row.GetCell(10).StringCellValue,
+                        labor_cost = Convert.ToInt32(row.GetCell(11).NumericCellValue),
+                        ot_cost = Convert.ToInt32(row.GetCell(12).NumericCellValue),
+                        accomodate = Convert.ToInt32(row.GetCell(13).NumericCellValue),
+                        compensate = Convert.ToInt32(row.GetCell(14).NumericCellValue),
+                        number_of_labor = Convert.ToInt32(row.GetCell(15).NumericCellValue),
+                        social_security = Convert.ToInt32(row.GetCell(16).NumericCellValue)
+                    };
                     jobs.Add(job);
                 }
             }
@@ -126,7 +129,6 @@ namespace ProjectManaging.Controllers
 
             List<string> v1 = Job_ID.Select(s => s.job_id).ToList();
             List<string> v2 = jobs.Select(s => s.job_id).Distinct().ToList();
-            //  var diff_Job = jobs.Where(w => !Job_ID.Any(a => a.job_id == w.job_id)).ToList();
             var diff_Job = v2.Except(v1).ToList();
             if (diff_Job.Count <= 0)
             {
@@ -139,6 +141,7 @@ namespace ProjectManaging.Controllers
                                         "isnull(NULLIF(OT_Labor_Cost,''),0) as OT_Labor_Cost , " +
                                         "isnull(NULLIF(Accommodation_Cost,''),0) as Accommodation_Cost, " +
                                         "isnull(NULLIF(Compensation_Cost,''),0) as Compensation_Cost, " +
+                                        "Social_Security, " +
                                         "isnull(NULLIF(No_Of_Labor_Week,''),0) as No_Of_Labor_Week " +
                                         "from Labor_Costs";
 
@@ -162,6 +165,7 @@ namespace ProjectManaging.Controllers
                             ot_cost = Convert.ToInt32(dr["OT_Labor_Cost"]),
                             accomodate = Convert.ToInt32(dr["Accommodation_Cost"]),
                             compensate = Convert.ToInt32(dr["Compensation_Cost"]),
+                            social_security = Convert.ToInt32(dr["Social_Security"]),
                             number_of_labor = Convert.ToInt32(dr["No_Of_Labor_Week"])
                         };
                         uploaded_jobs.Add(job);
@@ -181,6 +185,7 @@ namespace ProjectManaging.Controllers
                                                                 "OT_Labor_Cost, " +
                                                                 "Accommodation_Cost, " +
                                                                 "Compensation_Cost, " +
+                                                                "Social_Security, " + 
                                                                 "No_Of_Labor_Week) " +
                                                      "VALUES(@Job_ID," +
                                                             "@Week, " +
@@ -191,6 +196,7 @@ namespace ProjectManaging.Controllers
                                                             "@OT_Labor_Cost, " +
                                                             "@Accommodation_Cost, " +
                                                             "@Compensation_Cost, " +
+                                                            "@Social_Security, " +
                                                             "@No_Of_Labor_Week)", con))
                 {
                     con.Open();
@@ -205,6 +211,7 @@ namespace ProjectManaging.Controllers
                     cmd3.Parameters.Add("@OT_Labor_Cost", SqlDbType.NVarChar);
                     cmd3.Parameters.Add("@Accommodation_Cost", SqlDbType.NVarChar);
                     cmd3.Parameters.Add("@Compensation_Cost", SqlDbType.NVarChar);
+                    cmd3.Parameters.Add("@Social_Security", SqlDbType.Int);
                     cmd3.Parameters.Add("@No_Of_Labor_Week", SqlDbType.NVarChar);
 
                     for (int i = 0; i < dif.Count; i++)
@@ -218,7 +225,8 @@ namespace ProjectManaging.Controllers
                         cmd3.Parameters[6].Value = dif[i].ot_cost;
                         cmd3.Parameters[7].Value = dif[i].accomodate;
                         cmd3.Parameters[8].Value = dif[i].compensate;
-                        cmd3.Parameters[9].Value = dif[i].number_of_labor;
+                        cmd3.Parameters[9].Value = dif[i].social_security;
+                        cmd3.Parameters[10].Value = dif[i].number_of_labor;
                         cmd3.ExecuteNonQuery();
                     }
                 }

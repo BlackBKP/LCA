@@ -33,16 +33,22 @@ namespace ProjectManaging.Controllers
             SqlConnection con = DB.Connect();
             con.Open();
 
-            string str_cmd = "select Hour.Job_ID, " +
-                                    "Hour.Week, " +
-                                    "Hour.Month, " +
-                                    "FORMAT(Hour.Working_Day,'yyyy') as Year, " +
-                                    "(case when sum(Hour.Hours) is null then 0 else sum(Hour.Hours) end) as Normal, " +
-                                    "(case when sum(s1.OT_1_5) is null then 0 else sum(s1.OT_1_5) end) as OT_1_5, " +
-                                    "(case when sum(s1.OT_3) is null then 0 else sum(s1.OT_3) end) as OT_3, " +
-                                    "sum(case when sum(Hour.Hours) is null then 0 else sum(Hour.Hours) end + case when sum(s1.OT_1_5) is null then 0 else sum(s1.OT_1_5) end  + case when sum(s1.OT_3)is null then 0 else sum(s1.OT_3) end ) OVER (partition by Hour.job_ID ORDER BY Hour.job_ID ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as Acc_Hour " +
-                                    "from Hour " +
-                                    "left join (select job_ID,Employee_ID,Recording_time,Month,week,OT_1_5,OT_3 from OT) as s1 ON s1.job_ID = Hour.job_ID and s1.Employee_ID = Hour.Employee_ID and s1.Recording_time = Hour.Working_Day and s1.Month = Hour.Month and s1.week = Hour.week group by Hour.job_ID,FORMAT(Hour.Working_Day,'yyyy'),Hour.Month,Hour.Week";
+            string str_cmd = "with normal " +
+                                    "as ( select Job_ID,FORMAT(Working_Day,'yyyy') as Year,Month,Week,SUM(Hours) as Normal,0 as OT_1_5,0 as OT_3 " +
+                                    "FROM Hour group by Job_ID,FORMAT(Working_Day,'yyyy'), Month, Week " +
+                                    "union all " +
+                                    "select Job_ID,FORMAT(Recording_time,'yyyy') as Year,Month,Week,0 as Normal ,SUM(case when OT_1_5 is null then 0 else OT_1_5 end) as OT_1_5,SUM(case when OT_3 is null then 0 else OT_3 end) as OT_3 " +
+                                    "FROM OT group by Job_ID,Format(Recording_time,'yyyy'),Month ,Week )" +
+                             "select Job_ID, " +
+                                    "Week, " +
+                                    "Month, " +
+                                    "Year, " +
+                                    "SUM(Normal) as Normal, " +
+                                    "SUM(OT_1_5) as OT_1_5, " +
+                                    "SUM(OT_3) as OT_3, " +
+                                    "SUM(SUM(case when Normal is null then 0 else Normal end + case when OT_1_5 is null then 0 else OT_1_5 end  + case when OT_3 is null then 0 else OT_3 end)) OVER (partition by Job_ID ORDER BY Job_ID ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)as Acc_Hour " +
+                                    "from normal " +
+                                    "group by Job_ID,Year,Month,Week";
 
             SqlCommand cmd = new SqlCommand(str_cmd, con);
             SqlDataReader dr = cmd.ExecuteReader();

@@ -51,6 +51,7 @@
                         <th>Overtime</th>
                         <th>Accomodation Cost</th>
                         <th>Compensation Cost</th>
+                        <th>Social Security</th>
                         <th>Number of Labor</th>
                     </tr>
                 </thead>
@@ -122,8 +123,8 @@
                     if (response.length == 0)
                         alert('Some error occured while uploading');
                     else {
-                        console.log("Response");
-                        console.log(response);
+                        //console.log("Response");
+                        //console.log(response);
                         jobs = response;
                         GenUploadData();
                     }
@@ -143,6 +144,7 @@
                     jobs[i].ot_cost,
                     jobs[i].accomodate,
                     jobs[i].compensate,
+                    jobs[i].social_security,
                     jobs[i].number_of_labor
                 ]);
             }
@@ -182,7 +184,6 @@
                         $('#btn_import').attr('disabled', false);
                         alert("Done");
                     }
-
                 }
             });
         }

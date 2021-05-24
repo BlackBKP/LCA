@@ -14,7 +14,7 @@
 @section Scripts
 {
     <script type="text/javascript">
-        var months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+        var months = [" ", "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
         $(document).ready(function () {
             GetData();
         });
@@ -70,32 +70,32 @@
                                 type: 'bar',
                                 label: 'Normal',
                                 data: normal,
-                                backgroundColor: 'rgba(32, 67, 198, 1)',
-                                borderColor: 'rgba(32, 67, 198, 1)',
+                                borderColor: 'rgba(27, 79, 144,1)',
+                                backgroundColor: 'rgba(27, 79, 144,0.75)',
                                 borderWidth: 1
                             },
                             {
                                 type: 'bar',
                                 label: 'Overtime 1.5',
                                 data: ot_1_5,
-                                backgroundColor: 'rgba(40, 121, 191, 1)',
-                                borderColor: 'rgba(40, 121, 191, 1)',
+                                backgroundColor: 'rgba(33, 97, 140, 0.75)',
+                                borderColor: 'rgba(33, 97, 140, 1)',
                                 borderWidth: 1
                             },
                             {
                                 type: 'bar',
                                 label: 'Overtime 3.0',
-                                data: ot_3,
-                                backgroundColor: 'rgba(40, 121, 191, 1)',
-                                borderColor: 'rgba(40, 121, 191, 1)',
+                                data:[1,1,0,1],
+                                backgroundColor: 'rgba(46, 134, 193, 0.75)',
+                                borderColor: 'rgba(46, 134, 193, 1)',
                                 borderWidth: 1
                             },
                             {
                                 type: 'line',
                                 label: 'Total (Accumulation)',
                                 data: acc_hour,
-                                backgroundColor: 'rgba(255,0,0,1)',
-                                borderColor: 'rgba(255,0,0,1)'
+                                backgroundColor: 'rgba(133, 193, 233, 0.75)',
+                                borderColor: 'rgba(133, 193, 233, 1)',
                             }
                         ]
                     },
