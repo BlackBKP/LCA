@@ -28,11 +28,11 @@
                 </button>
             </div>
         </div>
-        <div class="card-body" style="overflow-y:auto">
-            <table id="summary_table" class="table table-sm table-hover" style="width:100%">
+        <div class="card-body">
+            <table id="summary_table" class="table table-sm table-hover" style="width:100%;overflow-x:auto">
                 <thead>
                     <tr>
-                        <th style="text-align:center;width:5%">Job Number</th>
+                        <th style="text-align:center">Job Number</th>
                         <th style="text-align:center">Estimated Budget</th>
 
                         <th style="text-align:center">Labor Cost</th>
@@ -125,42 +125,23 @@
                 ],
                 columnDefs: [
                     {
-                        targets: [2, 3, 4, 5, 6],
+                        targets: [2, 3, 4, 5,6],
                         visible: show_cost_details,
                         searchable: show_cost_details,
+                        className: 'bg-lightblue'
                     },
                     {
                         targets: [11, 12, 13],
                         visible: show_mph_details,
                         searchable: show_mph_details,
+                        className: 'bg-blue'
                     }
                 ],
-                rowCallback: function (row, data) {
-
-                    if (show_cost_details) {
-                        $('td', row).eq(2).addClass('bg-orange');
-                        $('td', row).eq(3).addClass('bg-orange');
-                        $('td', row).eq(4).addClass('bg-orange');
-                        $('td', row).eq(5).addClass('bg-orange');
-                        $('td', row).eq(6).addClass('bg-orange');
-                    }
-
-                    if (show_cost_details && show_mph_details) {
-                        $('td', row).eq(11).addClass('bg-blue');
-                        $('td', row).eq(12).addClass('bg-blue');
-                        $('td', row).eq(13).addClass('bg-blue');
-                    }
-                    else if (!show_cost_details && show_mph_details) {
-                        $('td', row).eq(6).addClass('bg-blue');
-                        $('td', row).eq(7).addClass('bg-blue');
-                        $('td', row).eq(8).addClass('bg-blue');
-                    }
-                }
             });
         }
 
         var show_cost_details = false;
-        $('#btn_cost_details').on('click', function() {
+        $('#btn_cost_details').on('click', function () {
             if (show_cost_details == false) {
                 show_cost_details = true;
                 $('#btn_cost_details').html("Hide Cost Detail");
@@ -169,7 +150,8 @@
                 show_cost_details = false;
                 $('#btn_cost_details').html("Show Cost Detail");
             }
-            GenSummaryTable();
+            var column = table.columns([2, 3, 4, 5, 6]).visible(show_cost_details);
+            table.draw();
         });
 
         var show_mph_details = false;
@@ -182,7 +164,8 @@
                 show_mph_details = false;
                 $('#btn_mph_details').html("Show Man Power Detail");
             }
-            GenSummaryTable();
+            var column = table.columns([11, 12, 13]).visible(show_mph_details);
+            table.draw();
         });
 
     </script>
