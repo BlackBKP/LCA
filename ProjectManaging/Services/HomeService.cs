@@ -96,7 +96,7 @@ namespace ProjectManaging.Services
             return spws;
         }
 
-        public List<EmployeeModel> GetEmployees()
+        /*public List<EmployeeModel> GetEmployees()
         {
             List<EmployeeModel> emps = new List<EmployeeModel>();
             SqlConnection con = DB.Connect();
@@ -253,6 +253,6 @@ namespace ProjectManaging.Services
 
             con.Close();
             return ots;
-        }
+        }*/
     }
 }

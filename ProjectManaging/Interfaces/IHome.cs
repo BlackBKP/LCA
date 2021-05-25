@@ -10,10 +10,10 @@ namespace ProjectManaging.Interfaces
     {
         List<SpentPerWeekModel> GetSpentCostPerWeeks();
         List<SpentPerWeekModel> GetSpentPerWeeksByJob(string job_id);
-        List<EmployeeModel> GetEmployees();
+        /*List<EmployeeModel> GetEmployees();
         List<HourModel> GetHours();
         List<JobModel> GetJobs();
         List<LaborCostModel> GetLaborCosts();
-        List<OvertimeModel> GetOvertimes();
+        List<OvertimeModel> GetOvertimes();*/
     }
 }

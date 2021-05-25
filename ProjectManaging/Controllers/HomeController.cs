@@ -37,7 +37,7 @@ namespace ProjectManaging.Controllers
             return Json(projects);
         }
 
-        [HttpGet]
+        /*[HttpGet]
         public JsonResult GetEmployees()
         {
             return Json(Home.GetEmployees());
@@ -65,7 +65,7 @@ namespace ProjectManaging.Controllers
         public JsonResult GetOvertimes()
         {
             return Json(Home.GetOvertimes());
-        }
+        }*/
 
         public IActionResult About()
         {
