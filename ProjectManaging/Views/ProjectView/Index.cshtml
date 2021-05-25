@@ -3,7 +3,7 @@
     ViewData["Title"] = "Job View";
 }
 
-<div id="div_container" class="container-fluid" style="padding-top:10px;height:88vh;overflow-y:hidden">
+<div id="div_container" class="container-fluid" style="padding-top:10px;height:86vh;overflow-y:hidden">
 
     <div class="info-box bg-dark">
         <div class="info-box-content">
@@ -176,12 +176,12 @@
         function SetScreenSize() {
             var view_height = $(window).height();
             if (window.innerHeight == screen.height) {
-                $('#div_container').height(view_height * 0.87);
+                $('#div_container').height(view_height * 0.86);
                 $('#div_selection').height(view_height * 0.59);
                 $('#div_content').height(view_height * 0.59);
             }
             else {
-                $('#div_container').height(view_height * 0.86);
+                $('#div_container').height(view_height * 0.85);
                 $('#div_selection').height(view_height * 0.54);
                 $('#div_content').height(view_height * 0.54);
             }
