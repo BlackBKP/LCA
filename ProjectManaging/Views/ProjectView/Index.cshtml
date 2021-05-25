@@ -2,7 +2,8 @@
 @{
     ViewData["Title"] = "Job View";
 }
-<div class="container-fluid" style="padding-top:10px">
+
+<div class="container-fluid" style="padding-top:10px;height:86vh;overflow-y:hidden">
 
     <div class="info-box bg-dark">
         <div class="info-box-content">
@@ -33,13 +34,9 @@
                 </div>
             </div>
 
-            <ul id="pj_lists" class="list-group">
-            </ul>
-
-            <div class="row">
-                <div class="col-12">
-
-                </div>
+            <div style="height:54vh;overflow-y:scroll">
+                <ul id="pj_lists" class="list-group">
+                </ul>
             </div>
 
         </div>
@@ -67,9 +64,8 @@
                         <i class="fas fa-chart-line info-box-icon bg-teal"></i>
                         <div class="info-box-content">
                             <span class="info-box-text" style="font-weight:bold">Progress</span>
-                            @*<span class="info-box-number">80/100</span>*@
-                            <div class="progress">
-                                <div class="progress-bar" style="width:80%"></div>
+                            <div class="progress bg-white">
+                                <div class="progress-bar bg-teal" style="width:80%"></div>
                             </div>
                             <span class="progress-description">
                                 80% Completion
@@ -83,8 +79,8 @@
                         <div class="info-box-content">
                             <span class="info-box-text">Budget Spent</span>
                             <span class="info-box-number">75/100</span>
-                            <div class="progress">
-                                <div class="progress-bar" style="width:75%"></div>
+                            <div class="progress bg-white">
+                                <div class="progress-bar bg-lightblue" style="width:75%"></div>
                             </div>
                             <span class="progress-description">
                                 75% Spent
@@ -98,8 +94,8 @@
                         <div class="info-box-content">
                             <span class="info-box-text">Budget Remain</span>
                             <span class="info-box-number">25/100</span>
-                            <div class="progress">
-                                <div class="progress-bar" style="width:25%"></div>
+                            <div class="progress bg-white">
+                                <div class="progress-bar bg-danger" style="width:25%"></div>
                             </div>
                             <span class="progress-description">
                                 25% of Budget left
@@ -118,37 +114,41 @@
                 </div>
             </div>
 
-            <div class="card card-dark">
-                <div class="card-header">
-                    <span class="card-title">
-                        Spent Per Fortnight
-                    </span>
+            <div style="height:54vh;overflow-y:scroll">
+                <div class="card card-dark">
+                    <div class="card-header">
+                        <span class="card-title">
+                            Spent Per Fortnight
+                        </span>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="canvas_1" style="height:400px"></canvas>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <canvas id="canvas_1" style="height:400px"></canvas>
-                </div>
-            </div>
 
-            <div class="card card-dark">
-                <div class="card-header">
-                    <span class="card-title">
-                        Manpower Per Hour
-                    </span>
+                <div class="card card-dark">
+                    <div class="card-header">
+                        <span class="card-title">
+                            Manpower Per Hour
+                        </span>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="canvas_2" style="height:400px"></canvas>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <canvas id="canvas_2" style="height:400px"></canvas>
-                </div>
-            </div>
 
-            <div class="card card-dark">
-                <div class="card-header">
-                    <span class="card-title">
-                        Normal Per Overtime Ratio
-                    </span>
+                <div class="card card-dark">
+                    <div class="card-header">
+                        <span class="card-title">
+                            Normal Per Overtime Ratio
+                        </span>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="canvas_4" style="height:400px"></canvas>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <canvas id="canvas_4" style="height:400px"></canvas>
-                </div>
+
+                <br />
             </div>
 
         </div>
