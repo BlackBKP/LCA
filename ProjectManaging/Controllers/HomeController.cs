@@ -29,7 +29,7 @@ namespace ProjectManaging.Controllers
         {
             List<List<SpentPerWeekModel>> projects = new List<List<SpentPerWeekModel>>();
             List<SpentPerWeekModel> spws = Home.GetSpentCostPerWeeks();
-            string[] job_id = spws.Select(s => s.job_id).Distinct().ToArray();
+            string[] job_id = spws.OrderByDescending(o => o.job_id).Select(s => s.job_id).Distinct().ToArray();
             for(int i = 0; i < job_id.Count(); i++)
             {
                 projects.Add(spws.Where(w => w.job_id == job_id[i]).Select(s => s).OrderBy(o=>o.year).ThenBy(t=>t.month).ThenBy(tt=>tt.week).ToList());

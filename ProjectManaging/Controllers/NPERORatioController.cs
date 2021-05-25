@@ -56,6 +56,7 @@ namespace ProjectManaging.Controllers
                 dr.Close();
             }
             con.Close();
+            nprs = nprs.OrderByDescending(o => o.job_id).ToList();
             return nprs;
         }
 

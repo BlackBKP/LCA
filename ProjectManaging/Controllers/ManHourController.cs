@@ -78,7 +78,7 @@ namespace ProjectManaging.Controllers
             string[] job_id = mphs.Select(s => s.job_id).Distinct().ToArray();
             for(int i = 0; i < job_id.Count(); i++)
             {
-                lmphs.Add(mphs.Where(w => w.job_id == job_id[i]).Select(s => s).OrderBy(y => y.year).ThenBy(m => m.month).ThenBy(w => w.week).ToList());
+                lmphs.Add(mphs.Where(w => w.job_id == job_id[i]).Select(s => s).OrderByDescending(y => y.year).ThenBy(m => m.month).ThenBy(w => w.week).ToList());
             }
             return lmphs;
         }
