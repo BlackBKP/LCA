@@ -37,36 +37,6 @@ namespace ProjectManaging.Controllers
             return Json(projects);
         }
 
-        /*[HttpGet]
-        public JsonResult GetEmployees()
-        {
-            return Json(Home.GetEmployees());
-        }
-
-        [HttpGet]
-        public JsonResult GetHours()
-        {
-            return Json(Home.GetHours());
-        }
-
-        [HttpGet]
-        public JsonResult GetJobs()
-        {
-            return Json(Home.GetJobs());
-        }
-
-        [HttpGet]
-        public JsonResult GetLaborCosts()
-        {
-            return Json(Home.GetLaborCosts());
-        }
-
-        [HttpGet]
-        public JsonResult GetOvertimes()
-        {
-            return Json(Home.GetOvertimes());
-        }*/
-
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";
