@@ -3,7 +3,7 @@
     ViewData["Title"] = "Job View";
 }
 
-<div class="container-fluid" style="padding-top:10px;height:86vh;overflow-y:hidden">
+<div id="div_container" class="container-fluid" style="padding-top:10px;height:88vh;overflow-y:hidden">
 
     <div class="info-box bg-dark">
         <div class="info-box-content">
@@ -34,7 +34,7 @@
                 </div>
             </div>
 
-            <div style="height:54vh;overflow-y:scroll">
+            <div id="div_selection" style="height:59vh;overflow-y:scroll">
                 <ul id="pj_lists" class="list-group">
                 </ul>
             </div>
@@ -114,7 +114,7 @@
                 </div>
             </div>
 
-            <div style="height:54vh;overflow-y:scroll">
+            <div id="div_content" style="height:59vh;overflow-y:scroll">
                 <div class="card card-dark">
                     <div class="card-header">
                         <span class="card-title">
@@ -159,16 +159,33 @@
 @section Scripts
 {
     <script type="text/javascript">
-
         var list_job_id = [];
-
         $(document).ready(function () {
+            SetScreenSize();
             GenerateYearOption();
             GenProjectOptions();
             GenSPFChart();
             GenMPHChart();
             GenNPOChart();
         });
+
+        $(window).resize(function () {
+            SetScreenSize();
+        })
+
+        function SetScreenSize() {
+            var view_height = $(window).height();
+            if (window.innerHeight == screen.height) {
+                $('#div_container').height(view_height * 0.87);
+                $('#div_selection').height(view_height * 0.59);
+                $('#div_content').height(view_height * 0.59);
+            }
+            else {
+                $('#div_container').height(view_height * 0.86);
+                $('#div_selection').height(view_height * 0.54);
+                $('#div_content').height(view_height * 0.54);
+            }
+        }
 
         function GenerateYearOption() {
             $('#ProjectYears').find('option').remove();
