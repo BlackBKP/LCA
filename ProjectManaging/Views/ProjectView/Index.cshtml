@@ -45,12 +45,12 @@
                 <div class="info-box-content">
                     <div class="row">
                         <div class="col-3">
-                            <h4 class="info-box-text">
+                            <h4 id="job_id" class="info-box-text">
                                 JOB ID : J21-0001
                             </h4>
                         </div>
                         <div class="col-9">
-                            <h4 class="info-box-text">
+                            <h4 id="job_name" class="info-box-text">
                                 Name : JOB A
                             </h4>
                         </div>
@@ -163,7 +163,7 @@
         $(document).ready(function () {
             SetScreenSize();
             GenerateYearOption();
-            GenProjectOptions();
+            GetJobID();
             GenSPFChart();
             GenMPHChart();
             GenNPOChart();
@@ -202,33 +202,69 @@
             GetJobID();
         });
 
+        var jobs = [];
         function GetJobID() {
-            var y = $('#ProjectYears').val();
-            if (y == "ALL") {
+            var year = $('#ProjectYears').val();
+            if (year == "ALL") {
                 console.log("Get All Job");
                 $.ajax({
-
-                });
+                type: "GET",
+                url: '@Url.Action("GetJobs", "ProjectView")',
+	            contentType: 'application/x-www-form-urlencoded',
+                data: {
+                    
+                },
+                success: function (response) {
+                    console.log("Response");
+                    console.log(response);
+                    jobs = response;
+                    GenProjectOptions();
+                }
+            });
             }
             else {
-                console.log("Get Job in " + y);
+                console.log("Get Job in " + year);
                 $.ajax({
-
-                });
+                type: "GET",
+                url: '@Url.Action("GetJobsByYear", "ProjectView")',
+	            contentType: 'application/x-www-form-urlencoded',
+                data: {
+                    year
+                },
+                success: function (response) {
+                    console.log("Response");
+                    console.log(response);
+                    jobs = response;
+                    GenProjectOptions();
+                }
+            });
             }
         }
-
 
         function GenProjectOptions() {
             $('#pj_lists').empty();
             var str = '';
-            for (var i = 1; i < 28; i++) {
+            for (var i = 0; i < jobs.length; i++) {
                 str += '<li class="list-group-item" style="padding:1px">';
-                str += '<button type="button" class="btn form-control" style="background-color:rgba(40,121,191,1);color:rgba(255,255,255,1)">';
-                str += 'J21 - ' + i.toString().padStart(4, "0") + '</button >';
+                str += '<button type="button" class="btn form-control" style="background-color:rgba(40,121,191,1);color:rgba(255,255,255,1)" onclick=ViewJobData("' + jobs[i].job_id + '")>';
+                str += jobs[i].job_id + '</button >';
                 str += '</li>';
             }
             $('#pj_lists').append(str);
+        }
+
+        function ViewJobData(job_id) {
+            var index = -1;
+            for (var i = 0; i < jobs.length; i++) {
+                if (jobs[i].job_id == job_id)
+                    index = i;
+            }
+            
+            $('#job_id').html("JOB NUMBER: " + jobs[index].job_number);
+            $('#job_name').html("JOB NAME: " + jobs[index].job_name);
+
+
+
         }
 
         //Spent per 15 days
