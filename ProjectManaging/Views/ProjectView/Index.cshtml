@@ -115,7 +115,7 @@
             </div>
 
             <div id="div_content" style="height:59vh;overflow-y:scroll;display:none">
-                <div class="card card-dark">
+                <div id="card_spf" class="card card-dark" style="display:none">
                     <div class="card-header">
                         <span class="card-title">
                             Spent Per Fortnight
@@ -126,7 +126,7 @@
                     </div>
                 </div>
 
-                <div class="card card-dark">
+                <div id="card_mph" class="card card-dark" style="display:none">
                     <div class="card-header">
                         <span class="card-title">
                             Manpower Per Hour
@@ -137,7 +137,7 @@
                     </div>
                 </div>
 
-                <div class="card card-dark">
+                <div id="card_npero" class="card card-dark" style="display:none">
                     <div class="card-header">
                         <span class="card-title">
                             Normal Per Overtime Ratio
@@ -312,8 +312,8 @@
                     job_id
                 },
                 success: function (response) {
-                    console.log("Half Month Spent");
-                    console.log(response);
+                    //console.log("Half Month Spent");
+                    //console.log(response);
                     GenSPFChart(response);
                 }
             });
@@ -353,162 +353,267 @@
 
         //Spent per 15 days
         function GenSPFChart(job) {
-            var ctx = document.getElementById('canvas_1').getContext('2d');
-            var chart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['JAN 1', 'JAN 2', 'FEB 1', 'FEB 2', 'MAR 1', 'MAR 2'],
-                    datasets: [
-                        {
-                            label: 'Spent Per Fortnight',
-                            type: 'line',
-                            data: [1, 2, 1, 2, 1, 1],
-                            backgroundColor: 'rgba(40,121,191,1)',
-                            borderColor: 'rgba(40,121,191,1)',
-                        },
-                        {
-                            label: 'Spent Total',
-                            type: 'line',
-                            data: [1, 3, 4, 6, 7, 8],
-                            backgroundColor: 'rgba(32,67,298,1)',
-                            borderColor: 'rgba(32,67,298,1)',
-                        },
-                        {
-                            label: 'Progress',
-                            type: 'line',
-                            data: [0, 3.3, 5.1, 7.4, 8.5, 10],
-                            backgroundColor: 'rgba(0,255,0,1)',
-                            borderColor: 'rgba(0,255,0,1)',
-                        },
-                        {
-                            label: '50% Budget',
-                            type: 'line',
-                            data: [5, 5, 5, 5, 5, 5],
-                            backgroundColor: 'rgba(255,255,0,0.2)',
-                            borderColor: 'rgba(255,255,0,0.2)',
-                        },
-                        {
-                            label: '80% Budget',
-                            type: 'line',
-                            data: [8, 8, 8, 8, 8, 8],
-                            fill: {
-                                value: 7,
-                                above: 'rgba(255,165,0,0.2)',
-                                below: 'rgba(255,255,0,0)'
-                            },
-                            borderColor: 'rgba(255,165,0,0.2)',
-                            backgroundColor: 'rgba(255,165,0,0.2)'
-                        },
-                        {
-                            label: 'Maximum Budget',
-                            type: 'line',
-                            data: [10, 10, 10, 10, 10, 10],
-                            fill: {
-                                value: 8,
-                                above: 'rgba(255,0,0,0.2)',
-                                below: 'rgba(255,0,0,0)'
-                            },
-                            borderColor: 'rgba(255,0,0,0.2)',
-                            backgroundColor: 'rgba(255,0,0,0.2)'
-                        }
-                    ],
-                },
-                options: {
-                    scales: {
-                        xAxes: [
+            if (chart != null)
+                chart.destroy();
+            if (job.length > 0) {
+                $('#card_spf').show();
+                var months = ["", "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+                var weeks = [];
+                var budget50 = [];
+                var budget70 = [];
+                var budget80 = [];
+                var budget100 = [];
+                var acc_cost = [];
+                var progress = [];
+                var spent_cost = [];
+
+                for (var i = 0; i < job.length; i++) {
+                    var week = months[job[i].month] + ' ' + job[i].week + ' ' + job[i].year;
+                    weeks.push(week);
+                    budget50.push(job[i].budget50);
+                    budget70.push(job[i].budget70);
+                    budget80.push(job[i].budget80);
+                    budget100.push(job[i].budget100);
+                    acc_cost.push(job[i].acc_cost);
+                    progress.push(job[i].progress);
+                    spent_cost.push(job[i].spent_cost);
+                }
+                var ctx = document.getElementById('canvas_1').getContext('2d');
+                var chart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: weeks,
+                        datasets: [
                             {
-                                max: 7,
-                                min: -1,
-                                ticks: {
-                                    stepSize: 0.5
-                                }
-                            }
-                        ],
-                        yAxes: [
+                                type: 'bar',
+                                label: 'Budget Spent',
+                                data: spent_cost,
+                                backgroundColor: 'rgba(255,0,0,1)',
+                                borderColor: 'rgba(255,0,0,1)',
+                                yAxisID: 'spent',
+                            },
                             {
-                                ticks: {
-                                    beginAtZero: true
-                                }
+                                type: 'line',
+                                label: "Total Spent",
+                                data: acc_cost,
+                                backgroundColor: 'rgba(0, 0, 255, 1)',
+                                borderColor: 'rgba(0, 0, 255, 1)',
+                                yAxisID: 'spent',
+                            },
+                            {
+                                label: 'Progress',
+                                data: progress,
+                                type: 'line',
+                                backgroundColor: 'rgba(0,255,0,1)',
+                                borderColor: 'rgba(0,255,0,1)',
+                                yAxisID: 'progress',
+                            },
+                            {
+                                type: 'line',
+                                label: "70% Budget",
+                                data: budget70,
+                                fill: false,
+                                backgroundColor: 'rgba(255,255,255,0.2)',
+                                borderColor: 'rgba(255, 255, 0, 0.3)',
+                            },
+                            {
+                                type: 'line',
+                                label: "80% Budget",
+                                data: budget80,
+                                fill: {
+                                    value: budget100[0] * 0.7,
+                                    above: 'rgba(255,200,50,0.2)',
+                                    below: 'rgba(255, 255, 255,0)',
+                                },
+                                borderDash: [10, 5],
+                                borderColor: ['rgba(255, 200, 50, 0)'],
+                            },
+                            {
+                                type: 'line',
+                                label: '100% of Budget',
+                                data: budget100,
+                                fill: {
+                                    value: budget100[0] * 0.8,
+                                    above: 'rgba(255,0,0,0.2)',
+                                    below: 'rgba(255, 255, 255,0)',
+                                },
+                                borderDash: [10, 5],
+                                borderColor: ['rgba(255, 0, 0, 0)'],
                             },
                         ]
                     },
-                    maintainAspectRatio: false
-                }
-            });
+                    options: {
+                        scales: {
+                            'spent': {
+                                type: 'linear',
+                                position: 'left',
+                                title: {
+                                    display: true,
+                                    text: 'Spent(BAHT)'
+                                },
+                                suggestedMin: 0,
+                                suggestedMax: budget100[0],
+                                ticks: {
+                                    stepSize: budget100[0] / 10
+                                }
+                            },
+                            'progress': {
+                                type: 'linear',
+                                position: 'right',
+                                title: {
+                                    display: true,
+                                    text: 'Progress(%)'
+                                },
+                                grid: {
+                                    display: false,
+                                },
+                                suggestedMin: 0,
+                                suggestedMax: 100,
+                                ticks: {
+                                    stepSize: 10
+                                }
+                            }
+                        },
+                        maintainAspectRatio: false,
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function (context) {
+                                        var lbl = context.dataset.label;
+                                        if (lbl == "Progress") {
+                                            var value = context.dataset.data[context.dataIndex];
+                                            return value + " %";
+
+                                        } else {
+                                            return context.dataset.data[context.dataIndex].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            else
+                $('$card_spf').hide();
         }
 
         //Manpower per hour
         function GenMPHChart(job) {
-            var ctx2 = document.getElementById('canvas_2').getContext('2d');
-            var chart2 = new Chart(ctx2, {
-                type: 'bar',
-                data: {
-                    labels: ['JAN 1', 'JAN 2', 'FEB 1', 'FEB 2', 'MAR 1', 'MAR 2'],
-                    datasets: [
-                        {
-                            label: 'Normal',
-                            data: [10, 9, 10, 11, 7, 6],
-                            backgroundColor: 'rgba(32,67,198,1)'
-                        },
-                        {
-                            label: 'Overtimes',
-                            data: [4, 3.5, 2.5, 1, 1.5, 0.5],
-                            backgroundColor: 'rgba(40,121,191,1)'
-                        }
-                    ],
-                },
-                options: {
-                    scales: {
-                        xAxes: [
+            if (chart2 != null)
+                chart2.destroy();
+            if (job.length > 0) {
+                $('#card_mph').show();
+                var months = ["", "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+                var weeks = [];
+                var normal = [];
+                var ot_1_5 = [];
+                var ot_3 = [];
+                var acc_hour = [];
+                for (var i = 0; i < job[i].length; i++) {
+                    var week = months[job[i].month] + ' ' + job[i].week + ' ' + job[i].year;
+                    weeks.push(week);
+                    normal.push(job[i].normal);
+                    ot_1_5.push(job[i].ot_1_5);
+                    ot_3.push(job[i].ot_3);
+                    acc_hour.push(job[i].acc_hour);
+                }
+                var col_normal = 'rgba(255,0,0,';
+                var col_ot15 = 'rgba(0,255,0,';
+                var col_ot03 = 'rgba(0,0,255,';
+                var col_acc = 'rgba(255,255,0,';
+                var ctx2 = document.getElementById('canvas_2').getContext('2d');
+                var chart2 = new Chart(ctx2, {
+                    type: 'bar',
+                    data: {
+                        labels: weeks,
+                        datasets: [
                             {
-                                stacked: true
+                                type: 'bar',
+                                label: 'Normal',
+                                data: normal,
+                                borderColor: col_normal + '1)',
+                                backgroundColor: col_normal + '0.75)',
+                                borderWidth: 1
+                            },
+                            {
+                                type: 'bar',
+                                label: 'Overtime 1.5',
+                                data: ot_1_5,
+                                backgroundColor: col_ot15 + '0.75)',
+                                borderColor: col_ot15 + '1)',
+                                borderWidth: 1
+                            },
+                            {
+                                type: 'bar',
+                                label: 'Overtime 3.0',
+                                data: ot_3,
+                                backgroundColor: col_ot03 + '0.75)',
+                                borderColor: col_ot03 + '1)',
+                                borderWidth: 1
+                            },
+                            {
+                                type: 'line',
+                                label: 'Total (Accumulation)',
+                                data: acc_hour,
+                                backgroundColor: col_acc + '0.75)',
+                                borderColor: col_acc + '1)',
                             }
-                        ],
-                        yAxes: [
-                            {
+                        ]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: {
                                 ticks: {
                                     beginAtZero: true
                                 },
                                 stacked: true
                             },
-                        ]
-                    },
-                    maintainAspectRatio: false
-                }
-            });
+                            xAxes: {
+                                stacked: true
+                            }
+                        },
+                        maintainAspectRatio: false
+                    }
+                });
+            }
+            else
+                $('#card_mph').hide();
         }
 
         //Normal Overtime Ratio
         function GenNPOChart(job) {
-            var ctx4 = document.getElementById('canvas_4').getContext('2d');
-            var chart4 = new Chart(ctx4, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Overtime', 'Normal'],
-                    datasets: [{
-                        data: [40, 200],
-                        backgroundColor: [
-                            'rgba(32,67,198,1)',
-                            'rgba(40,121,191,1)'
-                        ],
-                        borderColor: [
-                            'rgba(32,67,198,0)',
-                            'rgba(40,121,191,0)'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
+            if (chart4 != null)
+                chart4.destroy();
+            if (job.length > 0) {
+                $('#card_npero').show();
+                var ctx4 = document.getElementById('canvas_4').getContext('2d');
+                var chart4 = new Chart(ctx4, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Overtime', 'Normal'],
+                        datasets: [{
+                            data: [job.overtime, job.normal],
+                            backgroundColor: [
+                                'rgba(40, 121, 191,1)',
+                                'rgba(32, 67, 198,1)'
+                            ],
+                        }]
+                    },
+                    options: {
                     maintainAspectRatio: false,
-                    tooltips: {
-                        callbacks: {
-                            label: function (tooltipItem) {
-                                return (Number(tooltipItem.yLabel) / 240) * 100 + "%";
+                        tooltips: {
+                            callbacks: {
+                                label: function (tooltipItem, data) {
+                                    return data.labels[tooltipItem.index] + ': ' + parseInt((data.datasets[0].data[tooltipItem.index] / 240) * 100) + ' %';
+                                }
                             }
                         }
                     }
-                }
-            });
+                });
+            }
+            else
+                $('#card_npero').hide();
         }
 
     </script>

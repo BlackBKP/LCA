@@ -59,6 +59,7 @@ namespace ProjectManaging.Controllers
                 }
                 dr.Close();
             }
+            jobs = jobs.OrderByDescending(o => o.job_id).ToList();
             return Json(jobs);
         }
 
