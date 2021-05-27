@@ -41,7 +41,6 @@
                     <tr>
                         <th>JOB ID</th>
                         <th>Name</th>
-                        <th>PM</th>
                         <th>Budget</th>
                     </tr>
                 </thead>
@@ -50,21 +49,18 @@
                     <tr>
                         <td>P01</td>
                         <td>Project 01</td>
-                        <td>Manager A</td>
                         <td>10M</td>
                     </tr>
 
                     <tr>
                         <td>P02</td>
                         <td>Project 02</td>
-                        <td>Manager B</td>
                         <td>5M</td>
                     </tr>
 
                     <tr>
                         <td>P03</td>
                         <td>Project 03</td>
-                        <td>Manager C</td>
                         <td>1M</td>
                     </tr>
 
@@ -91,9 +87,11 @@
             <!-- Modal Body -->
             <div class="modal-body">
                 <form>
-                    <label for="input_job_id">Job ID</label>
-                    <input id="input_job_id" class="form-control" type="text" placeholder="JYY-XXXX" disabled />
-                    <br />
+                    <div style="display:none">
+                        <label for="input_job_id">Job ID</label>
+                        <input id="input_job_id" class="form-control" type="text" placeholder="JYY-XXXX" disabled />
+                        <br />
+                    </div>
 
                     <label for="input_job_year">Job Year</label>
                     <input id="input_job_year" class="form-control" type="text" placeholder="YYYY" />
@@ -188,10 +186,51 @@
 @section Scripts
 {
     <script type="text/javascript">
-
         $(document).ready(function () {
-
+            GetJobLists();
         });
+
+        var jobs = [];
+        async function GetJobLists() {
+            await $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetJobs", "Project")',
+	            contentType: 'application/x-www-form-urlencoded',
+                data: {
+                    
+                },
+                success: function (response) {
+                    console.log("Response");
+                    console.log(response);
+                    jobs = response;
+                    GenerateJobsList();
+                }
+            });
+        }
+
+        var table;
+        function GenerateJobsList() {
+            var datas = [];
+            for (var i = 0; i < jobs.length; i++) {
+                var jnum = jobs[i].job_number != "" ? jobs[i].job_number : jobs[i].job_id;
+                datas.push([
+                    jnum,
+                    jobs[i].job_name,
+                    jobs[i].estimated_budget,
+                ]);
+            } 
+
+            if (table != null)
+                $('#project_table').DataTable().destroy();
+
+            table = $('#project_table').DataTable({
+                data: datas,
+                pagingType: "full_numbers",
+                order: [
+                    [0, "desc"]
+                ],
+            });
+        };
 
         $('#btn_add_job').on('click', function () {
             $('#modal_add_job').modal();
