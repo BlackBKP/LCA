@@ -46,12 +46,12 @@
                     <div class="row">
                         <div class="col-3">
                             <h4 id="job_id" class="info-box-text">
-                                JOB ID : J21-0001
+                                Please Select Job
                             </h4>
                         </div>
                         <div class="col-9">
                             <h4 id="job_name" class="info-box-text">
-                                Name : JOB A
+                                
                             </h4>
                         </div>
                     </div>
@@ -60,61 +60,61 @@
 
             <div class="row">
                 <div class="col-3">
-                    <div class="info-box bg-dark" style="height:90px">
+                    <div id="ib_progress" class="info-box bg-dark" style="height:90px;display:none">
                         <i class="fas fa-chart-line info-box-icon bg-teal"></i>
                         <div class="info-box-content">
                             <span class="info-box-text" style="font-weight:bold">Progress</span>
                             <div class="progress bg-white">
-                                <div class="progress-bar bg-teal" style="width:80%"></div>
+                                <div id="pb_progress" class="progress-bar bg-teal" style="width:80%"></div>
                             </div>
-                            <span class="progress-description">
+                            <span id="pb_progress_description" class="progress-description">
                                 80% Completion
                             </span>
                         </div>
                     </div>
                 </div>
                 <div class="col-3">
-                    <div class="info-box bg-dark" style="height:90px">
+                    <div id="ib_spent" class="info-box bg-dark" style="height:90px;display:none">
                         <i class="fas fa-money-bill-wave info-box-icon bg-lightblue"></i>
                         <div class="info-box-content">
                             <span class="info-box-text">Budget Spent</span>
-                            <span class="info-box-number">75/100</span>
+                            <span id="spent_number" class="info-box-number">75/100</span>
                             <div class="progress bg-white">
-                                <div class="progress-bar bg-lightblue" style="width:75%"></div>
+                                <div id="pb_spent" class="progress-bar bg-lightblue" style="width:75%"></div>
                             </div>
-                            <span class="progress-description">
+                            <span id="pb_spent_description" class="progress-description">
                                 75% Spent
                             </span>
                         </div>
                     </div>
                 </div>
                 <div class="col-3">
-                    <div class="info-box bg-dark" style="height:90px">
+                    <div id="ib_remain" class="info-box bg-dark" style="height:90px;display:none">
                         <i class="fas fa-coins info-box-icon bg-danger"></i>
                         <div class="info-box-content">
                             <span class="info-box-text">Budget Remain</span>
-                            <span class="info-box-number">25/100</span>
+                            <span id="ib_remain_number" class="info-box-number">25/100</span>
                             <div class="progress bg-white">
-                                <div class="progress-bar bg-danger" style="width:25%"></div>
+                                <div id="pb_remain" class="progress-bar bg-danger" style="width:25%"></div>
                             </div>
-                            <span class="progress-description">
+                            <span id="pb_remain_description" class="progress-description">
                                 25% of Budget left
                             </span>
                         </div>
                     </div>
                 </div>
                 <div class="col-3">
-                    <div class="info-box bg-dark" style="height:90px">
+                    <div id="ib_labor" class="info-box bg-dark" style="height:90px;display:none">
                         <i class="fas fa-users info-box-icon bg-warning"></i>
                         <div class="info-box-content">
                             <span class="info-box-text">Manpower Per Hour</span>
-                            <span class="info-box-number">22</span>
+                            <span id="ib_labor_number" class="info-box-number">22</span>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div id="div_content" style="height:59vh;overflow-y:scroll">
+            <div id="div_content" style="height:59vh;overflow-y:scroll;display:none">
                 <div class="card card-dark">
                     <div class="card-header">
                         <span class="card-title">
@@ -164,9 +164,6 @@
             SetScreenSize();
             GenerateYearOption();
             GetJobID();
-            GenSPFChart();
-            GenMPHChart();
-            GenNPOChart();
         });
 
         $(window).resize(function () {
@@ -212,7 +209,7 @@
                 url: '@Url.Action("GetJobs", "ProjectView")',
 	            contentType: 'application/x-www-form-urlencoded',
                 data: {
-                    
+
                 },
                 success: function (response) {
                     console.log("Response");
@@ -259,16 +256,103 @@
                 if (jobs[i].job_id == job_id)
                     index = i;
             }
-            
             $('#job_id').html("JOB NUMBER: " + jobs[index].job_number);
             $('#job_name').html("JOB NAME: " + jobs[index].job_name);
+            GetJobProgress(job_id);
+            $('#div_content').show();
+            GetHalfMonthSpent(job_id);
+            GetManPower(job_id);
+            GetNormalOvertimeRatio(job_id);
+        }
 
+        function GetJobProgress(job_id) {
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetJobProgress", "ProjectView")',
+                contentType: 'application/x-www-form-urlencoded',
+                data: {
+                    job_id
+                },
+                success: function (response) {
+                    console.log("Progress");
+                    console.log(response);
+                    //Progress
+                    var percentage_progress = response[0].work_completion + "%";
+                    $('#ib_progress').show();
+                    $('#pb_progress').width(percentage_progress);
+                    $('#pb_progress_description').html(percentage_progress + " Work Completion");
 
+                    //Spent
+                    var percentage_spent = response[0].cost_usage;
+                    $('#ib_spent').show();
+                    $('#spent_number').html(response[0].cost_to_date + "/" + response[0].estimated_budget);
+                    $('#pb_spent').width(percentage_spent + "%");
+                    $('#pb_spent_description').html(percentage_spent + "% Budget Spent");
 
+                    //Remain
+                    var percentage_remain = Math.round((response[0].remainning_cost / response[0].estimated_budget) * 100);
+                    $('#ib_remain').show();
+                    $('#ib_remain_number').html(response[0].remainning_cost + "/" + response[0].estimated_budget);
+                    $('#pb_remain').width(percentage_remain + "%");
+                    $('#pb_remain_description').html(percentage_remain + "% Budget Remain");
+
+                    //Labor
+                    $('#ib_labor').show();
+                    $('#ib_labor_number').html(response[0].no_of_labor);
+                }
+            });
+        }
+
+        function GetHalfMonthSpent(job_id) {
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetHalfMonthSpent", "ProjectView")',
+                contentType: 'application/x-www-form-urlencoded',
+                data: {
+                    job_id
+                },
+                success: function (response) {
+                    console.log("Half Month Spent");
+                    console.log(response);
+                    GenSPFChart(response);
+                }
+            });
+        }
+
+        function GetManPower(job_id) {
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetManPower", "ProjectView")',
+                contentType: 'application/x-www-form-urlencoded',
+                data: {
+                    job_id
+                },
+                success: function (response) {
+                    console.log("Man Power");
+                    console.log(response);
+                    GenMPHChart(response);
+                }
+            });
+        }
+
+        function GetNormalOvertimeRatio(job_id) {
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetNormalOvertimeRatio", "ProjectView")',
+                contentType: 'application/x-www-form-urlencoded',
+                data: {
+                    job_id
+                },
+                success: function (response) {
+                    console.log("Normal Overtime Ratio");
+                    console.log(response);
+                    GenNPOChart(response);
+                }
+            });
         }
 
         //Spent per 15 days
-        function GenSPFChart() {
+        function GenSPFChart(job) {
             var ctx = document.getElementById('canvas_1').getContext('2d');
             var chart = new Chart(ctx, {
                 type: 'line',
@@ -354,7 +438,7 @@
         }
 
         //Manpower per hour
-        function GenMPHChart() {
+        function GenMPHChart(job) {
             var ctx2 = document.getElementById('canvas_2').getContext('2d');
             var chart2 = new Chart(ctx2, {
                 type: 'bar',
@@ -395,7 +479,7 @@
         }
 
         //Normal Overtime Ratio
-        function GenNPOChart() {
+        function GenNPOChart(job) {
             var ctx4 = document.getElementById('canvas_4').getContext('2d');
             var chart4 = new Chart(ctx4, {
                 type: 'doughnut',
