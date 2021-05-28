@@ -178,12 +178,18 @@
                                 callbacks: {
                                     label: function (context) {
                                         var lbl = context.dataset.label;
+                                        var value = context.dataset.data[context.dataIndex];
                                         if (lbl == "Progress") {
-                                            var value = context.dataset.data[context.dataIndex];
-                                            return value + " %";
-
-                                        } else {
-                                            return context.dataset.data[context.dataIndex].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                            return "Progress: " + value + " %";
+                                        }
+                                        else if (lbl == "Budget Spent") {
+                                            return "Budget Spent: " + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                        }
+                                        else if (lbl == "Total Spent") {
+                                            return "Total Spent: " + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                        }
+                                        else {
+                                            return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                                         }
                                     }
                                 }
