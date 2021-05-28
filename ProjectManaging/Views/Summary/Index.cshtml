@@ -29,7 +29,7 @@
             </div>
         </div>
         <div class="card-body">
-            <table id="summary_table" class="table table-sm table-hover" style="width:100%;overflow-x:auto">
+            <table id="summary_table" class="table table-sm table-hover table-head-fixed" style="width:100%">
                 <thead>
                     <tr>
                         <th style="text-align:center">Job Number</th>
@@ -124,17 +124,18 @@
                     [0, "desc"]
                 ],
                 columnDefs: [
+                    { "className": "dt-center", "targets": "_all" },
                     {
                         targets: [2, 3, 4, 5,6],
                         visible: show_cost_details,
                         searchable: show_cost_details,
-                        className: 'bg-lightblue'
+                        //className: 'bg-lightblue'
                     },
                     {
                         targets: [11, 12, 13],
                         visible: show_mph_details,
                         searchable: show_mph_details,
-                        className: 'bg-blue'
+                        //className: 'bg-blue'
                     }
                 ],
             });
