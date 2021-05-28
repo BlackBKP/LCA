@@ -12,11 +12,11 @@ namespace ProjectManaging.Controllers
 {
     public class HomeController : Controller
     {
-        IHome Home;
+        ISpentPerWeek SPW;
 
         public HomeController()
         {
-            this.Home = new HomeService();
+            this.SPW = new SpentPerWeekService();
         }
 
         public IActionResult Index()
@@ -28,7 +28,7 @@ namespace ProjectManaging.Controllers
         public JsonResult GetSpentCostPerWeeks()
         {
             List<List<SpentPerWeekModel>> projects = new List<List<SpentPerWeekModel>>();
-            List<SpentPerWeekModel> spws = Home.GetSpentCostPerWeeks();
+            List<SpentPerWeekModel> spws = SPW.GetSpentCostPerWeeks();
             string[] job_id = spws.OrderByDescending(o => o.job_id).Select(s => s.job_id).Distinct().ToArray();
             for(int i = 0; i < job_id.Count(); i++)
             {

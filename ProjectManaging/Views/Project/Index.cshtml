@@ -200,8 +200,8 @@
                     
                 },
                 success: function (response) {
-                    console.log("Response");
-                    console.log(response);
+                    //console.log("Response");
+                    //console.log(response);
                     jobs = response;
                     GenerateJobsList();
                 }
@@ -323,8 +323,8 @@
                     if (response.length == 0)
                         alert('Some error occured while uploading');
                     else {
-                        console.log("Response");
-                        console.log(response);
+                        //console.log("Response");
+                        //console.log(response);
                         import_jobs = response;
                         GenUploadData();
                     }

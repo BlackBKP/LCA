@@ -40,7 +40,7 @@
         }
 
         function GenSpentChart(jobs) {
-            console.log(jobs);
+            //console.log(jobs);
             var i = 0;
             for (i = 0; i < jobs.length; i++) {
                 var job_year = jobs[i][0].job_id.substring(0, 3);
@@ -179,11 +179,7 @@
                                     label: function (context) {
                                         var lbl = context.dataset.label;
                                         if (lbl == "Progress") {
-                                           // var Budget = jobs[context.chart.id][0].budget100;
                                             var value = context.dataset.data[context.dataIndex];
-                                            //console.log(Budget);
-                                           // console.log(value);
-                                            //var percent = value / Budget * 100;
                                             return value + " %";
 
                                         } else {
