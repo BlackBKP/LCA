@@ -393,24 +393,24 @@
                                 type: 'bar',
                                 label: 'Budget Spent',
                                 data: spent_cost,
-                                backgroundColor: 'rgba(255,0,0,1)',
-                                borderColor: 'rgba(255,0,0,1)',
+                                backgroundColor: 'rgba(2,62,138,0.75)',
+                                borderColor: 'rgba(2,62,138,1)',
                                 yAxisID: 'spent',
                             },
                             {
                                 type: 'line',
                                 label: "Total Spent",
                                 data: acc_cost,
-                                backgroundColor: 'rgba(0, 0, 255, 1)',
-                                borderColor: 'rgba(0, 0, 255, 1)',
+                                backgroundColor: 'rgba(0, 150, 199, 0.75)',
+                                borderColor: 'rgba(0, 150, 199, 1)',
                                 yAxisID: 'spent',
                             },
                             {
                                 label: 'Progress',
                                 data: progress,
                                 type: 'line',
-                                backgroundColor: 'rgba(0,255,0,1)',
-                                borderColor: 'rgba(0,255,0,1)',
+                                backgroundColor: 'rgba(72,202,228,0.75)',
+                                borderColor: 'rgba(72,202,228,1)',
                                 yAxisID: 'progress',
                             },
                             {
@@ -523,10 +523,10 @@
                     ot_3.push(job[i].ot_3);
                     acc_hour.push(job[i].acc_hour);
                 }
-                var col_normal = 'rgba(255,0,0,';
-                var col_ot15 = 'rgba(0,255,0,';
-                var col_ot03 = 'rgba(0,0,255,';
-                var col_acc = 'rgba(255,255,0,';
+                var col_normal = 'rgba(2,62,138,';
+                var col_ot15 = 'rgba(0,150,199,';
+                var col_ot03 = 'rgba(72,202,228,';
+                var col_acc = 'rgba(3,4,94,';
                 var ctx2 = document.getElementById('canvas_2').getContext('2d');
                 chart2 = new Chart(ctx2, {
                     type: 'bar',
@@ -596,12 +596,12 @@
                 chart4 = new Chart(ctx4, {
                     type: 'doughnut',
                     data: {
-                        labels: ['Overtime', 'Normal'],
+                        labels: ['Normal', 'Overtime'],
                         datasets: [{
-                            data: [job[0].overtime, job[0].normal],
+                            data: [job[0].normal,job[0].overtime],
                             backgroundColor: [
-                                'rgba(40, 121, 191,1)',
-                                'rgba(32, 67, 198,1)'
+                                'rgba(2, 62, 138,0.75)',
+                                'rgba(0, 150, 199,0.75)'
                             ],
                         }]
                     },
