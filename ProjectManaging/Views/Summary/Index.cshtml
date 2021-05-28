@@ -95,22 +95,22 @@
                 var job_number = summaries[i].job_id.substring(4, summaries[i].job_id.length).padStart(4,'0');
                 datas.push([
                     job_year + '-' + job_number,
-                    summaries[i].estimated_budget,
-                    summaries[i].labor_cost,
-                    summaries[i].ot_labor_cost,
-                    summaries[i].accomodation_cost,
-                    summaries[i].compensation_cost,
-                    summaries[i].social_security,
-                    summaries[i].cost_to_date,
-                    summaries[i].remainning_cost,
+                    summaries[i].estimated_budget.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+                    summaries[i].labor_cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+                    summaries[i].ot_labor_cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+                    summaries[i].accomodation_cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+                    summaries[i].compensation_cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+                    summaries[i].social_security.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+                    summaries[i].cost_to_date.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+                    summaries[i].remainning_cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
                     summaries[i].cost_usage,
                     summaries[i].work_completion,
-                    summaries[i].hours,
-                    summaries[i].ot_1_5,
-                    summaries[i].ot_3,
-                    summaries[i].total_man_hour,
-                    summaries[i].no_of_labor,
-                    summaries[i].avg_labor_cost_per_hour,
+                    summaries[i].hours.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+                    summaries[i].ot_1_5.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+                    summaries[i].ot_3.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+                    summaries[i].total_man_hour.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+                    summaries[i].no_of_labor.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+                    summaries[i].avg_labor_cost_per_hour.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
                 ]);
             }
 
@@ -137,7 +137,7 @@
                         searchable: show_mph_details,
                         //className: 'bg-blue'
                     }
-                ],
+                ]
             });
         }
 

@@ -44,13 +44,13 @@
             <div class="info-box bg-dark" style="width:100%;">
                 <div class="info-box-content">
                     <div class="row">
-                        <div class="col-3">
-                            <h4 id="job_id" class="info-box-text">
+                        <div class="col-6">
+                            <h4 id="job_id" class="info-box-text text-right">
                                 Please Select Job
                             </h4>
                         </div>
-                        <div class="col-9">
-                            <h4 id="job_name" class="info-box-text">
+                        <div class="col-6">
+                            <h4 id="job_name" class="info-box-text text-left">
                                 
                             </h4>
                         </div>
@@ -59,7 +59,7 @@
             </div>
 
             <div class="row">
-                <div class="col-3">
+                <div class="col-4">
                     <div id="ib_progress" class="info-box bg-dark" style="height:90px;display:none">
                         <i class="fas fa-chart-line info-box-icon bg-teal"></i>
                         <div class="info-box-content">
@@ -73,7 +73,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-3">
+                <div class="col-4">
                     <div id="ib_spent" class="info-box bg-dark" style="height:90px;display:none">
                         <i class="fas fa-money-bill-wave info-box-icon bg-lightblue"></i>
                         <div class="info-box-content">
@@ -88,7 +88,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-3">
+                @*<div class="col-3">
                     <div id="ib_remain" class="info-box bg-dark" style="height:90px;display:none">
                         <i class="fas fa-coins info-box-icon bg-danger"></i>
                         <div class="info-box-content">
@@ -102,12 +102,12 @@
                             </span>
                         </div>
                     </div>
-                </div>
-                <div class="col-3">
+                </div>*@
+                <div class="col-4">
                     <div id="ib_labor" class="info-box bg-dark" style="height:90px;display:none">
                         <i class="fas fa-users info-box-icon bg-warning"></i>
                         <div class="info-box-content">
-                            <span class="info-box-text">Manpower Per Hour</span>
+                            <span class="info-box-text">Max Number Of Labor</span>
                             <span id="ib_labor_number" class="info-box-number">22</span>
                         </div>
                     </div>
@@ -248,7 +248,8 @@
             for (var i = 0; i < jobs.length; i++) {
                 str += '<li class="list-group-item" style="padding:1px">';
                 str += '<button type="button" class="btn form-control" style="background-color:rgba(40,121,191,1);color:rgba(255,255,255,1)" onclick=ViewJobData("' + jobs[i].job_id + '")>';
-                str += jobs[i].job_id + '</button >';
+                str += jobs[i].job_id;
+                str += '</button >';
                 str += '</li>';
             }
             $('#pj_lists').append(str);
@@ -278,8 +279,8 @@
                     job_id
                 },
                 success: function (response) {
-                    //console.log("Progress");
-                    //console.log(response);
+                    console.log("Progress");
+                    console.log(response);
 
                     //Progress
                     var percentage_progress = response[0].work_completion + "%";
@@ -295,11 +296,11 @@
                     $('#pb_spent_description').html(percentage_spent + "% Budget Spent");
 
                     //Remain
-                    var percentage_remain = Math.round((response[0].remainning_cost / response[0].estimated_budget) * 100);
+                    @*var percentage_remain = Math.round((response[0].remainning_cost / response[0].estimated_budget) * 100);
                     $('#ib_remain').show();
                     $('#ib_remain_number').html(response[0].remainning_cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "/" + response[0].estimated_budget.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
                     $('#pb_remain').width(percentage_remain + "%");
-                    $('#pb_remain_description').html(percentage_remain + "% Budget Remain");
+                    $('#pb_remain_description').html(percentage_remain + "% Budget Remain");*@
 
                     //Labor
                     $('#ib_labor').show();
@@ -409,8 +410,8 @@
                                 label: 'Progress',
                                 data: progress,
                                 type: 'line',
-                                backgroundColor: 'rgba(72,202,228,0.75)',
-                                borderColor: 'rgba(72,202,228,1)',
+                                backgroundColor: 'rgba(60,224,175,0.75)',
+                                borderColor: 'rgba(60,224,175,1)',
                                 yAxisID: 'progress',
                             },
                             {
