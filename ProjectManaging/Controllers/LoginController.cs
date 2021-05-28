@@ -60,7 +60,7 @@ namespace ProjectManaging.Controllers
         public IActionResult Login(string username, string password)
         {
             if(ActiveDirectoryAuthenticate(username, password))
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "ProjectView");
             else
                 return View("Index");
         }
