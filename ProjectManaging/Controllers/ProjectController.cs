@@ -138,10 +138,10 @@ namespace ProjectManaging.Controllers
                         break;
 
                     JobModel job = new JobModel();
-                    job.job_id = row.GetCell(0).StringCellValue.Trim().Replace("-",String.Empty);
-                    job.job_number = row.GetCell(1).StringCellValue.Trim();
-                    job.job_name = row.GetCell(2).StringCellValue;
-                    job.job_year = Convert.ToInt32(row.GetCell(3).NumericCellValue);
+                    job.job_id = row.GetCell(0).StringCellValue.Replace("-",String.Empty).Replace(" ",String.Empty);
+                    job.job_number = row.GetCell(0).StringCellValue.Trim();
+                    job.job_name = row.GetCell(1).StringCellValue;
+                    job.job_year = Convert.ToInt32(row.GetCell(2).NumericCellValue);
                     import_jobs.Add(job);
                 }
             }
