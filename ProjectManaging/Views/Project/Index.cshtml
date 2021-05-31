@@ -1,4 +1,7 @@
 ﻿<!-- Project Index -->
+@{
+    ViewData["Title"] = "Job Management";
+}
 <div class="container-fluid" style="padding-top:10px">
 
     <div class="info-box bg-dark">
@@ -108,7 +111,7 @@
                     <br />
 
                     @*<label for="input_job_budget">Budget</label>
-                    <input id="input_job_budget" class="form-control" type="text" placeholder="Estimated Budget" />*@
+                        <input id="input_job_budget" class="form-control" type="text" placeholder="Estimated Budget" />*@
                 </form>
             </div>
 
@@ -199,7 +202,7 @@
                 url: '@Url.Action("GetJobs", "Project")',
 	            contentType: 'application/x-www-form-urlencoded',
                 data: {
-                    
+
                 },
                 success: function (response) {
                     //console.log("Response");
@@ -221,7 +224,7 @@
                     jobs[i].job_name,
                     jobs[i].estimated_budget.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
                 ]);
-            } 
+            }
 
             if (table != null)
                 $('#project_table').DataTable().destroy();
@@ -277,7 +280,7 @@
                     id, number, name, year
                 },
                 success: function (response) {
-
+                    window.location.reload();
                 }
             })
         });
@@ -374,7 +377,7 @@
 
                 },
                 success: function (response) {
-
+                    $('#modal_upload').hide();
                 }
             })
         }
