@@ -276,8 +276,8 @@
                     job_id
                 },
                 success: function (response) {
-                    console.log("Progress");
-                    console.log(response);
+                    //console.log("Progress");
+                    //console.log(response);
 
                     //Progress
                     var percentage_progress = response[0].work_completion + "%";
@@ -576,6 +576,10 @@
                     options: {
                         scales: {
                             yAxes: {
+                                title: {
+                                    display: true,
+                                    text: 'Manpower(Hours)'
+                                },
                                 ticks: {
                                     beginAtZero: true
                                 },
