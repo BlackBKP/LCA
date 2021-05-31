@@ -44,8 +44,8 @@
             var i = 0;
             for (i = 0; i < jobs.length; i++) {
                 var job_year = jobs[i][0].job_id.substring(0, 3);
-                var job_number = jobs[i][0].job_id.substring(4, jobs[i][0].job_id.length);
-                var job_id = job_year + '-' + job_number.padStart(4, '0');
+                var job_number = jobs[i][0].job_id.substring(3);
+                var job_id = job_year + '-' + job_number;
                 var str = '<div class="card card-dark">' +
                             '<div class="card-header">' +
                                 '<span class="card-title">JOB ID: ' + job_id + '</span>' +

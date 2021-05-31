@@ -44,7 +44,8 @@
         function GenChart(data) {
             $('#project_lists').empty();
             for (var i = 0; i < data.length; i++) {
-                var str = '<div class="card card-dark"><div class="card-header"><span>Job ID: ' + data[i].job_id + '</span></div>';
+                var job_number = data[i].job_id.substring(0, 3) + '-' + data[i].job_id.substring(3);
+                var str = '<div class="card card-dark"><div class="card-header"><span>Job ID: ' + job_number + '</span></div>';
                 str += '<div class="card-body"><canvas id="' + data[i].job_id + '" style="height:400px"></canvas></div></div>';
                 $('#project_lists').append(str);
 
