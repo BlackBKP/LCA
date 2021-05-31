@@ -42,7 +42,7 @@
                 var job_number = data[i][0].job_id.substring(3);
                 var job_id = job_year + '-' + job_number.padStart(4, '0');
 
-                var str = '<div class="card card-dark"><div class="card-header"><span class="card-title">' + job_id + '</span></div>';
+                var str = '<div class="card card-dark"><div class="card-header"><span class="card-title">JOB ID: ' + job_id + '</span></div>';
                 str += '<div class="card-body"><canvas id="' + job_id + '" style="height:400px"></canvas></div></div>';
                 $('#projects').append(str);
 

@@ -13,7 +13,7 @@
                 <i class="info-box-icon fas fa-list"></i>
                 <div class="info-box-content">
                     <span class="info-box-text">TOTAL JOBS</span>
-                    <span class="info-box-number">3/3</span>
+                    <span id="total_jobs" class="info-box-number">3/3</span>
                 </div>
             </div>
         </div>
@@ -213,8 +213,9 @@
         var table;
         function GenerateJobsList() {
             var datas = [];
+            $('#total_jobs').val(jobs.length)
             for (var i = 0; i < jobs.length; i++) {
-                var jnum = jobs[i].job_number != "" ? jobs[i].job_number : jobs[i].job_id;
+                var jnum = jobs[i].job_number != "" ? jobs[i].job_number : jobs[i].job_id.substring(0,3) + '-' + jobs[i].job_id.substring(3);
                 datas.push([
                     jnum,
                     jobs[i].job_name,

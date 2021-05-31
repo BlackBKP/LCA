@@ -172,6 +172,87 @@
 
 </div>
 
+<!-- Modal -->
+<div class="modal" id="ModalEditJobSpent" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Job Spent and Progress</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label>Year</label>
+                        <input class="form-control" value="2021" type="text" disabled />
+                    </div>
+                    <div class="form-group">
+                        <label>Month</label>
+                        <input class="form-control" value="JANUARY" type="text" disabled />
+                    </div>
+                    <hr />
+                    <label>Week 1</label>
+                    <div class="form-group row" style="padd">
+                        <div class="col-4">
+                            <label class="col-form-label" for="labor_cost_w1">Labor Cost</label>
+                            <label class="col-form-label" for="ot_cost_w1">OT Cost</label>
+                            <label class="col-form-label" for="accommodation_cost_w1">Accommodation Cost</label>
+                            <label class="col-form-label" for="compensation_cost_w1">Compensation Cost</label>
+                            <label class="col-form-label" for="social_security_w1">Social Security</label>
+                        </div>
+                        <div class="col-7">
+                            <input id="labor_cost_w1" class="form-control" type="number" />
+                            <input id="ot_cost_w1" class="form-control" type="number" />
+                            <input id="accommodation_cost_w1" class="form-control" type="number" />
+                            <input id="compensation_cost_w1" class="form-control" type="number" />
+                            <input id="social_security_w1" class="form-control" type="number" />
+                        </div>
+                        <div class="col-1">
+                            <label class="col-form-label">BAHT</label>
+                            <label class="col-form-label">BAHT</label>
+                            <label class="col-form-label">BAHT</label>
+                            <label class="col-form-label">BAHT</label>
+                            <label class="col-form-label">BAHT</label>
+                        </div>
+                    </div>
+                    <hr />
+                    <label>Week 2</label>
+                    <div class="form-group row">
+                        <div class="col-4">
+                            <label class="col-form-label" for="labor_cost_w2">Labor Cost</label>
+                            <label class="col-form-label" for="ot_cost_w2">OT Cost</label>
+                            <label class="col-form-label" for="accommodation_cost_w2">Accommodation Cost</label>
+                            <label class="col-form-label" for="compensation_cost_w2">Compensation Cost</label>
+                            <label class="col-form-label" for="social_security_w2">Social Security</label>
+                        </div>
+                        <div class="col-7">
+                            <input id="labor_cost_w2" class="form-control" type="number" />
+                            <input id="ot_cost_w2" class="form-control" type="number" />
+                            <input id="accommodation_cost_w2" class="form-control" type="number" />
+                            <input id="compensation_cost_w2" class="form-control" type="number" />
+                            <input id="social_security_w2" class="form-control" type="number" />
+                        </div>
+                        <div class="col-1">
+                            <label class="col-form-label">BAHT</label>
+                            <label class="col-form-label">BAHT</label>
+                            <label class="col-form-label">BAHT</label>
+                            <label class="col-form-label">BAHT</label>
+                            <label class="col-form-label">BAHT</label>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts
 {
     <script type="text/javascript">
@@ -313,7 +394,7 @@
             }
 
             if (index > -1) {
-                console.log(jobs[index]);
+                //console.log(jobs[index]);
                 var card = document.getElementById("card_job_detail");
                 card.style.display = "block";
                 $('#job_number_detail').text("Job Number: " + jobs[index][0].job_number);
@@ -470,6 +551,12 @@
                 }
             })
         }
+
+        @*$('#table_details tbody').on('click', 'tr', function () {
+            $('#ModalEditJobSpent').modal("show");
+            var tt = $('#table_details').DataTable();
+            console.log(tt.row(this).data());
+        });*@
 
     </script>
 }
