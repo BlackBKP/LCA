@@ -291,8 +291,11 @@
             $('#div_upload').hide();
             $('#btn_confirm_import').attr('disabled', true);
             import_table = null;
+            $('#import_file').val(null);
+            $('#import_file_label').text("Select File");
         });
 
+        var duplicate_jobs = [];
         var import_jobs = [];
         $('#import_file').on('change', async function () {
             var fileExtension = ['xls', 'xlsx'];
@@ -329,9 +332,10 @@
                     if (response.length == 0)
                         alert('Some error occured while uploading');
                     else {
-                        //console.log("Response");
-                        //console.log(response);
-                        import_jobs = response;
+                        console.log("Response");
+                        console.log(response);
+                        import_jobs = response[0];
+                        duplicate_jobs = response[1];
                         GenUploadData();
                     }
                 },

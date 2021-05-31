@@ -100,7 +100,9 @@ namespace ProjectManaging.Controllers
             string folderName = "files";
             string webRootPath = _hostingEnvironment.WebRootPath;
             string newPath = Path.Combine(webRootPath, folderName);
+            List<string> job_ids = GetJobID();
             import_jobs = new List<JobModel>();
+            List<JobModel> duplicated = new List<JobModel>();
             if (!Directory.Exists(newPath))
             {
                 Directory.CreateDirectory(newPath);
@@ -142,10 +144,40 @@ namespace ProjectManaging.Controllers
                     job.job_number = row.GetCell(0).StringCellValue.Trim();
                     job.job_name = row.GetCell(1).StringCellValue;
                     job.job_year = Convert.ToInt32(row.GetCell(2).NumericCellValue);
-                    import_jobs.Add(job);
+                    int ind = import_jobs.FindIndex(f => f.job_id == job.job_id);
+                    int ind2 = job_ids.IndexOf(job.job_id);
+                    if (ind < 0 && ind2 < 0)
+                        import_jobs.Add(job);
+                    else
+                        duplicated.Add(job);
                 }
             }
-            return Json(import_jobs);
+            List<List<JobModel>> gg = new List<List<JobModel>>();
+            gg.Add(import_jobs);
+            gg.Add(duplicated);
+            return Json(gg);
+        }
+
+        public List<string> GetJobID()
+        {
+            List<string> job_ids = new List<string>();
+            this.DB = new ConnectDB();
+            SqlConnection con = DB.Connect();
+            con.Open();
+            string str_cmd = "select Job_ID from Job";
+            SqlCommand cmd = new SqlCommand(str_cmd, con);
+            SqlDataReader dr = cmd.ExecuteReader();
+            if (dr.HasRows)
+            {
+                while (dr.Read())
+                {
+                    string id = dr["Job_ID"].ToString().Trim();
+                    job_ids.Add(id);
+                }
+                dr.Close();
+            }
+            con.Close();
+            return job_ids;
         }
 
         [HttpPost]
@@ -153,6 +185,9 @@ namespace ProjectManaging.Controllers
         {
             this.DB = new ConnectDB();
             SqlConnection con = DB.Connect();
+            List<string> job_ids = GetJobID();
+            List<JobModel> inserted_jobs = new List<JobModel>();
+            List<JobModel> duplicated_jobs = new List<JobModel>();
             using (SqlCommand cmd = new SqlCommand("INSERT INTO Job(Job_ID, Job_Number, Job_Name, Job_Year) " +
                                                    "VALUES(@Job_ID, @Job_Number, @Job_Name, @Job_Year)", con))
             {
